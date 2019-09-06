@@ -1,0 +1,5 @@
+﻿  main.cpp
+c:\users\vincent\documents\universite\4. automne 2019\inf1010\tp1\tp1\gestionnaire.h(8): warning C4067: jetons inattendus après la directive du préprocesseur - saut de ligne attendu
+c:\users\vincent\documents\universite\4. automne 2019\inf1010\tp1\tp1\membre.h(10): warning C4067: jetons inattendus après la directive du préprocesseur - saut de ligne attendu
+c:\users\vincent\documents\universite\4. automne 2019\inf1010\tp1\tp1\membre.h(11): warning C4067: jetons inattendus après la directive du préprocesseur - saut de ligne attendu
+  TP1.vcxproj -> C:\Users\Vincent\Documents\Universite\4. Automne 2019\INF1010\TP1\Debug\TP1.exe
