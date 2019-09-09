@@ -16,33 +16,32 @@ class Membre {
 public:
 	// TODO: Implementer toutes les methodes
 	Membre();
-	Membre(const string& nom_);
+	Membre(const string& nom);
 
 	// TODO: Implementer si necessaire
 	~Membre();
 
 	// Getters
-	string getNom();
-	int getPoints();
-	Billet** getBillets();
-	int getNbBillets();
-	int getCapaciteBillets();
-	Coupon** getCoupons();
-	int getNbCoupons();
-	int getCapaciteCoupons();
+	string getNom() const;
+	int getPoints() const;
+	Billet** getBillets() const;
+	int getNbBillets() const;
+	int getCapaciteBillets() const;
+	Coupon** getCoupons() const;
+	int getNbCoupons() const;
+	int getCapaciteCoupons() const;
 
 	// Setters
 	void setNom(const string& nom);
-
 	void modifierPoints(int points);
 	void ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, const string& dateVol);
 	void ajouterCoupon(Coupon* coupon);
 	void retirerCoupon(Coupon* coupon);
 
 	void acheterCoupon(Coupon* coupon);
-	double calculerPoints(Billet* billet);
+	double calculerPoints(Billet* billet) const; // const?
 
-	void afficherMembre();
+	void afficherMembre() const;
 
 private:
 	string nom_;

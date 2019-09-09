@@ -18,19 +18,19 @@ public:
 	Coupon(const string& code, double rabais, int cout);
 
 	// TODO: Implementer si necessaire
-	~Coupon();
+	~Coupon() = default;
 
 	// Getters
-	string getCode();
-	double getRabais();
-	int getCout();
+	string getCode() const;
+	double getRabais() const;
+	int getCout() const;
 
 	// Setters
 	void setCode(const string& code);
 	void setRabais(double rabais);
 	void setCout(int cout);
 
-	void afficherCoupon();
+	void afficherCoupon() const;
 private:
 	string code_;
 	double rabais_;
