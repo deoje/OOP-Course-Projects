@@ -154,7 +154,7 @@ string Billet::formatTarif(TarifBillet tarif)
 	case TarifBillet::Economie:
 		return "Economie";
 	case TarifBillet::PremiumEconomie:
-		return "PremiumEconomie";
+		return "Premium economie";
 	case TarifBillet::Affaire:
 		return "Affaire";
 	case TarifBillet::Premiere:

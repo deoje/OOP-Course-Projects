@@ -1,11 +1,7 @@
 #include <iostream>
-#include <string>
 #include <iomanip>
-
 //#include "pch.h"
 #include "coupon.h"
-
-using namespace std;
 
 Coupon::Coupon()
 {
