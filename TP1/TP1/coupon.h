@@ -13,11 +13,11 @@ using namespace std;
 
 class Coupon {
 public:
-	// TODO: Implementer toutes les methodes
+	// Constructors
 	Coupon();
 	Coupon(const string& code, double rabais, int cout);
 
-	// TODO: Implementer si necessaire
+	// Destructors
 	~Coupon() = default;
 
 	// Getters
@@ -30,10 +30,21 @@ public:
 	void setRabais(double rabais);
 	void setCout(int cout);
 
+	// Printing methods
 	void afficherCoupon() const;
 private:
+	/**
+	* @brief code_ the name of the coupon
+	*/
 	string code_;
+	/**
+	* @brief rabais_ the deduction offered by the coupon
+	* represented as a number between 0 and 1
+	*/
 	double rabais_;
+	/**
+	* @brief cout_ the price of the coupon in points
+	*/
 	int cout_;
 };
 
