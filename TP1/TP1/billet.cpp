@@ -161,7 +161,7 @@ string Billet::formatTarif(TarifBillet tarif) const
 	case TarifBillet::Premiere:
 		return "Premiere";
 	}
-	return "Invalid formatTarif";
+	return "Invalid format for Tarif";
 }
 
 /**
