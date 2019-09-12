@@ -7,8 +7,8 @@
 #define MEMBRE_H
 
 #include <string>
-#include "billet.h";
-#include "coupon.h";
+#include "billet.h"
+#include "coupon.h"
 
 using namespace std;
 
@@ -40,7 +40,7 @@ public:
 
 	// Methods for buying coupons and calculating points per billet
 	void acheterCoupon(Coupon* coupon);
-	double calculerPoints(Billet* billet) const; // const?
+	double calculerPoints(Billet* billet) const;
 
 	// Printing methods
 	void afficherMembre() const;

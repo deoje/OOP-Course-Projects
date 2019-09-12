@@ -4,27 +4,33 @@
 
 
 Membre::Membre()
+	: nom_("no_name"),
+	points_(0),
+	nbBillets_(0),
+	capaciteBillets_(CAPACITE_INITIALE),
+	nbCoupons_(0),
+	capaciteCoupons_(CAPACITE_INITIALE)
 {
 	/**
 	* @brief Coupon Default constructor of the class
 	*/
-	nom_ = "no_name";
-	points_ = 0;
 	/*
 		Billets
 	*/
-	nbBillets_ = 0;
-	capaciteBillets_ = CAPACITE_INITIALE;
 	billets_ = new Billet*[CAPACITE_INITIALE];
 	/*
 		Coupons
 	*/
-	nbCoupons_ = 0;
-	capaciteCoupons_ = CAPACITE_INITIALE;
 	coupons_ = new Coupon*[CAPACITE_INITIALE];
 }
 
 Membre::Membre(const string& nom)
+	: nom_(nom),
+	points_(0),
+	nbBillets_(0),
+	capaciteBillets_(CAPACITE_INITIALE),
+	nbCoupons_(0),
+	capaciteCoupons_(CAPACITE_INITIALE)
 {
 	/**
 	* @brief Coupon Constructor with parameters receiving its code, rabais and
@@ -32,19 +38,13 @@ Membre::Membre(const string& nom)
 	* @param nom Constant reference of a string representing the name of the
 	* membre
 	*/
-	nom_ = nom;
-	points_ = 0;
 	/*
 		Billets
 	*/
-	nbBillets_ = 0;
-	capaciteBillets_ = CAPACITE_INITIALE;
 	billets_ = new Billet * [CAPACITE_INITIALE];
 	/*
 		Coupons
 	*/
-	nbCoupons_ = 0;
-	capaciteCoupons_ = CAPACITE_INITIALE;
 	coupons_ = new Coupon * [CAPACITE_INITIALE];
 }
 
@@ -173,7 +173,7 @@ void Membre::ajouterBillet(const string& pnr, double prix,
 		Billet** newArray = new Billet * [newCapacity];
 
 		// Filling the new array with the old billets_
-		for (size_t i = 0; i < nbBillets_; i++)
+		for (int i = 0; i < nbBillets_; i++)
 		{
 			newArray[i] = billets_[i];
 		}
@@ -246,7 +246,7 @@ void Membre::retirerCoupon(Coupon* coupon)
 			}
 			// Decrease by one the value of the coupons
 			nbCoupons_--;
-			// Go out of the loop once we found the right coupon and removed it
+			// Go out of the loop once we find the right coupon and remove it
 			break;
 		}
 	}

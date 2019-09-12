@@ -3,16 +3,15 @@
 #include "coupon.h"
 
 Coupon::Coupon()
+	: code_(""),rabais_(0.0),cout_(100)
 {
 	/**
 	* @brief Coupon Default constructor of the class
 	*/
-	code_ = "";
-	rabais_ = 0.0;
-	cout_ = 100;
 }
 
 Coupon::Coupon(const string& code, double rabais, int cout)
+	:code_(code), rabais_(rabais), cout_(cout)
 {
 	/**
 	* @brief Coupon Constructor with parameters receiving its code, rabais and
@@ -21,9 +20,6 @@ Coupon::Coupon(const string& code, double rabais, int cout)
 	* @param rabais The deduction offered by the coupon
 	* @param cout its price in points
 	*/
-	code_ = code;
-	rabais_ = rabais;
-	cout_ = cout;
 }
 
 string Coupon::getCode() const

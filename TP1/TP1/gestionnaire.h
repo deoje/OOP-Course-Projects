@@ -5,7 +5,7 @@
 #ifndef GESTIONNAIRE_H
 #define	GESTIONNAIRE_H
 
-#include "membre.h";
+#include "membre.h"
 
 class Gestionnaire {
 

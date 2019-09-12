@@ -227,19 +227,7 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 	}
 	// Buy the coupon if one has been found.
 	if (bestCoupon != nullptr) {
-		trouverMembre(nomMembre)->acheterCoupon(bestCoupon);
-		// TODO: Remove the coupon from the set?
-		//Coupon** reducedArray = new Coupon*[capaciteCoupons_];
-		//int skipDeletedCoupon = 0;
-		//for (unsigned int i = 0; i < nbCoupons_ - 1; i++) {
-		//	if (i == couponID) {
-		//		skipDeletedCoupon = 1;
-		//	}
-		//	reducedArray[i] = coupons_[i + skipDeletedCoupon];
-		//}
-		//delete[] coupons_;
-		//coupons_ = reducedArray;
-		//nbCoupons_--;
+		membre->acheterCoupon(bestCoupon);
 	}
 	else {
 		cout << "Error: member '" << nomMembre << "' cannot "
