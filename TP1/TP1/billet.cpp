@@ -5,13 +5,13 @@
 *@brief Billet default constructor. Initializes values to 0 or empty strings.
 */
 Billet::Billet()
+	: pnr_(""),
+	  nomPassager_(""),
+	  prix_(0.0),
+	  od_(""),
+	  tarif_(TarifBillet::Economie),
+	  dateVol_("")
 {
-	pnr_ = "";
-	nomPassager_ = "";
-	prix_ = 0.0;
-	od_ = "";
-	tarif_ = TarifBillet::Economie;
-	dateVol_ = "";
 }
 
 /**
@@ -26,13 +26,13 @@ Billet::Billet()
 Billet::Billet(const string& pnr, const string& nomPassager,
 			   double prix, const string& od, TarifBillet tarif,
 			   const string& dateVol)
+	: pnr_(pnr),
+	  nomPassager_(nomPassager),
+	  prix_(prix),
+	  od_(od),
+	  tarif_(tarif),
+	  dateVol_(dateVol)
 {
-	pnr_ = pnr;
-	nomPassager_ = nomPassager;
-	prix_ = prix;
-	od_ = od;
-	tarif_ = tarif;
-	dateVol_ = dateVol;
 }
 
 /**

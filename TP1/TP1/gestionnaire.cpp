@@ -7,10 +7,8 @@
 */
 Gestionnaire::Gestionnaire()
 	: nbMembres_(0),
-	  membres_(nullptr),
 	  capaciteMembres_(CAPACITE_INITIALE),
 	  nbCoupons_(0),
-	  coupons_(nullptr),
 	  capaciteCoupons_(CAPACITE_INITIALE)
 {
 	membres_ = new Membre*[capaciteMembres_];
