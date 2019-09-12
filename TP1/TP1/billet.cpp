@@ -3,6 +3,7 @@
 
 /**
 *@brief Billet default constructor. Initializes values to 0 or empty strings.
+*       The default value of "tarif_" is "Economie".
 */
 Billet::Billet()
 	: pnr_(""),

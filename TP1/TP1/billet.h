@@ -15,11 +15,12 @@ using namespace std;
 
 class Billet {
 public:
-	// TODO: Implementer toutes les methodes
+	// Constructor
 	Billet();
-	Billet(const string& pnr, const string& nomPassager, double prix, const string& od, TarifBillet tarif, const string& dateVol);
+	Billet(const string& pnr, const string& nomPassager, double prix,
+		const string& od, TarifBillet tarif, const string& dateVol);
 
-	// TODO: Implementer si necessaire
+	// Destructor
 	~Billet();
 
 	// Getters
@@ -38,15 +39,35 @@ public:
 	void setTarif(TarifBillet tarif);
 	void setDateVol(const string& dateVol);
 
+	// Printing methods
 	string formatTarif(TarifBillet tarif) const;
-
 	void afficherBillet() const;
+
 private:
+	// Attributes
+	/**
+	 * @brief pnr_ Identifier for the ticket.
+	 */
 	string pnr_;
+	/**
+	 * @brief nomPassager_ Passenger name.
+	 */
 	string nomPassager_;
+	/**
+	 * @brief prix_ Ticket price.
+	 */
 	double prix_;
+	/**
+	 * @brief od_ Origin and destination for the ticket.
+	 */
 	string od_;
+	/**
+	 * @brief tarif_ Type of ticket.
+	 */
 	TarifBillet tarif_;
+	/**
+	 * @brief dateVol Flight date.
+	 */
 	string dateVol_;
 };
 #endif // !BILLET_H

@@ -16,6 +16,23 @@ Gestionnaire::Gestionnaire()
 }
 
 /**
+*@brief Delete attributes 'membres_' and 'coupons_' and their content.
+*/
+Gestionnaire::~Gestionnaire()
+{
+	for (int i = 0; i < nbMembres_; i++) {
+		delete membres_[i];
+	}
+	delete[] membres_;
+	membres_ = nullptr;
+	for (int i = 0; i < nbCoupons_; i++) {
+		delete coupons_[i];
+	}
+	delete[] coupons_;
+	coupons_ = nullptr;
+}
+
+/**
 *@brief Get pointer to array 'membres_'.
 *@return attribute membres_.
 */
@@ -241,19 +258,4 @@ void Gestionnaire::afficherInfos() const
 		membres_[i]->afficherMembre();
 		cout << endl;
 	}
-}
-
-/**
-*@brief Delete attributes 'membres_' and 'coupons_' and their content.
-*/
-Gestionnaire::~Gestionnaire()
-{
-	for (int i = 0; i < nbMembres_; i++) {
-		delete membres_[i];
-	}
-	delete[] membres_;
-	for (int i = 0; i < nbCoupons_; i++) {
-		delete coupons_[i];
-	}
-	delete[] coupons_;
 }
