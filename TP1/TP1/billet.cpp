@@ -168,12 +168,12 @@ string Billet::formatTarif(TarifBillet tarif) const
 */
 void Billet::afficherBillet() const
 {
-	cout << "\t\t - Billet " << pnr_ << "(Classe : "
-		<< formatTarif(tarif_) << endl;
-	cout << "\t\t\t - Passager \t : " << nomPassager_;
-	cout << "\t\t\t - Prix \t : " << prix_;
-	cout << "\t\t\t - Trajet \t : " << od_;
-	cout << "\t\t\t - Vol le \t : " << dateVol_;
+	cout << "\t\t - Billet " << pnr_ << " (Classe : "
+		<< formatTarif(tarif_) << ")" << endl;
+	cout << "\t\t\t - Passager \t : " << nomPassager_ << endl;
+	cout << "\t\t\t - Prix \t : " << prix_ << endl;
+	cout << "\t\t\t - Trajet \t : " << od_ << endl;
+	cout << "\t\t\t - Vol le \t : " << dateVol_ << endl;
 }
 
 // TODO: check if the destructor is really necessary.

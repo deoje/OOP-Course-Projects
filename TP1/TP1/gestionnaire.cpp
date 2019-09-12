@@ -239,8 +239,11 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 */
 void Gestionnaire::afficherInfos() const
 {
+	cout << "====================ETAT ACTUEL DU PROGRAMME==================="
+		<< endl << endl;
 	for (int i = 0; i < nbMembres_; i++) {
 		membres_[i]->afficherMembre();
+		cout << endl;
 	}
 }
 

@@ -49,7 +49,7 @@ void Coupon::setCout(int cout)
 
 void Coupon::afficherCoupon()const
 {
-	cout << "- Coupon " + code_ + ". "
+	cout << "\t\t - Coupon " + code_ + ". "
 		<< "Rabais" << " : " << rabais_ << "."
 		<< endl;
 

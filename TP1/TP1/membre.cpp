@@ -197,5 +197,26 @@ double Membre::calculerPoints(Billet* billet) const
 }
 
 void Membre::afficherMembre() const {
-
+	cout << "- Membre " << nom_ << ":" << endl;
+	cout << "\t - Points  : " << points_ << endl;
+	cout << "\t - Billets : ";
+	if (nbBillets_ == 0) {
+		cout << " Aucun billet" << endl;
+	}
+	else {
+		cout << endl;
+		for (int i = 0; i < nbBillets_; i++) {
+			billets_[i]->afficherBillet();
+		}
+	}
+	cout << "\t - Coupons : ";
+	if (nbCoupons_ == 0) {
+		cout << " Aucun coupon" << endl;
+	}
+	else {
+		cout << endl;
+		for (int i = 0; i < nbCoupons_; i++) {
+			coupons_[i]->afficherCoupon();
+		}
+	}
 }
