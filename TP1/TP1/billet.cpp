@@ -39,7 +39,7 @@ Billet::Billet(const string& pnr, const string& nomPassager,
 *@brief Getter for attribute pnr.
 *@return attribute pnr_.
 */
-string Billet::getPnr()
+string Billet::getPnr() const
 {
 	return pnr_;
 }
@@ -48,7 +48,7 @@ string Billet::getPnr()
 *@brief Getter for attribute nomPassager.
 *@return attribute nomPassager_.
 */
-string Billet::getNomPassager()
+string Billet::getNomPassager() const
 {
 	return nomPassager_;
 }
@@ -57,7 +57,7 @@ string Billet::getNomPassager()
 *@brief Getter for attribute prix.
 *@return attribute prix_.
 */
-double Billet::getPrix()
+double Billet::getPrix() const
 {
 	return prix_;
 }
@@ -66,7 +66,7 @@ double Billet::getPrix()
 *@brief Getter for attribute od.
 *@return attribute od_.
 */
-string Billet::getOd()
+string Billet::getOd() const
 {
 	return od_;
 }
@@ -75,7 +75,7 @@ string Billet::getOd()
 *@brief Getter for attribute tarif.
 *@return attribute tarif_.
 */
-TarifBillet Billet::getTarif()
+TarifBillet Billet::getTarif() const
 {
 	return tarif_;
 }
@@ -84,7 +84,7 @@ TarifBillet Billet::getTarif()
 *@brief Getter for attribute dateVol.
 *@return attribute dateVol_.
 */
-string Billet::getDateVol()
+string Billet::getDateVol() const
 {
 	return dateVol_;
 }
@@ -148,7 +148,7 @@ void Billet::setDateVol(const string& dateVol)
 *@param tarif Price reduction (as an enumeration).
 *@return A character string for the price reduction.
 */
-string Billet::formatTarif(TarifBillet tarif)
+string Billet::formatTarif(TarifBillet tarif) const
 {
 	switch (tarif) {
 	case TarifBillet::Economie:
@@ -166,7 +166,7 @@ string Billet::formatTarif(TarifBillet tarif)
 /**
 *@brief Print all ticket attributes with an indentation.
 */
-void Billet::afficherBillet()
+void Billet::afficherBillet() const
 {
 	cout << "\t\t - Billet " << pnr_ << "(Classe : "
 		<< formatTarif(tarif_) << endl;

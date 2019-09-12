@@ -23,12 +23,12 @@ public:
 	~Billet();
 
 	// Getters
-	string getPnr();
-	string getNomPassager();
-	double getPrix();
-	string getOd();
-	TarifBillet getTarif();
-	string getDateVol();
+	string getPnr() const;
+	string getNomPassager() const;
+	double getPrix() const;
+	string getOd() const;
+	TarifBillet getTarif() const;
+	string getDateVol() const;
 
 	// Setters
 	void setPnr(const string& pnr);
@@ -38,9 +38,9 @@ public:
 	void setTarif(TarifBillet tarif);
 	void setDateVol(const string& dateVol);
 
-	string formatTarif(TarifBillet tarif);
+	string formatTarif(TarifBillet tarif) const;
 
-	void afficherBillet();
+	void afficherBillet() const;
 private:
 	string pnr_;
 	string nomPassager_;

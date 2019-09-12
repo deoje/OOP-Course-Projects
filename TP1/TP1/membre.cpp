@@ -195,3 +195,7 @@ double Membre::calculerPoints(Billet* billet) const
 
 	return basePoints + bonusPoints;
 }
+
+void Membre::afficherMembre() const {
+
+}

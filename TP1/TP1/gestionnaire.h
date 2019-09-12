@@ -17,22 +17,22 @@ public:
 	~Gestionnaire();
 
 	// Getters
-	Membre** getMembres();
-	int getNbMembres();
-	int getCapaciteMembres();
-	Coupon** getCoupons();
-	int getNbCoupons();
-	int getCapaciteCoupons();
+	Membre** getMembres() const;
+	int getNbMembres() const;
+	int getCapaciteMembres() const;
+	Coupon** getCoupons() const;
+	int getNbCoupons() const;
+	int getCapaciteCoupons() const;
 
 	void ajouterMembre(const string& nomMembre);
 	void ajouterCoupon(const string& code, double rabais, int cout);
 
-	Membre* trouverMembre(const string& nomMembre);
+	Membre* trouverMembre(const string& nomMembre) const;
 	void assignerBillet(const string& nomMembre, const string& pnr, double prixBase, const string& od, TarifBillet tarif, const string& dateVol, bool utiliserCoupon);
 	double appliquerCoupon(Membre* membre, double prix);
 	void acheterCoupon(const string& nomMembre);
 
-	void afficherInfos();
+	void afficherInfos() const;
 private:
 	Membre** membres_;
 	int nbMembres_;
