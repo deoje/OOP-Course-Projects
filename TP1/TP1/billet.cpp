@@ -6,12 +6,12 @@
 *       The default value of "tarif_" is "Economie".
 */
 Billet::Billet()
-	: pnr_(""),
-	  nomPassager_(""),
+	: pnr_("Unknown"),
+	  nomPassager_("Unknown"),
 	  prix_(0.0),
-	  od_(""),
+	  od_("Unknown"),
 	  tarif_(TarifBillet::Economie),
-	  dateVol_("")
+	  dateVol_("Unknown")
 {
 }
 
@@ -175,9 +175,4 @@ void Billet::afficherBillet() const
 	cout << "\t\t\t - Prix \t : " << prix_ << endl;
 	cout << "\t\t\t - Trajet \t : " << od_ << endl;
 	cout << "\t\t\t - Vol le \t : " << dateVol_ << endl;
-}
-
-// TODO: check if the destructor is really necessary.
-Billet::~Billet()
-{
 }

@@ -21,7 +21,7 @@ public:
 		const string& od, TarifBillet tarif, const string& dateVol);
 
 	// Destructor
-	~Billet();
+	~Billet() = default;
 
 	// Getters
 	string getPnr() const;
