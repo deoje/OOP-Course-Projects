@@ -92,8 +92,7 @@ void Gestionnaire::ajouterMembre(const string& nomMembre)
 		capaciteMembres_ = expandedCapacity;
 	}
 	// Add a new element to the array.
-	membres_[nbMembres_] = new Membre(nomMembre);
-	nbMembres_++;
+	membres_[nbMembres_++] = new Membre(nomMembre);
 }
 
 /**
@@ -117,8 +116,7 @@ void Gestionnaire::ajouterCoupon(const string& code, double rabais, int cout)
 		coupons_ = expandedArray;
 		capaciteCoupons_ = expandedCapacity;
 	}
-	coupons_[nbCoupons_] = new Coupon(code, rabais, cout);
-	nbCoupons_++;
+	coupons_[nbCoupons_++] = new Coupon(code, rabais, cout);
 }
 
 /**
@@ -215,18 +213,18 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 	// Buy the coupon if one has been found.
 	if (bestCoupon != nullptr) {
 		trouverMembre(nomMembre)->acheterCoupon(bestCoupon);
-		// Remove the coupon from the set.
-		Coupon** reducedArray = new Coupon*[capaciteCoupons_];
-		int skipDeletedCoupon = 0;
-		for (unsigned int i = 0; i < nbCoupons_; i++) {
-			if (i == couponID) {
-				skipDeletedCoupon = 1;
-			}
-			reducedArray[i] = coupons_[i + skipDeletedCoupon];
-		}
-		delete[] coupons_;
-		coupons_ = reducedArray;
-		nbCoupons_--;
+		// TODO: Remove the coupon from the set?
+		//Coupon** reducedArray = new Coupon*[capaciteCoupons_];
+		//int skipDeletedCoupon = 0;
+		//for (unsigned int i = 0; i < nbCoupons_ - 1; i++) {
+		//	if (i == couponID) {
+		//		skipDeletedCoupon = 1;
+		//	}
+		//	reducedArray[i] = coupons_[i + skipDeletedCoupon];
+		//}
+		//delete[] coupons_;
+		//coupons_ = reducedArray;
+		//nbCoupons_--;
 	}
 	else {
 		cout << "Error: member '" << nomMembre << "' cannot "
