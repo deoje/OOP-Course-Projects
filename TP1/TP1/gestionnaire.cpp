@@ -131,11 +131,12 @@ void Gestionnaire::ajouterCoupon(const string& code, double rabais, int cout)
 		coupons_ = expandedArray;
 		capaciteCoupons_ = expandedCapacity;
 	}
+	// Add a new coupon to the array.
 	coupons_[nbCoupons_++] = new Coupon(code, rabais, cout);
 }
 
 /**
-*@brief Find and return a member in the list of members.
+*@brief Find and return a member in the list of members by their name.
 *@param nomMembre Name of the member to look for.
 *@return Pointer to the member of the desired name.
 */
@@ -166,13 +167,12 @@ void Gestionnaire::assignerBillet(const string& nomMembre,
 	TarifBillet tarif, const string& dateVol,
 	bool utiliserCoupon)
 {
-	double prix = prixBase;
+	double price = prixBase;
 	Membre* membre = trouverMembre(nomMembre);
 	if (utiliserCoupon) {
-		prix = appliquerCoupon(membre, prixBase);
+		price = appliquerCoupon(membre, prixBase);
 	}
-	membre->ajouterBillet(pnr, prix, od,
-		tarif, dateVol);
+	membre->ajouterBillet(pnr, price, od, tarif, dateVol);
 }
 
 /**
@@ -193,12 +193,12 @@ double Gestionnaire::appliquerCoupon(Membre* membre, double prix)
 	// Select the best coupon.
 	Coupon** coupons = membre->getCoupons();
 	Coupon* bestCoupon = coupons[0];
-	double rabais = bestCoupon->getRabais();
 	for (int i = 1; i < nCoupons; i++) {
 		if (coupons[i]->getRabais() > bestCoupon->getRabais()) {
 			bestCoupon = coupons[i];
 		}
 	}
+	// Reduce the price based on discount.
 	double reducedPrice = (1.0 - bestCoupon->getRabais()) * prix;
 	membre->retirerCoupon(bestCoupon);
 	return reducedPrice;
@@ -211,24 +211,23 @@ double Gestionnaire::appliquerCoupon(Membre* membre, double prix)
 void Gestionnaire::acheterCoupon(const string& nomMembre)
 {
 	// Find the best discount that can be purchased.
-	Membre* membre = trouverMembre(nomMembre);
-	int maxPrice = membre->getPoints();
+	Membre* member = trouverMembre(nomMembre);
+	int maxPrice = member->getPoints();
 	Coupon* bestCoupon = nullptr;
-	double rabais = 0.0;
-	int couponID = 0;
+	double discount = 0.0;
 	for (int i = 0; i < nbCoupons_; i++) {
 		if (coupons_[i]->getCout() <= maxPrice) {
-			rabais = coupons_[i]->getRabais();
-			if (i == 0 || rabais > bestCoupon->getRabais()) {
+			discount = coupons_[i]->getRabais();
+			if (i == 0 || discount > bestCoupon->getRabais()) {
 				bestCoupon = coupons_[i];
-				couponID = i;
 			}
 		}
 	}
-	// Buy the coupon if one has been found.
+	// Buy the coupon if one has been found and remove it from the set.
 	if (bestCoupon != nullptr) {
-		membre->acheterCoupon(bestCoupon);
+		member->acheterCoupon(bestCoupon);
 	}
+	// Print an error message if no coupon can be purchased.
 	else {
 		cout << "Error: member '" << nomMembre << "' cannot "
 			<< "buy a coupon." << endl;
