@@ -7,11 +7,34 @@
 
 1.	Quel est l’utilité de l’opérateur = et du constructeur par copie?
 
+L'opérateur = et le constructeur par copie peuvent être redéfini pour
+permettre d'effectuer une "deep copy" (c-à-d une copie de l'entité) au lieu
+d'une simple copie de ses attributs ("shallow copy"). Copier les attributs
+peut être problématique lorsqu'on utilise des pointeurs parce qu'on
+risque d'obtenir deux objets qui pointent vers le même espace en mémoire.
+L'opérateur = et le constructeur par copie permettent d'éviter que deux
+objets contiennent des pointeurs vers les mêmes variables.
+
 2.	Dans quel cas est-il nécessaire de surcharger l’opérateur = et le constructeur par copie? 
+
+Il faut les surcharger si on veut éviter qu'une copie d'un objet puisse
+accéder à un attribut de l'objet original en utilisant un pointeur. En
+d'autres termes, on les surcharge si les "shallow copies" permettent à l'objet
+copié d'accéder à une valeur qu'il n'est pas sensé pouvoir modifier.
 
 3.	Pourquoi avons-nous dû surcharger l’opérateur = et le constructeur par copie pour la classe Membre?
 
+Si on ne surchargeait pas l'opérateur = et le constructeur par copie, une
+copie d'un objet 'Membre' contiendrait un vecteur de pointeurs vers des
+billets. Une copie pourrait dont accéder aux billets du Membre original. Or,
+un Membre et des Billets sont liés par une relation de composition et les
+autres objets ne doivent pas y accéder. La surcharge du = et du constructeur
+permettent de créer des "deep copies" exemptes de ces problèmes d'accès en
+créant de nouveaux billets à la place de pointeurs.
+
 4.	Qu’est-ce qui différencie l’opérateur = du constructeur par copie?
+
+
 
 */
 

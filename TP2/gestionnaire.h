@@ -18,10 +18,10 @@ public:
 	~Gestionnaire();
 
 	// Getters
-	Membre** getMembres() const;
+	vector<Membre*> getMembres() const;
 	int getNbMembres() const;
 	int getCapaciteMembres() const;
-	Coupon** getCoupons() const;
+	vector<Coupon*> getCoupons() const;
 	int getNbCoupons() const;
 	int getCapaciteCoupons() const;
 
@@ -33,17 +33,11 @@ public:
 	double appliquerCoupon(Membre* membre, double prix);
 	void acheterCoupon(const string& nomMembre);
 
-	// TODO: Remplacer cette methode par l'operateur <<
-	void afficherInfos() const;
+	friend ostream& operator<< (ostream& os, const Gestionnaire& gestionnaire);
+
 private:
-	// TODO: Convertir membres_ en vecteur
-	Membre** membres_;
-	int nbMembres_;
-	int capaciteMembres_;
-	// TODO: Convertir coupons_ en vecteur
-	Coupon** coupons_;
-	int nbCoupons_;
-	int capaciteCoupons_;
+	vector<Membre*> membres_;
+	vector<Coupon*> coupons_;
 };
 #endif // !GESTIONNAIRE_H
 

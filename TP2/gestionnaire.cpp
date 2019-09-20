@@ -5,100 +5,66 @@
 
 #include "gestionnaire.h"
 
-Gestionnaire::Gestionnaire() :
-	membres_(new Membre*[CAPACITE_INITIALE]),
-	nbMembres_(0),
-	capaciteMembres_(CAPACITE_INITIALE),
-	coupons_(new Coupon*[CAPACITE_INITIALE]),
-	nbCoupons_(0),
-	capaciteCoupons_(CAPACITE_INITIALE)
+Gestionnaire::Gestionnaire()
 {
 }
 
 Gestionnaire::~Gestionnaire()
 {
-	for (int i = 0; i < nbMembres_; i++) {
+	for (int i = 0; i < membres_.size(); i++) {
 		delete membres_[i];
 	}
-	delete[] membres_;
 
-	for (int i = 0; i < nbCoupons_; i++) {
+	for (int i = 0; i < coupons_.size(); i++) {
 		delete coupons_[i];
 	}
-	delete[] coupons_;
 }
 
-Membre** Gestionnaire::getMembres() const
+vector<Membre*> Gestionnaire::getMembres() const
 {
 	return membres_;
 }
 
 int Gestionnaire::getNbMembres() const
 {
-	return nbMembres_;
+	return membres_.size();
 }
 
 int Gestionnaire::getCapaciteMembres() const
 {
-	return capaciteMembres_;
+	return membres_.capacity();
 }
 
-Coupon** Gestionnaire::getCoupons() const
+vector<Coupon*> Gestionnaire::getCoupons() const
 {
 	return coupons_;
 }
 
 int Gestionnaire::getNbCoupons() const
 {
-	return nbCoupons_;
+	return coupons_.size();
 }
 
 int Gestionnaire::getCapaciteCoupons() const
 {
-	return capaciteCoupons_;
+	return coupons_.capacity();
 }
 
 void Gestionnaire::ajouterMembre(const string& nomMembre)
 {
-	Membre* membre = new Membre(nomMembre);
-	if (nbMembres_ >= capaciteMembres_) {
-		capaciteMembres_ *= 2;
-
-		Membre** temp = new Membre* [capaciteMembres_];
-
-		for (int i = 0; i < nbMembres_; i++) {
-			temp[i] = membres_[i];
-		}
-		delete[] membres_;
-
-		membres_ = temp;
-	}
-	membres_[nbMembres_++] = membre;
+	membres_.push_back(new Membre(nomMembre));
 }
 
 void Gestionnaire::ajouterCoupon(const string& code, double rabais, int cout)
 {
-	Coupon* coupon = new Coupon(code, rabais, cout);
-	if (nbCoupons_ >= capaciteCoupons_) {
-		capaciteCoupons_ *= 2;
-
-		Coupon** temp = new Coupon * [capaciteCoupons_];
-
-		for (int i = 0; i < nbCoupons_; i++) {
-			temp[i] = coupons_[i];
-		}
-		delete[] coupons_;
-
-		coupons_ = temp;
-	}
-	coupons_[nbCoupons_++] = coupon;
+	coupons_.push_back(new Coupon(code, rabais, cout));
 }
 
 Membre* Gestionnaire::trouverMembre(const string& nomMembre) const
 {
-	for (int i = 0; i < nbMembres_; i++) {
+	for (int i = 0; i < membres_.size(); i++) {
 		// TODO: Faite cette comparaison avec la surcharge de l'operateur == de la classe Membre
-		if (membres_[i]->getNom() == nomMembre) {
+		if (membres_[i] == nomMembre) {
 			return membres_[i];
 		}
 	}
@@ -135,21 +101,20 @@ double Gestionnaire::appliquerCoupon(Membre* membre, double prix)
 	Coupon* meilleurCoupon = membre->getCoupons()[0];
 	Coupon** coupons = membre->getCoupons();
 	for (int i = 1; i < membre->getNbCoupons(); i++) {
-		// TODO: Faites cette comparaison par la surcharge de l'operateur > de la classe Coupon
-		if (coupons[i]->getRabais() > meilleurCoupon->getRabais()) {
+		if (coupons[i] > meilleurCoupon) {
 			meilleurCoupon = membre->getCoupons()[i];
 		}
 	}
 
 	// TODO: Utiliser la surcharge de l'operateur -= de la classe Membre plutot qu'utiliser la methode retirerCoupon
-	membre->retirerCoupon(meilleurCoupon);
+	membre -= meilleurCoupon;
 
 	return prix * meilleurCoupon->getRabais();
 }
 
 void Gestionnaire::acheterCoupon(const string& nomMembre)
 {
-	if (nbCoupons_ == 0) {
+	if (coupons_.size() == 0) {
 		cout << "Le gestionnaire n'a pas de coupon!" << endl;
 		return;
 	}
@@ -162,7 +127,7 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 
 	Coupon* meilleurCoupon = nullptr;
 
-	for (int i = 0; i < nbCoupons_; i++) {
+	for (int i = 0; i < coupons_.size(); i++) {
 		if (membre->getPoints() >= coupons_[i]->getCout()) {
 			// Si on avait pas encore trouve de meilleur coupon, on fait la premiere assignation
 			if (meilleurCoupon == nullptr) {
@@ -170,7 +135,7 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 			}
 			// Sinon on compare si le coupon courant a un rabais superieur au meilleur coupon
 			// TODO: Faites cette comparaison avec la surcharge de l'operateur > de la classe Coupon
-			else if (coupons_[i]->getRabais() > meilleurCoupon->getRabais()) {
+			else if (coupons_[i] > meilleurCoupon) {
 				meilleurCoupon = coupons_[i];
 			}
 		}
@@ -184,11 +149,10 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 	}
 }
 
-// TODO: Remplacer cette methode par l'operateur <<
-void Gestionnaire::afficherInfos() const
+ostream& operator<< (ostream& os, const Gestionnaire& gestionnaire)
 {
-	cout << "=================== ETAT ACTUEL DU PROGRAMME ==================\n\n";
-	for (int i = 0; i < nbMembres_; i++) {
-		membres_[i]->afficherMembre();
+	os << "=================== ETAT ACTUEL DU PROGRAMME ==================\n\n";
+	for (int i = 0; i < gestionnaire.getNbMembres(); i++) {
+		os << gestionnaire.getMembres()[i];
 	}
 }

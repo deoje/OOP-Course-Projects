@@ -40,8 +40,8 @@ public:
 
 	string formatTarif(TarifBillet tarif) const;
 
-	// TODO: Remplacer cette methode par l'operateur <<
-	void afficherBillet() const;
+	friend ostream& operator<< (ostream& os, const Billet& billet);
+
 private:
 	string pnr_;
 	string nomPassager_;
