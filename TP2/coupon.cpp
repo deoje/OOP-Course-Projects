@@ -55,10 +55,6 @@ void Coupon::setCout(int cout)
 
 bool Coupon::operator>(const Coupon& c2) const
 {
-	/*
-	* @brief 
-	* @param c2 Coupon to compare with
-	*/
 
 	if (rabais_>c2.rabais_) {
 		return true;
@@ -70,11 +66,7 @@ bool Coupon::operator>(const Coupon& c2) const
 
 bool Coupon::operator<(const Coupon& c2) const
 {
-	/*
-	* @brief
-	* @param c2 Coupon to compare with
-	*/
-
+	
 	if (rabais_ < c2.rabais_) {
 		return true;
 	}
@@ -82,12 +74,7 @@ bool Coupon::operator<(const Coupon& c2) const
 }
 
 // TODO: Remplacer cette methode par l'operateur <<
-//void Coupon::afficherCoupon() const
-//{
-//	cout << "\t\t- Coupon " << code_ << ". Rabais : " << rabais_ << "." << endl;
-//}
-
 ostream& operator<<(ostream& o, const Coupon& c)
 {
-	return o << "\t\t- Coupon " << c.code_ << ". Rabais : " << c.rabais_ << "." << endl;
+	return o << "\t\t- Coupon " << c.code_ << ". Rabais : " << c.rabais_ << ".";
 }

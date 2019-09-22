@@ -113,4 +113,5 @@ ostream& operator<< (ostream& os, const Billet& billet)
 	os << "\t\t\t" << setw(11) << "- Prix" << ": " << billet.getPrix() << "$" << endl;
 	os << "\t\t\t" << setw(11) << "- Trajet" << ": " << billet.getOd() << endl;
 	os << "\t\t\t" << setw(11) << "- Vol le" << ": " << billet.getDateVol() << endl;
+	return os;
 }

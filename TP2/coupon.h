@@ -34,7 +34,6 @@ public:
 	// TODO: Surcharger l'operateur <
 	bool operator<(const Coupon& c2) const;
 	// TODO: Remplacer cette methode par l'operateur <<
-	//void afficherCoupon() const;
 	friend ostream& operator<<(ostream& o, const Coupon& c);
 
 private:

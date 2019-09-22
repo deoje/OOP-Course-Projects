@@ -7,37 +7,53 @@
 
 Membre::Membre() :
 	nom_(""),
-	points_(0),
-	billets_(new Billet* [CAPACITE_INITIALE]),
-	nbBillets_(0),
-	capaciteBillets_(CAPACITE_INITIALE),
-	coupons_(new Coupon* [CAPACITE_INITIALE]),
-	nbCoupons_(0),
-	capaciteCoupons_(CAPACITE_INITIALE)
+	points_(0)
 {
 }
 
 Membre::Membre(const string& nom) :
 	nom_(nom),
-	points_(0),
-	billets_(new Billet* [CAPACITE_INITIALE]),
-	nbBillets_(0),
-	capaciteBillets_(CAPACITE_INITIALE),
-	coupons_(new Coupon* [CAPACITE_INITIALE]),
-	nbCoupons_(0),
-	capaciteCoupons_(CAPACITE_INITIALE)
+	points_(0)
 {
+}
+
+Membre::Membre(const Membre& m2) : 
+	nom_(m2.getNom()),
+	points_(m2.getPoints())
+{
+	// Create a copy of each Billet object found in the
+	// billets_ vector of the Membre m
+	for (int i = 0; i < m2.getNbBillets(); ++i) {
+
+		// Create a temp var for the original billet
+		Billet* originalBillet = m2.billets_[i];
+
+		// Create a new Billet object identical to the original one
+		Billet* copyBillet = new Billet(
+			originalBillet->getPnr(),
+			m2.getNom(),
+			originalBillet->getPrix(),
+			originalBillet->getOd(),
+			originalBillet->getTarif(),
+			originalBillet->getDateVol());
+
+		// Add the copy to the new vector
+		billets_.push_back(copyBillet);
+	}
+
+	// Create a shallow copy of objects in the coupons_ vector
+	// but deep copy of pointers
+	coupons_ = m2.coupons_;
 }
 
 Membre::~Membre()
 {
-	for (int i = 0; i < nbBillets_; i++) {
+	// iterate through billets_ vector
+	for (int i = 0 ; i < billets_.size(); ++i)
+		// deallocate the memory for the Billet object at pos i
 		delete billets_[i];
-	}
-	delete[] billets_;
-
-	delete[] coupons_;
 }
+
 
 string Membre::getNom() const
 {
@@ -49,35 +65,26 @@ int Membre::getPoints() const
 	return points_;
 }
 
-Billet** Membre::getBillets() const
+vector<Billet*> Membre::getBillets() const
 {
 	return billets_;
 }
 
-Coupon** Membre::getCoupons() const
+vector<Coupon*> Membre::getCoupons() const
 {
 	return coupons_;
 }
 
 int Membre::getNbBillets() const
 {
-	return nbBillets_;
+	return billets_.size();
 }
 
 int Membre::getNbCoupons() const
 {
-	return nbCoupons_;
+	return coupons_.size();
 }
 
-int Membre::getCapaciteBillets() const
-{
-	return capaciteBillets_;
-}
-
-int Membre::getCapaciteCoupons() const
-{
-	return capaciteCoupons_;
-}
 
 void Membre::setNom(const string& nom)
 {
@@ -92,19 +99,7 @@ void Membre::modifierPoints(int points)
 void Membre::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, const string& dateVol)
 {
 	Billet* billet = new Billet(pnr, nom_, prix, od, tarif, dateVol);
-	if (nbBillets_ >= capaciteBillets_) {
-		capaciteBillets_ *= 2;
-
-		Billet** temp = new Billet * [capaciteBillets_];
-
-		for (int i = 0; i < nbBillets_; i++) {
-			temp[i] = billets_[i];
-		}
-		delete[] billets_;
-
-		billets_ = temp;
-	}
-	billets_[nbBillets_++] = billet;
+	billets_.push_back(billet);
 	modifierPoints(calculerPoints(billet));
 }
 
@@ -112,7 +107,7 @@ void Membre::acheterCoupon(Coupon* coupon)
 {
 	if (points_ > coupon->getCout()) {
 		// TODO: Utiliser la surcharge de l'operateur += de la classe Membre plutot qu'utiliser la methode ajouterCoupon
-		ajouterCoupon(coupon);
+		*this+=coupon;
 		modifierPoints(-coupon->getCout());
 	}
 }
@@ -138,50 +133,104 @@ double  Membre::calculerPoints(Billet * billet) const
 }
 
 // TODO: Remplacer cette methode par l'operateur +=
-void Membre::ajouterCoupon(Coupon* coupon)
+Membre& Membre::operator+=(Coupon* c)
 {
-	if (nbCoupons_ >= capaciteCoupons_) {
-		capaciteCoupons_ *= 2;
-
-		Coupon** temp = new Coupon *[capaciteCoupons_];
-
-		for (int i = 0; i < nbCoupons_; i++) {
-			temp[i] = coupons_[i];
-		}
-		delete[] coupons_;
-
-		coupons_ = temp;
-	}
-	coupons_[nbCoupons_++] = coupon;
+	coupons_.push_back(c);
+	return *this;
 }
 
 // TODO: Remplacer cette methode par l'operateur -=
-void Membre::retirerCoupon(Coupon* coupon)
-{
-	for (int i = 0; i < nbCoupons_; i++) {
-		if (coupons_[i] == coupon) {
-			nbCoupons_--;
-			for (int j = i; j < nbCoupons_; j++) {
+Membre& Membre::operator-=(Coupon* c)
+{	
+	for (int i = 0; i < coupons_.size(); ++i) {
+		if (coupons_[i] == c) {
+			for (int j = i; j < coupons_.size()-1; ++j) {
 				coupons_[j] = coupons_[j + 1];
 			}
-			return;
+			coupons_.pop_back();
+			return *this;
 		}
 	}
 }
 
-// TODO: Remplacer cette methode par la surcharge de l'operateur <<
-void Membre::afficherMembre() const
+bool Membre::operator==(const string& s) const
 {
-	cout << setfill(' ');
-	cout << "- Membre " << nom_ << ":" << endl;
-	cout << "\t" << left << setw(10) << "- Points" << ": " << points_ << endl;
-	cout << "\t" << "- Billets :" << endl;
-	for (int i = 0; i < nbBillets_; i++) {
-		billets_[i]->afficherBillet();
-	}
-	cout << "\t" << "- Coupons :" << endl;
-	for (int i = 0; i < nbCoupons_; i++) {
-		//coupons_[i]->afficherCoupon();
-	}
-	cout << endl;
+	if (nom_ == s)
+		return true;
+	return false;
 }
+
+bool operator==(const string& s, const Membre& m)
+{
+	if (s == m.nom_)
+		return true;
+
+	return false;
+}
+
+Membre& Membre::operator=(const Membre& m2)
+{	
+	// Verify if we're working with the same Member object
+	if (this != &m2) {
+
+		// Iterate the billets_ from the right to left
+		for (int i = billets_.size()-1; i > -1; --i) {
+
+			// deallocate the memory for the Billets at pos i
+			delete billets_[i];
+
+			// decrease the size of the vector
+			billets_.pop_back();
+			
+		}
+		
+		// Assign the new name
+		nom_ = m2.nom_;
+		points_ = m2.points_;
+
+		// Create a copy of each Billet object found in the
+		// billets_ vector of the Membre m
+		for (int i = 0; i < m2.getNbBillets(); ++i) {
+
+			// Create a temp var for the original billet
+			Billet* originalBillet = m2.billets_[i];
+
+			// Create a new Billet object identical to the original one
+			Billet* copyBillet = new Billet(
+				originalBillet->getPnr(),
+				m2.getNom(),
+				originalBillet->getPrix(),
+				originalBillet->getOd(),
+				originalBillet->getTarif(),
+				originalBillet->getDateVol());
+
+			// Add the copy to the new vector
+			billets_.push_back(copyBillet);
+		}
+
+		// Create a shallow copy of objects in the coupons_ vector
+		// but deep copy of pointers
+		coupons_ = m2.coupons_;
+	}
+	
+	return *this;
+
+}
+
+ostream& operator<<(ostream& o, const Membre& m)
+{
+	o << setfill(' ');
+	o << "- Membre " << m.nom_ << ":" << endl;
+	o << "\t" << left << setw(10) << "- Points" << ": " << m.points_ << endl;
+	o << "\t" << "- Billets :" << endl;
+	for (int i = 0; i < m.billets_.size(); i++) {
+		o << *(m.billets_[i]) << endl;
+	}
+	o << "\t" << "- Coupons :" << endl;
+	for (int i = 0; i < m.coupons_.size(); i++) {
+		o << *(m.coupons_[i]) << endl;
+	}
+	o << endl;
+	return o;
+}
+

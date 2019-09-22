@@ -64,7 +64,7 @@ Membre* Gestionnaire::trouverMembre(const string& nomMembre) const
 {
 	for (int i = 0; i < membres_.size(); i++) {
 		// TODO: Faite cette comparaison avec la surcharge de l'operateur == de la classe Membre
-		if (membres_[i] == nomMembre) {
+		if (*membres_[i] == nomMembre) {
 			return membres_[i];
 		}
 	}
@@ -99,15 +99,15 @@ double Gestionnaire::appliquerCoupon(Membre* membre, double prix)
 	}
 
 	Coupon* meilleurCoupon = membre->getCoupons()[0];
-	Coupon** coupons = membre->getCoupons();
+	vector<Coupon*> coupons = membre->getCoupons();
 	for (int i = 1; i < membre->getNbCoupons(); i++) {
-		if (coupons[i] > meilleurCoupon) {
+		if (*(coupons[i]) > *(meilleurCoupon)) {
 			meilleurCoupon = membre->getCoupons()[i];
 		}
 	}
 
 	// TODO: Utiliser la surcharge de l'operateur -= de la classe Membre plutot qu'utiliser la methode retirerCoupon
-	membre -= meilleurCoupon;
+	*membre -= meilleurCoupon;
 
 	return prix * meilleurCoupon->getRabais();
 }
@@ -153,6 +153,7 @@ ostream& operator<< (ostream& os, const Gestionnaire& gestionnaire)
 {
 	os << "=================== ETAT ACTUEL DU PROGRAMME ==================\n\n";
 	for (int i = 0; i < gestionnaire.getNbMembres(); i++) {
-		os << gestionnaire.getMembres()[i];
+		os << *(gestionnaire.getMembres()[i]);
 	}
+	return os;
 }
