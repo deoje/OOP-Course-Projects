@@ -55,7 +55,7 @@ void Coupon::setCout(int cout)
 
 bool Coupon::operator>(const Coupon& c2) const
 {
-
+	// verify if the discount is bigger for current coupon (left operand) than c2
 	if (rabais_>c2.rabais_) {
 		return true;
 	}
@@ -66,7 +66,7 @@ bool Coupon::operator>(const Coupon& c2) const
 
 bool Coupon::operator<(const Coupon& c2) const
 {
-	
+	// verify if the discount is smaller for current coupon (left operand) than c2
 	if (rabais_ < c2.rabais_) {
 		return true;
 	}
@@ -76,5 +76,6 @@ bool Coupon::operator<(const Coupon& c2) const
 // TODO: Remplacer cette methode par l'operateur <<
 ostream& operator<<(ostream& o, const Coupon& c)
 {
+	// output a custom print of c's state
 	return o << "\t\t- Coupon " << c.code_ << ". Rabais : " << c.rabais_ << ".";
 }

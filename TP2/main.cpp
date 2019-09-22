@@ -17,10 +17,11 @@ objets contiennent des pointeurs vers les mêmes variables.
 
 2.	Dans quel cas est-il nécessaire de surcharger l’opérateur = et le constructeur par copie? 
 
-Il faut les surcharger si on veut éviter qu'une copie d'un objet puisse
-accéder à un attribut de l'objet original en utilisant un pointeur. En
-d'autres termes, on les surcharge si les "shallow copies" permettent à l'objet
-copié d'accéder à une valeur qu'il n'est pas sensé pouvoir modifier.
+Il faut les surcharger lorsqu'une gestion dynamique de la mémoire est nécéssaire
+et si on veut éviter qu'une copie d'un objet puisse accéder à un attribut
+de l'objet original en utilisant un pointeur. En d'autres termes, on les
+surcharge si les "shallow copies" permettent à l'objet copié d'accéder à
+une valeur qu'il n'est pas sensé pouvoir modifier.
 
 3.	Pourquoi avons-nous dû surcharger l’opérateur = et le constructeur par copie pour la classe Membre?
 
@@ -34,6 +35,9 @@ créant de nouveaux billets à la place de pointeurs.
 
 4.	Qu’est-ce qui différencie l’opérateur = du constructeur par copie?
 
+Le constructeur par copie initialise un nouvel objet, tandis que l'operateur
+`=` modifie un objet déjà existant. De plus, la vérification d'une afectation
+d'une objet à lui-même n'a pas à être ajoutée dans le constructeur par copie.
 
 
 */

@@ -19,9 +19,15 @@ public:
 	// Constructeurs
 	Membre();
 	Membre(const string& nom);
-	// TODO: Ajouter un constructeur par copie si necessaire
+	/**
+	 * @brief Membre Copy constructor
+	 * @param m2 The member to copy
+	 */
 	Membre(const Membre& m2);
 
+	/**
+	 * @brief ~Membre Membre destructor
+	 */
 	~Membre();
 
 	// Getters
@@ -39,27 +45,51 @@ public:
 	void acheterCoupon(Coupon* coupon);
 	double calculerPoints(Billet* billet) const;
 
-	// TODO: Remplacer cette methode par l'operateur +=
+	/**
+	 * @brief operator+= To add a coupon to the current Member
+	 * @param c The coupon to add
+	 */
 	Membre& operator+=(Coupon* c);
-	// TODO: Remplacer cette methode par l'operateur -=
+	/**
+	 * @brief operator+-= To remove a coupon from coupons_
+	 * @param c The coupon to remove
+	 */
 	Membre& operator-=(Coupon* c);
 
-	// TODO: Surcharger l'operateur == (operande de gauche est un membre et droite est un string)
+	/**
+	 * @brief operator== To compare a Member's name with a string
+	 * @param s The string to compare nom_ with
+	 */
 	bool operator==(const string& s) const;
-	// TODO: Surcharger l'operateur == (operande de gauche est un string et droite est un membre)
+	/**
+	 * @brief operator== To compare a string with a Member's name
+	 * @param m The member to compare s with
+	 */
 	friend bool operator==(const string& s, const Membre& m);
-	// TODO: Surcharger l'operateur =
+	/**
+	 * @brief operator= To assign the current member to the member m2
+	 * @param m2 The member to copy
+	 */
 	Membre& operator=(const Membre& m2);
 
 
-	// TODO: Remplacer cette methode par l'operateur <<
+	/**
+	 * @brief operator<< To output the state of the current member
+	 * @param ostream The ostream object
+	 * @param m The Membre object which has the state of interest
+	 */
 	friend ostream& operator<<(ostream& o, const Membre& m);
+
 private:
 	string nom_;
 	int points_;
-	// TODO: Convertir billets_ en vecteur
+	/**
+	 * @brief billets_ To store pointers to Billet objects
+	 */
 	vector<Billet*> billets_;
-	// TODO: Convertir coupons_ en vecteur
+	/**
+	 * @brief billets_ To store pointers to Coupons objects
+	 */
 	vector<Coupon*> coupons_;
 };
 #endif // !MEMBRE_H

@@ -77,11 +77,13 @@ vector<Coupon*> Membre::getCoupons() const
 
 int Membre::getNbBillets() const
 {
+	// return the size of the billets_ vector
 	return billets_.size();
 }
 
 int Membre::getNbCoupons() const
 {
+	// return the size of the coupons_ vector
 	return coupons_.size();
 }
 
@@ -97,16 +99,19 @@ void Membre::modifierPoints(int points)
 }
 
 void Membre::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, const string& dateVol)
-{
+{	
+	// Create the new Billet object and store its pointer in billet
 	Billet* billet = new Billet(pnr, nom_, prix, od, tarif, dateVol);
+	// append the billet pointer to the billets_ vector
 	billets_.push_back(billet);
+	// add the points earned by buying this ticket
 	modifierPoints(calculerPoints(billet));
 }
 
 void Membre::acheterCoupon(Coupon* coupon)
 {
 	if (points_ > coupon->getCout()) {
-		// TODO: Utiliser la surcharge de l'operateur += de la classe Membre plutot qu'utiliser la methode ajouterCoupon
+		// add the bought coupon to the current member
 		*this+=coupon;
 		modifierPoints(-coupon->getCout());
 	}
@@ -135,6 +140,7 @@ double  Membre::calculerPoints(Billet * billet) const
 // TODO: Remplacer cette methode par l'operateur +=
 Membre& Membre::operator+=(Coupon* c)
 {
+	//append the coupon to the coupons_ vector
 	coupons_.push_back(c);
 	return *this;
 }
@@ -142,12 +148,18 @@ Membre& Membre::operator+=(Coupon* c)
 // TODO: Remplacer cette methode par l'operateur -=
 Membre& Membre::operator-=(Coupon* c)
 {	
+	// iterate through the coupons_ vector
 	for (int i = 0; i < coupons_.size(); ++i) {
+		// find the first instance of the corresponding coupon c
 		if (coupons_[i] == c) {
+			// move every coupon (starting from the positon of the coupon to remove)
+			// one place below
 			for (int j = i; j < coupons_.size()-1; ++j) {
 				coupons_[j] = coupons_[j + 1];
 			}
+			// remove the last coupons which is now a unusefull copy
 			coupons_.pop_back();
+			// return the modified instance of the Membre calss
 			return *this;
 		}
 	}
@@ -155,6 +167,7 @@ Membre& Membre::operator-=(Coupon* c)
 
 bool Membre::operator==(const string& s) const
 {
+	// verify if the string representing the name of current member matches `s`
 	if (nom_ == s)
 		return true;
 	return false;
@@ -162,6 +175,7 @@ bool Membre::operator==(const string& s) const
 
 bool operator==(const string& s, const Membre& m)
 {
+	// verify if the string representing the name of m matches `s`
 	if (s == m.nom_)
 		return true;
 
@@ -231,6 +245,7 @@ ostream& operator<<(ostream& o, const Membre& m)
 		o << *(m.coupons_[i]) << endl;
 	}
 	o << endl;
+	// output a custom print of m's state
 	return o;
 }
 

@@ -29,11 +29,20 @@ public:
 	void setRabais(double rabais);
 	void setCout(int cout);
 
-	// TODO: Surcharger l'operateur >
+	/**
+	 * @brief operator> To compare the rabais_ field of each Coupon object
+	 * @param c2 The coupon to compare the left operand with
+	 */
 	bool operator>(const Coupon& c2) const;
-	// TODO: Surcharger l'operateur <
+	/**
+	 * @brief operator< To compare the rabais_ field of each Coupon object
+	 * @param c2 The coupon to compare the left operand with
+	 */
 	bool operator<(const Coupon& c2) const;
-	// TODO: Remplacer cette methode par l'operateur <<
+	/**
+	 * @brief operator>> To output the state of the Coupon object
+	 * @param c2 The coupon to compare the left operand with
+	 */
 	friend ostream& operator<<(ostream& o, const Coupon& c);
 
 private:
