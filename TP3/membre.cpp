@@ -161,6 +161,8 @@ ostream& operator<<(ostream& o, const Membre& membre)
 	for (int i = 0; i < membre.billets_.size(); i++) {
 		o << *membre.billets_[i];
 	}
+	o << "\t" << left << setw(10) << "- Points" << ": " << endl;
+	o << "\t" << "- Coupons :" << endl;
 
-	return o << endl << membre;
+	return o << endl;
 }

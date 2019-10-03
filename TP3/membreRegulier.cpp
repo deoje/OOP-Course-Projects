@@ -56,13 +56,19 @@ void MembreRegulier::modifierPoints(int points)
 }
 
 ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier) {
-	os << membreRegulier;
+	os << setfill(' ');
+	os << "- Membre " << membreRegulier.nom_ << ":" << endl;
 	os << "\t" << left << setw(10) << "- Points" << ": " << membreRegulier.points_ << endl;
+	os << "\t" << "- Billets :" << endl;
+	for (int i = 0; i < membreRegulier.billets_.size(); i++) {
+		os << *membreRegulier.billets_[i];
+	}
 	os << "\t" << "- Coupons :" << endl;
 	for (int i = 0; i < membreRegulier.coupons_.size(); i++) {
 		os << *membreRegulier.coupons_[i];
 	}
-	return os << membreRegulier;
+
+	return os << endl;
 }
 
 double MembreRegulier::calculerPoints(Billet* billet) const

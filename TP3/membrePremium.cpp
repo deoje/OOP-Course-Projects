@@ -41,8 +41,18 @@ void MembrePremium::acheterCoupon(Coupon* coupon) {
 }
 
 ostream& operator<<(ostream& os, const MembrePremium& membrePremium) {
-	os << membrePremium << endl;
+	os << setfill(' ');
+	os << "- Membre " << membrePremium.nom_ << ":" << endl;
+	os << "\t" << left << setw(10) << "- Points" << ": " << membrePremium.points_ << endl;
+	os << "\t" << "- Billets :" << endl;
+	for (int i = 0; i < membrePremium.billets_.size(); i++) {
+		os << *membrePremium.billets_[i];
+	}
+	os << "\t" << "- Coupons :" << endl;
+	for (int i = 0; i < membrePremium.coupons_.size(); i++) {
+		os << *membrePremium.coupons_[i];
+	}
 	os << "\t" << left << "- Points cumules : " << membrePremium.pointsCumules_ << endl;
 	os << "\t" << left << "- Jours premium restants : " << membrePremium.pointsCumules_ << endl;
-	return os << endl << membrePremium;
+	return os << endl;
 }
