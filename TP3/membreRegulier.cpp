@@ -10,9 +10,9 @@ int MembreRegulier::getPoints() const
 	return points_;
 }
 
-void MembreRegulier::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol); {
-	Membre::ajouterBillet(pnr, prix, od, tarif, TypeBillet, dteVol);
-	modifierPoint(-calculerPoints(billets_[billets_.size() - 1]));
+void MembreRegulier::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol){
+	Membre::ajouterBillet(pnr, prix, od, tarif, typeBillet, dateVol);
+	modifierPoints(-calculerPoints(billets_[billets_.size() - 1]));
 }
 
 vector<Coupon*> MembreRegulier::getCoupons() const
@@ -54,8 +54,14 @@ void MembreRegulier::modifierPoints(int points)
 	points_ += points;
 }
 
-friend ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier) {
+ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier) {
 	os << membreRegulier;
+	os << "\t" << left << setw(10) << "- Points" << ": " << membreRegulier.points_ << endl;
+	os << "\t" << "- Coupons :" << endl;
+	for (int i = 0; i < membreRegulier.coupons_.size(); i++) {
+		os << *membreRegulier.coupons_[i];
+	}
+	return os << membreRegulier;
 }
 
 double MembreRegulier::calculerPoints(Billet* billet) const

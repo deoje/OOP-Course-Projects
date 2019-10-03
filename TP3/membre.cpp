@@ -64,16 +64,16 @@ void Membre::setNom(const string& nom)
 }
 
 void Membre::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol)
-{
-	switch (membre.billets_[i]->getTypeBillet()) {
+{ 
+	switch (typeBillet) {
 		case Billet_Base:
-			billets_.push_back(new Billet(*membre.billets_[i]));
+			billets_.push_back(new Billet(pnr, nom_, prix, od, tarif, typeBillet));
 			break;
 		case Billet_Regulier:
-			billets_.push_back(new BilletRegulier(*membre.billets_[i]));
+			billets_.push_back(new BilletRegulier(pnr, nom_, prix, od, tarif, dateVol, typeBillet));
 			break;
 		case Flight_Pass:
-			billets_.push_back(new FlightPass(*membre.billets_[i]));
+			billets_.push_back(new FlightPass(pnr, nom_, prix, od, tarif, typeBillet));
 			break;
 	}
 }
@@ -116,18 +116,18 @@ void Membre::utiliserBillet(const string& pnr) {
 		if (billets_[i]->getPnr() == pnr) {
 			bool mustRemove = false;
 			// If it is a FlightPass, handle number of use
-			if (billets_[i]->getTypeBillet == Flight_Pass) {
+			if (billets_[i]->getTypeBillet() == Flight_Pass) {
 				billets_[i].decrementeNbUtilisations();
 				if (billets_[i].getNbUtilisationsRestante() == 0) {
 					mustRemove = true;
 				}
 			}
 			// If it is a regular pass, it must be removed.
-			else if (billets_[i]->getTypeBillet == Billet_Regulier) {
+			else if (billets_[i]->getTypeBillet() == Billet_Regulier) {
 				mustRemove = true;
 			}
 			if (mustRemove) {
-				billets_[i] = billets_[billets.size() - 1];
+				billets_[i] = billets_[billets_.size() - 1];
 				billets_.pop_back();
 				// Exit the function, because other tickets won't be removed.
 				return;
@@ -145,15 +145,10 @@ ostream& operator<<(ostream& o, const Membre& membre)
 {
 	o << setfill(' ');
 	o << "- Membre " << membre.nom_ << ":" << endl;
-	o << "\t" << left << setw(10) << "- Points" << ": " << membre.points_ << endl;
 	o << "\t" << "- Billets :" << endl;
 	for (int i = 0; i < membre.billets_.size(); i++) {
 		o << *membre.billets_[i];
 	}
-	o << "\t" << "- Coupons :" << endl;
-	for (int i = 0; i < membre.coupons_.size(); i++) {
-		o << *membre.coupons_[i];
-	}
 
-	return o << endl << this;
+	return o << endl << membre;
 }

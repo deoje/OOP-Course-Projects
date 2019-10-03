@@ -29,7 +29,6 @@ public:
 	//à faire 
 	void ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol);
 
-
 	double calculerPoints(Billet* billet) const;
 
 	//à faire

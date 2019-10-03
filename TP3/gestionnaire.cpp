@@ -30,9 +30,9 @@ vector<Coupon*> Gestionnaire::getCoupons() const
 	return coupons_;
 }
 
-void Gestionnaire::ajouterMembre(const string& nomMembre, TypeMembre)
+void Gestionnaire::ajouterMembre(const string& nomMembre, TypeMembre typeMembre)
 {
-	membres_.push_back(new Membre(nomMembre));
+	membres_.push_back(new Membre(nomMembre, typeMembre));
 }
 
 void Gestionnaire::ajouterCoupon(const string& code, double rabais, int cout)
