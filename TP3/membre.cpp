@@ -128,7 +128,6 @@ void Membre::utiliserBillet(const string& pnr) {
 			bool mustRemove = false;
 			// If it is a FlightPass, handle number of use
 			if (billets_[i]->getTypeBillet() == Flight_Pass) {
-				cout << "   " << mustRemove << endl;
 				FlightPass* flightPass = static_cast<FlightPass*>(billets_[i]);
 				flightPass->decrementeNbUtilisations();
 				if (flightPass->getNbUtilisationsRestante() <= 0) {
