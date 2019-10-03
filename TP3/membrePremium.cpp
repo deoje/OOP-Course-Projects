@@ -26,6 +26,7 @@ unsigned int MembrePremium::getpointsCumulee() const {
 void MembrePremium::ajouterBillet(const string& pnr, double prix,
 	const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol) {
 	MembreRegulier::ajouterBillet(pnr, prix, od, tarif, typeBillet, dateVol);
+	modifierPointsCumules(calculerPoints(billets_[billets_.size() - 1]));
 }
 
 void MembrePremium::acheterCoupon(Coupon* coupon) {
