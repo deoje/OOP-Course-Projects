@@ -7,7 +7,7 @@
 
 Membre::Membre() :
 	nom_(""),
-	typeMembre_(Membre_Regulier)
+	typeMembre_(Membre_Occasionnel)
 {
 }
 
@@ -78,13 +78,13 @@ void Membre::ajouterBillet(const string& pnr, double prix, const string& od, Tar
 { 
 	switch (typeBillet) {
 		case Billet_Base:
-			billets_.push_back(new Billet(pnr, nom_, prix, od, tarif, typeBillet));
+			billets_.push_back(new Billet(pnr, nom_, prix, od, tarif, Billet_Base));
 			break;
 		case Billet_Regulier:
-			billets_.push_back(new BilletRegulier(pnr, nom_, prix, od, tarif, dateVol, typeBillet));
+			billets_.push_back(new BilletRegulier(pnr, nom_, prix, od, tarif, dateVol, Billet_Regulier));
 			break;
 		case Flight_Pass:
-			billets_.push_back(new FlightPass(pnr, nom_, prix, od, tarif, typeBillet));
+			billets_.push_back(new FlightPass(pnr, nom_, prix, od, tarif, Flight_Pass));
 			break;
 	}
 }
@@ -128,17 +128,19 @@ void Membre::utiliserBillet(const string& pnr) {
 			bool mustRemove = false;
 			// If it is a FlightPass, handle number of use
 			if (billets_[i]->getTypeBillet() == Flight_Pass) {
+				cout << "   " << mustRemove << endl;
 				FlightPass* flightPass = static_cast<FlightPass*>(billets_[i]);
 				flightPass->decrementeNbUtilisations();
-				if (flightPass->getNbUtilisationsRestante() == 0) {
+				if (flightPass->getNbUtilisationsRestante() <= 0) {
 					mustRemove = true;
 				}
 			}
 			// If it is a regular pass, it must be removed.
-			else if (billets_[i]->getTypeBillet() == Billet_Regulier) {
+			else {
 				mustRemove = true;
 			}
 			if (mustRemove) {
+				delete billets_[i];
 				billets_[i] = billets_[billets_.size() - 1];
 				billets_.pop_back();
 				// Exit the function, because other tickets won't be removed.
