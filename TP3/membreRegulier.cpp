@@ -1,8 +1,18 @@
 #include "membreRegulier.h"
 
+MembreRegulier::MembreRegulier(const string& nom, TypeMembre typeMembre) :
+	Membre(nom, typeMembre)
+{
+}
+
 int MembreRegulier::getPoints() const
 {
 	return points_;
+}
+
+void MembreRegulier::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol); {
+	Membre::ajouterBillet(pnr, prix, od, tarif, TypeBillet, dteVol);
+	modifierPoint(-calculerPoints(billets_[billets_.size() - 1]));
 }
 
 vector<Coupon*> MembreRegulier::getCoupons() const
@@ -42,6 +52,10 @@ Membre& MembreRegulier::operator-=(Coupon* coupon)
 void MembreRegulier::modifierPoints(int points)
 {
 	points_ += points;
+}
+
+friend ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier) {
+	os << membreRegulier;
 }
 
 double MembreRegulier::calculerPoints(Billet* billet) const
