@@ -11,17 +11,19 @@
 class BilletRegulier : public Billet {
 
 public:
-	
-	//à faire 
+	// Constructor by parameter
 	BilletRegulier(const string& pnr, const string& nomPassager, double prix, const string& od, TarifBillet tarif, const string& dateVol, TypeBillet typeBillet);
-	//à faire 
+
+	// Getter & Setter
 	string getDateVol() const;
-	//à faire 
 	void setDateVol(string dateVol);
 
-	//à faire 
+	// Overloading << operator
 	friend ostream& operator<<(ostream& o, const BilletRegulier& billet);
 private:
+	/**
+	* @ brief dateVol_ String containing the date of flight
+	*/
 	string dateVol_;
 };
 

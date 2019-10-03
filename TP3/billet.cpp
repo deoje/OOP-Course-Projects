@@ -10,7 +10,8 @@ Billet::Billet() :
 	nomPassager_(""),
 	prix_(0),
 	od_(""),
-	tarif_(TarifBillet::Economie)
+	tarif_(TarifBillet::Economie),
+	typeBillet_(TypeBillet::Billet_Base) // Added for inheritance
 {
 }
 
@@ -19,7 +20,8 @@ Billet::Billet(const string& pnr, const string& nomPassager, double prix, const 
 	nomPassager_(nomPassager),
 	prix_(prix),
 	od_(od),
-	tarif_(tarif)
+	tarif_(tarif),
+	typeBillet_(typeBillet) // Added for inheritance
 {
 }
 
@@ -52,6 +54,14 @@ TarifBillet Billet::getTarif() const
 	return tarif_;
 }
 
+TypeBillet Billet::getTypeBillet() const 
+{
+	/*
+	* @brief getTypeBillet to get the type of the 
+	* @return typeBillet_ the type of Billet which is from the enum TypeBillet
+	*/
+	return typeBillet_;
+}
 
 void Billet::setPnr(const string& pnr)
 {
@@ -78,6 +88,14 @@ void Billet::setTarif(TarifBillet tarif)
 	tarif_ = tarif;
 }
 
+void Billet::setTypeBillet(TypeBillet typeBillet)
+{
+	/*
+	* @brief setTypeBillet to change the attribute typeBillet_ to the right value
+	* @param typeBillet the value from the TypeBillet enum
+	*/
+	typeBillet_ = typeBillet;
+}
 
 string Billet::formatTarif(TarifBillet tarif) const
 {
@@ -102,7 +120,6 @@ ostream& operator<<(ostream& o, const Billet& billet)
 	o << left << "\t\t\t" << setw(11) << "- Passager " << ": " << billet.nomPassager_ << endl;
 	o << "\t\t\t" << setw(11) << "- Prix" << ": " << billet.prix_ << "$" << endl;
 	o << "\t\t\t" << setw(11) << "- Trajet" << ": " << billet.od_ << endl;
-	o << "\t\t\t" << setw(11) << "- Vol le" << ": " << billet.dateVol_ << endl;
 
 	return o;
 }
