@@ -30,9 +30,19 @@ vector<Coupon*> Gestionnaire::getCoupons() const
 	return coupons_;
 }
 
-void Gestionnaire::ajouterMembre(const string& nomMembre, TypeMembre)
+void Gestionnaire::ajouterMembre(const string& nomMembre, TypeMembre typeMembre)
 {
-	membres_.push_back(new Membre(nomMembre));
+	switch (typeMembre) {
+	case Membre_Occasionnel:
+		membres_.push_back(new Membre(nomMembre, typeMembre));
+		break;
+	case Membre_Regulier:
+		membres_.push_back(new MembreRegulier(nomMembre, typeMembre));
+		break;
+	case Membre_Premium:
+		membres_.push_back(new MembrePremium(nomMembre));
+		break;
+	}
 }
 
 void Gestionnaire::ajouterCoupon(const string& code, double rabais, int cout)
@@ -67,25 +77,26 @@ void Gestionnaire::assignerBillet(const string& nomMembre, const string& pnr, do
 	else {
 		prixReel = prixBase;
 	}
-	membre->ajouterBillet(pnr, prixReel, od, tarif, dateVol);
+	membre->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
 }
 
 double Gestionnaire::appliquerCoupon(Membre* membre, double prix)
 {
-	if (membre->getCoupons().size() == 0) {
+	MembreRegulier* membreRegulier = static_cast<MembreRegulier*>(membre);
+	if (membreRegulier->getCoupons().size() == 0) {
 		cout << "Le membre n'a pas de coupon utilisable\n";
 		return 0;
 	}
 
-	Coupon* meilleurCoupon = membre->getCoupons()[0];
-	vector<Coupon*> coupons = membre->getCoupons();
+	Coupon* meilleurCoupon = membreRegulier->getCoupons()[0];
+	vector<Coupon*> coupons = membreRegulier->getCoupons();
 	for (int i = 1; i < coupons.size(); ++i) {
 		if (*coupons[i] > *meilleurCoupon) {
 			meilleurCoupon = coupons[i];
 		}
 	}
 
-	*membre -= meilleurCoupon;
+	*membreRegulier -= meilleurCoupon;
 
 	return prix * meilleurCoupon->getRabais();
 }
@@ -105,8 +116,9 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 
 	Coupon* meilleurCoupon = nullptr;
 
+	MembreRegulier* membreRegulier = static_cast<MembreRegulier*>(membre);
 	for (int i = 0; i < coupons_.size(); i++) {
-		if (membre->getPoints() >= coupons_[i]->getCout()) {
+		if (membreRegulier->getPoints() >= coupons_[i]->getCout()) {
 			// Si on avait pas encore trouve de meilleur coupon, on fait la premiere assignation
 			if (meilleurCoupon == nullptr) {
 				meilleurCoupon = coupons_[i];
@@ -119,7 +131,7 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 	}
 
 	if (meilleurCoupon) {
-		membre->acheterCoupon(meilleurCoupon);
+		membreRegulier->acheterCoupon(meilleurCoupon);
 	}
 	else {
 		cout << "Le membre ne peut acheter de coupon\n";

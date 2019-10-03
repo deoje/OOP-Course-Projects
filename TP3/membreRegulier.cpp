@@ -1,8 +1,19 @@
 #include "membreRegulier.h"
 
+MembreRegulier::MembreRegulier(const string& nom, TypeMembre typeMembre) :
+	Membre(nom, typeMembre),
+	points_(0)
+{
+}
+
 int MembreRegulier::getPoints() const
 {
 	return points_;
+}
+
+void MembreRegulier::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol){
+	Membre::ajouterBillet(pnr, prix, od, tarif, typeBillet, dateVol);
+	modifierPoints(-calculerPoints(billets_[billets_.size() - 1]));
 }
 
 vector<Coupon*> MembreRegulier::getCoupons() const
@@ -12,7 +23,7 @@ vector<Coupon*> MembreRegulier::getCoupons() const
 
 void MembreRegulier::acheterCoupon(Coupon* coupon)
 {
-	if (points_ > coupon->getCout()) {
+	if (points_ >= coupon->getCout()) {
 		*this += coupon;
 		modifierPoints(-coupon->getCout());
 	}
@@ -42,6 +53,22 @@ Membre& MembreRegulier::operator-=(Coupon* coupon)
 void MembreRegulier::modifierPoints(int points)
 {
 	points_ += points;
+}
+
+ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier) {
+	os << setfill(' ');
+	os << "- Membre " << membreRegulier.nom_ << ":" << endl;
+	os << "\t" << left << setw(10) << "- Points" << ": " << membreRegulier.points_ << endl;
+	os << "\t" << "- Billets :" << endl;
+	for (int i = 0; i < membreRegulier.billets_.size(); i++) {
+		os << *membreRegulier.billets_[i];
+	}
+	os << "\t" << "- Coupons :" << endl;
+	for (int i = 0; i < membreRegulier.coupons_.size(); i++) {
+		os << *membreRegulier.coupons_[i];
+	}
+
+	return os << endl;
 }
 
 double MembreRegulier::calculerPoints(Billet* billet) const
