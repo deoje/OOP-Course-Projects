@@ -52,6 +52,11 @@ TarifBillet Billet::getTarif() const
 	return tarif_;
 }
 
+TypeBillet Billet::getTypeBillet() const
+{
+	return typeBillet_;
+}
+
 
 void Billet::setPnr(const string& pnr)
 {

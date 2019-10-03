@@ -1,7 +1,7 @@
 #include "membrePremium.h"
 
 MembrePremium::MembrePremium(const string& nom) :
-	MembreRegulier(nom, typeMembre_),
+	MembreRegulier(nom, Membre_Premium),
 	joursRestants_(JOUR_RESTANT_INITIALE),
 	pointsCumules_(0)
 {
