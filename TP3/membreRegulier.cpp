@@ -13,7 +13,7 @@ int MembreRegulier::getPoints() const
 
 void MembreRegulier::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol){
 	Membre::ajouterBillet(pnr, prix, od, tarif, typeBillet, dateVol);
-	modifierPoints(-calculerPoints(billets_[billets_.size() - 1]));
+	modifierPoints(calculerPoints(billets_[billets_.size() - 1]));
 }
 
 vector<Coupon*> MembreRegulier::getCoupons() const
