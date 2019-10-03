@@ -30,10 +30,14 @@ void MembrePremium::ajouterBillet(const string& pnr, double prix,
 
 void MembrePremium::acheterCoupon(Coupon* coupon) {
 	double rabais = double(pointsCumules_ / 1000) * 0.01;
-	if (rabais > 20.0) {
-		rabais = 20.0;
+	if (rabais > (20.0 / 100)) {
+		rabais = (20.0 / 100);
 	}
-	MembreRegulier::acheterCoupon(coupon);
+	int cout = coupon->getCout() * (1 - rabais);
+	if (points_ > cout) {
+		*this += coupon;
+		modifierPoints(-cout);
+	}
 }
 
 ostream& operator<<(ostream& os, const MembrePremium& membrePremium) {

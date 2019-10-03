@@ -10,7 +10,7 @@
 #include "gestionnaire.h"
 using namespace std;
 
-int main() {
+int main(){
 	initDebogageMemoire();
 	
 	vector<bool> tests;

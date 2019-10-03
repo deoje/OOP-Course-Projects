@@ -1,7 +1,8 @@
 #include "membreRegulier.h"
 
 MembreRegulier::MembreRegulier(const string& nom, TypeMembre typeMembre) :
-	Membre(nom, typeMembre)
+	Membre(nom, typeMembre),
+	points_(0)
 {
 }
 
@@ -22,7 +23,7 @@ vector<Coupon*> MembreRegulier::getCoupons() const
 
 void MembreRegulier::acheterCoupon(Coupon* coupon)
 {
-	if (points_ > coupon->getCout()) {
+	if (points_ >= coupon->getCout()) {
 		*this += coupon;
 		modifierPoints(-coupon->getCout());
 	}

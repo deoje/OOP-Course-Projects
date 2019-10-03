@@ -10,6 +10,7 @@
 
 
 #include "membreRegulier.h"
+#include "def.h"
 
 class MembrePremium : public MembreRegulier {
 public:

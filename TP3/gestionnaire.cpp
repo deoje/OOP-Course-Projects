@@ -32,7 +32,17 @@ vector<Coupon*> Gestionnaire::getCoupons() const
 
 void Gestionnaire::ajouterMembre(const string& nomMembre, TypeMembre typeMembre)
 {
-	membres_.push_back(new Membre(nomMembre, typeMembre));
+	switch (typeMembre) {
+	case Membre_Occasionnel:
+		membres_.push_back(new Membre(nomMembre, typeMembre));
+		break;
+	case Membre_Regulier:
+		membres_.push_back(new MembreRegulier(nomMembre, typeMembre));
+		break;
+	case Membre_Premium:
+		membres_.push_back(new MembrePremium(nomMembre));
+		break;
+	}
 }
 
 void Gestionnaire::ajouterCoupon(const string& code, double rabais, int cout)
