@@ -21,20 +21,26 @@ Membre::Membre(const Membre& membre) :
 	nom_(membre.nom_),
 	typeMembre_(membre.typeMembre_)
 {
-	for (int i = 0; i < membre.billets_.size(); ++i) {
-		if (membre.billets_[i]->getTypeBillet() == Billet_Base) {
-			billets_.push_back(new Billet(*membre.billets_[i]));
-		}
-
-		switch (membre.billets_[i]->getTypeBillet()) {
-			case Billet_Base:
-				billets_.push_back(new Billet(*membre.billets_[i]));
+	for (int i = 0; i < membre.getBillets().size(); ++i) {
+		Billet* billet = membre.getBillets()[i];
+		switch (billet->getTypeBillet()) {
+			case Billet_Base: {
+				billets_.push_back(new Billet(*billet));
+			}
 				break;
-			case Billet_Regulier:
-				billets_.push_back(new BilletRegulier(*membre.billets_[i]));
+			case Billet_Regulier: {
+				BilletRegulier* billetRegulier = static_cast<BilletRegulier*>(billet);
+				billets_.push_back(new BilletRegulier(billetRegulier->getPnr(),
+					nom_, billetRegulier->getPrix(), billetRegulier->getOd(),
+					billetRegulier->getTarif(), billetRegulier->getDateVol(),
+					billetRegulier->getTypeBillet()));
+			}
 				break;
-			case Flight_Pass:
-				billets_.push_back(new FlightPass(*membre.billets_[i]));
+			case Flight_Pass:{
+				billets_.push_back(new FlightPass(billet->getPnr(),
+					nom_, billet->getPrix(), billet->getOd(),
+					billet->getTarif(), billet->getTypeBillet()));
+			}
 				break;
 		}
 	}
@@ -117,8 +123,9 @@ void Membre::utiliserBillet(const string& pnr) {
 			bool mustRemove = false;
 			// If it is a FlightPass, handle number of use
 			if (billets_[i]->getTypeBillet() == Flight_Pass) {
-				billets_[i].decrementeNbUtilisations();
-				if (billets_[i].getNbUtilisationsRestante() == 0) {
+				FlightPass* flightPass = static_cast<FlightPass*>(billets_[i]);
+				flightPass->decrementeNbUtilisations();
+				if (flightPass->getNbUtilisationsRestante() == 0) {
 					mustRemove = true;
 				}
 			}
