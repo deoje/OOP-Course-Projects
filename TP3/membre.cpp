@@ -161,7 +161,7 @@ ostream& operator<<(ostream& o, const Membre& membre)
 	o << "- Membre " << membre.nom_ << ":" << endl;
 	o << "\t" << "- Billets :" << endl;
 	for (int i = 0; i < membre.billets_.size(); i++) {
-		if (dynamic_cast<FlightPass*>(membre.billets_[i])) {
+		if (membre.billets_[i]->getTypeBillet() == Flight_Pass) {
 			o << *(static_cast<FlightPass*>(membre.billets_[i]));
 			continue;
 		}
