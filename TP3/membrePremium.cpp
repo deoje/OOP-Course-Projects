@@ -23,6 +23,11 @@ unsigned int MembrePremium::getpointsCumulee() const {
 	return pointsCumules_;
 }
 
+void MembrePremium::ajouterBillet(const string& pnr, double prix,
+	const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol) {
+	MembreRegulier::ajouterBillet(pnr, prix, od, tarif, typeBillet, dateVol);
+}
+
 void MembrePremium::acheterCoupon(Coupon* coupon) {
 	double rabais = double(pointsCumules_ / 1000) * 0.01;
 	if (rabais > 20.0) {

@@ -63,6 +63,11 @@ vector<Billet*> Membre::getBillets() const
 	return billets_;
 }
 
+TypeMembre Membre::getTypeMembre() const
+{
+	return typeMembre_;
+}
+
 
 void Membre::setNom(const string& nom)
 {
