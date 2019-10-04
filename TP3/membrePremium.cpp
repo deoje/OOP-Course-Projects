@@ -34,10 +34,10 @@ void MembrePremium::acheterCoupon(Coupon* coupon) {
 	if (rabais > (20.0 / 100.0)) {
 		rabais = (20.0 / 100.0);
 	}
-	int cout = coupon->getCout() * (1.0 - rabais);
-	if (points_ >= cout) {
+	int cost = coupon->getCout() * (1.0 - rabais);
+	if (points_ >= cost) {
 		*this += coupon;
-		modifierPoints(-cout);
+		modifierPoints(-cost);
 	}
 }
 
