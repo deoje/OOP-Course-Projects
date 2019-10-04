@@ -77,6 +77,18 @@ void Gestionnaire::assignerBillet(const string& nomMembre, const string& pnr, do
 	else {
 		prixReel = prixBase;
 	}
+	if (typeBillet == Flight_Pass) {
+		prixReel *= 10;
+	}
+	if (membre->getTypeMembre() == Membre_Premium) {
+		MembrePremium* membrePremium = static_cast<MembrePremium*>(membre);
+		double deduction = double(membrePremium->getpointsCumulee()) / 1000.0 * (0.5 / 100.0);
+		if (deduction > 0.1) {
+			deduction = 0.1;
+		}
+		prixReel *= (1.0 - deduction);
+		membrePremium->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
+	}
 
 	if (membre->getTypeMembre() == Membre_Occasionnel) {
 		membre->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
