@@ -86,11 +86,11 @@ void Gestionnaire::assignerBillet(const string& nomMembre, const string& pnr, do
 		if (deduction > 0.1) {
 			deduction = 0.1;
 		}
+		cout << " &&&&    " << (1.0 - deduction) << endl;
 		prixReel *= (1.0 - deduction);
 		membrePremium->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
 	}
-
-	if (membre->getTypeMembre() == Membre_Occasionnel) {
+	else if (membre->getTypeMembre() == Membre_Occasionnel) {
 		membre->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
 	}
 	else {

@@ -292,7 +292,7 @@ int main() {
 	tests.push_back(marc->getBillets().size() == 4
 		&& marc->getBillets()[2]->getPrix() == 20000
 		&& marc->getBillets()[2]->getNomPassager() == "Marc"
-		//&& marc->getBillets()[3]->getPrix() == 18000
+		&& marc->getBillets()[3]->getPrix() == 18000
 		&& marc->getPoints() == 6060
 		&& marc->getCoupons().size() == 0);
 
