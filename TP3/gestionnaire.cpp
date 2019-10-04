@@ -77,7 +77,14 @@ void Gestionnaire::assignerBillet(const string& nomMembre, const string& pnr, do
 	else {
 		prixReel = prixBase;
 	}
-	membre->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
+
+	if (membre->getTypeMembre() == Membre_Occasionnel) {
+		membre->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
+	}
+	else {
+		MembreRegulier* tempMembre = static_cast<MembreRegulier*>(membre);
+		tempMembre->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
+	}
 }
 
 double Gestionnaire::appliquerCoupon(Membre* membre, double prix)
@@ -131,7 +138,13 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 	}
 
 	if (meilleurCoupon) {
-		membreRegulier->acheterCoupon(meilleurCoupon);
+		if (membreRegulier->getTypeMembre() == Membre_Premium) {
+			MembrePremium* tempMembre = static_cast<MembrePremium*>(membreRegulier);
+			tempMembre->acheterCoupon(meilleurCoupon);
+		}
+		else {
+			membreRegulier->acheterCoupon(meilleurCoupon);
+		}
 	}
 	else {
 		cout << "Le membre ne peut acheter de coupon\n";
