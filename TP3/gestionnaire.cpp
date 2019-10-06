@@ -30,6 +30,11 @@ vector<Coupon*> Gestionnaire::getCoupons() const
 	return coupons_;
 }
 
+/**
+*	@brief ajouterMembre To create a specific type of member and add it to membres_
+*	@param nomMembre String representing the member's name
+*	@param typeMembre TypeMember enum representing the member's type
+*/
 void Gestionnaire::ajouterMembre(const string& nomMembre, TypeMembre typeMembre)
 {
 	switch (typeMembre) {
@@ -62,25 +67,36 @@ Membre* Gestionnaire::trouverMembre(const string& nomMembre) const
 	return nullptr;
 }
 
+/**
+*	@brief assignerBillet To assign a ticket to a member
+*	@param nomMembre String representing the name of the member
+*	@param pnr String representing the ticket's ID
+*	@param prix Double representing the ticket's price
+*	@param od Constant reference to a string representing the ticket's origin and destination
+*	@param tarif TarifBillet enum to set the ticket's class (economie, affaire ...)
+*	@param typeBillet TypeBillet enum to set the ticket's type
+*	@param utiliserCoupon Bool to specify if we should use a deduction coupon
+*	@param dateVol String representing the ticket's date of flight
+*/
 void Gestionnaire::assignerBillet(const string& nomMembre, const string& pnr, double prixBase, const string& od, TarifBillet tarif, const string& dateVol, bool utiliserCoupon, TypeBillet typeBillet)
 {
 	double prixReel;
 	Membre* membre = trouverMembre(nomMembre);
 
-	if (membre == nullptr) {
-		return;
+	if (membre == nullptr) {// No member has been found
+		return; 
 	}
 
-	if (utiliserCoupon) {
+	if (utiliserCoupon) { // If we bool says to add a deduction coupon
 		prixReel = prixBase - appliquerCoupon(membre, prixBase);
 	}
 	else {
 		prixReel = prixBase;
 	}
 	if (typeBillet == Flight_Pass) {
-		prixReel *= 10;
+		prixReel *= 10; // There's 10 tickets in one flight pass
 	}
-	if (membre->getTypeMembre() == Membre_Premium) {
+	if (membre->getTypeMembre() == Membre_Premium) { // There is an extra deduction for Premium members
 		MembrePremium* membrePremium = static_cast<MembrePremium*>(membre);
 		double deduction = double(membrePremium->getpointsCumulee()) / 1000.0 * (0.5 / 100.0);
 		if (deduction > 0.1) {
@@ -92,14 +108,17 @@ void Gestionnaire::assignerBillet(const string& nomMembre, const string& pnr, do
 	else if (membre->getTypeMembre() == Membre_Occasionnel) {
 		membre->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
 	}
-	else {
+	else { // cast to MembreRegulier to add points earned with the buy
 		MembreRegulier* tempMembre = static_cast<MembreRegulier*>(membre);
 		tempMembre->ajouterBillet(pnr, prixReel, od, tarif, typeBillet, dateVol);
 	}
 }
 
+/**
+*	@brief appliquerCoupon to apply a coupon to a Member that's at least a MembreRegulier
+*/
 double Gestionnaire::appliquerCoupon(Membre* membre, double prix)
-{
+{	// Cast to MembreRegulier
 	MembreRegulier* membreRegulier = static_cast<MembreRegulier*>(membre);
 	if (membreRegulier->getCoupons().size() == 0) {
 		cout << "Le membre n'a pas de coupon utilisable\n";
@@ -151,6 +170,7 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 	if (meilleurCoupon) {
 		if (membreRegulier->getTypeMembre() == Membre_Premium) {
 			MembrePremium* tempMembre = static_cast<MembrePremium*>(membreRegulier);
+			// This method applies the deduction for a Premium member (up to 20%)
 			tempMembre->acheterCoupon(meilleurCoupon);
 		}
 		else {
@@ -166,8 +186,22 @@ ostream& operator<<(ostream& o, const Gestionnaire& gestionnaire)
 {
 	o << "=================== ETAT ACTUEL DU PROGRAMME ==================\n\n";
 	for (int i = 0; i < gestionnaire.membres_.size(); i++) {
-		o << *gestionnaire.membres_[i];
+		// Print by type
+		switch (gestionnaire.membres_[i]->getTypeMembre()) {
+			case Membre_Occasionnel: {
+				o << *gestionnaire.membres_[i] << endl;
+				break; }
+			case Membre_Regulier: {
+				MembreRegulier* membreRegulier = static_cast<MembreRegulier*>(gestionnaire.membres_[i]);
+				o << *membreRegulier << endl;
+				break; }
+			case Membre_Premium: {
+				MembrePremium* membrePremium = static_cast<MembrePremium*>(gestionnaire.membres_[i]);
+				o << *membrePremium << endl;
+				break; }
+		}
+		
 	}
-
+	// Return the ostream reference
 	return o;
 }

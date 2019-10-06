@@ -10,6 +10,25 @@
 #include "gestionnaire.h"
 using namespace std;
 
+/* RÉPONSES AUX QUESTIONS
+
+	1. Pourquoi a-t-on besoin de l’attribut type_ dans la classe membre? Que ce serait-il passé
+	   s’il n’existait pas?
+
+	   Certaines opérations supplémentaires doivent être effectuées selon le type du membre avec
+	   lequel on travaille étant donné ses fonctionnalités de plus. L'attribut type_ nous permet
+	   alors de vérifier le type du membre et d'agir en conséquence.
+
+
+	2. Quelle est l’importance de l’utilisation d’un static_cast ?
+
+	   Puisque certains conteneurs ont été déclarés avec un type de pointeur spécifique, et que ce
+	   même conteneur peut tout de même contenir des pointeurs ou références de type
+	   autre que celui spécifié à la déclaration, il est important d'utiliser la fonction static_cast
+	   lorsqu'on manipule ces conteneurs, car sinon, les méthodes appelées seront celle de la classe
+	   du type spécifié à la déclaration et non celles attendues.
+*/
+
 int main() {
 	initDebogageMemoire();
 

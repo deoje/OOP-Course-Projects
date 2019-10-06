@@ -11,8 +11,19 @@ int MembreRegulier::getPoints() const
 	return points_;
 }
 
+/**
+*	@brief ajouterBillet To create a specific type of ticket and then add it to a member
+*	@param pnr String representing the ticket's ID
+*	@param prix Double representing the ticket's price
+*	@param od Constant reference to a string representing the ticket's origin and destination
+*	@param tarif TarifBillet enum to set the ticket's class (economie, affaire ...)
+*	@param typeBillet TypeBillet enum to set the ticket's type
+*	@param dateVol String representing the ticket's date of flight
+*/
 void MembreRegulier::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol){
+	// Use the method defined in the base class
 	Membre::ajouterBillet(pnr, prix, od, tarif, typeBillet, dateVol);
+	// Change the points of the member with the results of the method calculerPoints on the last ticket added to billets_
 	modifierPoints(calculerPoints(billets_[billets_.size() - 1]));
 }
 
@@ -55,14 +66,17 @@ void MembreRegulier::modifierPoints(int points)
 	points_ += points;
 }
 
+/**
+*	@brief Operator overload (<<) to print the state of the current member
+*/
 ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier) {
 	os << setfill(' ');
 	os << "- Membre " << membreRegulier.nom_ << ":" << endl;
-	os << "\t" << left << setw(10) << "- Points" << ": " << membreRegulier.points_ << endl;
 	os << "\t" << "- Billets :" << endl;
 	for (int i = 0; i < membreRegulier.billets_.size(); i++) {
 		os << *membreRegulier.billets_[i];
 	}
+	os << "\t" << left << setw(10) << "- Points" << ": " << membreRegulier.points_ << endl;
 	os << "\t" << "- Coupons :" << endl;
 	for (int i = 0; i < membreRegulier.coupons_.size(); i++) {
 		os << *membreRegulier.coupons_[i];

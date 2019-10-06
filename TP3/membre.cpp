@@ -7,15 +7,20 @@
 
 Membre::Membre() :
 	nom_(""),
-	typeMembre_(Membre_Occasionnel)
+	typeMembre_(Membre_Occasionnel) // Added for inheritance
 {
 }
 
 Membre::Membre(const string& nom, TypeMembre typeMembre) :
 	nom_(nom),
-	typeMembre_(typeMembre)
+	typeMembre_(typeMembre) // Added for inheritance
 {
 }
+
+/**
+*	@brief Copy Constructor for the Member Class
+*	@param membre The reference to the member object to copy
+*/
 
 Membre::Membre(const Membre& membre) :
 	nom_(membre.nom_),
@@ -74,6 +79,15 @@ void Membre::setNom(const string& nom)
 	nom_ = nom;
 }
 
+/**
+*	@brief ajouterBillet To create a specific type of ticket and then add it to a member
+*	@param pnr String representing the ticket's ID
+*	@param prix Double representing the ticket's price
+*	@param od Constant reference to a string representing the ticket's origin and destination
+*	@param tarif TarifBillet enum to set the ticket's class (economie, affaire ...)
+*	@param typeBillet TypeBillet enum to set the ticket's type
+*	@param dateVol String representing the ticket's date of flight
+*/
 void Membre::ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol)
 { 
 	switch (typeBillet) {
@@ -88,8 +102,6 @@ void Membre::ajouterBillet(const string& pnr, double prix, const string& od, Tar
 			break;
 	}
 }
-
-
 
 bool Membre::operator==(const string& nomMembre) const
 {
@@ -122,6 +134,11 @@ Membre& Membre::operator=(const Membre& membre)
 	return *this;
 }
 
+/**
+*	@brief utiliserBillet To use a member's ticket
+*	@param pnr String representing the ticket's ID
+*/
+
 void Membre::utiliserBillet(const string& pnr) {
 	for (int i = 0; i < billets_.size(); ++i) {
 		if (billets_[i]->getPnr() == pnr) {
@@ -153,7 +170,9 @@ void Membre::utiliserBillet(const string& pnr) {
 	cout << "Le billet '" << pnr << "' est introuvable." << endl;
 }
 
-// a changer
+/**
+*	@brief Operator overload (<<) to print the state of the current member
+*/
 ostream& operator<<(ostream& o, const Membre& membre)
 {
 	o << setfill(' ');
