@@ -185,8 +185,6 @@ ostream& operator<<(ostream& o, const Membre& membre)
 		}
 		o << *membre.billets_[i];
 	}
-	o << "\t" << left << setw(10) << "- Points" << ": " << endl;
-	o << "\t" << "- Coupons :" << endl;
 
 	return o << endl;
 }

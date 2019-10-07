@@ -27,7 +27,6 @@ public:
 	void ajouterBillet(const string& pnr, double prix, const string& od, TarifBillet tarif, TypeBillet typeBillet, const string& dateVol);
 	void acheterCoupon(Coupon* coupon);
 
-	//à faire
 	friend ostream& operator<<(ostream& os, const MembrePremium& membrePremium);
 
 private:

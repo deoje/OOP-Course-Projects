@@ -70,12 +70,10 @@ void MembreRegulier::modifierPoints(int points)
 *	@brief Operator overload (<<) to print the state of the current member
 */
 ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier) {
-	os << setfill(' ');
-	os << "- Membre " << membreRegulier.nom_ << ":" << endl;
-	os << "\t" << "- Billets :" << endl;
-	for (int i = 0; i < membreRegulier.billets_.size(); i++) {
-		os << *membreRegulier.billets_[i];
-	}
+	// Implicit upcasting i.e. MembreRegulier --> Membre
+	Membre membre = membreRegulier;
+	os << membre;
+
 	os << "\t" << left << setw(10) << "- Points" << ": " << membreRegulier.points_ << endl;
 	os << "\t" << "- Coupons :" << endl;
 	for (int i = 0; i < membreRegulier.coupons_.size(); i++) {

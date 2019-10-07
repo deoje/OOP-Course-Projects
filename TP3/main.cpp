@@ -15,9 +15,11 @@ using namespace std;
 	1. Pourquoi a-t-on besoin de l’attribut type_ dans la classe membre? Que ce serait-il passé
 	   s’il n’existait pas?
 
-	   Certaines opérations supplémentaires doivent être effectuées selon le type du membre avec
-	   lequel on travaille étant donné ses fonctionnalités de plus. L'attribut type_ nous permet
-	   alors de vérifier le type du membre et d'agir en conséquence.
+	   L'héritage permet de créer des classes pouvant utiliser des méthodes supplémentaires à
+	   partir de classes plus simples. Certaines opérations supplémentaires doivent être
+	   effectuées selon le type du membre avec lequel on travaille étant donné ses
+	   fonctionnalités de plus. L'attribut type_ nous permet alors de vérifier le type du
+	   membre et d'agir en conséquence.
 
 
 	2. Quelle est l’importance de l’utilisation d’un static_cast ?

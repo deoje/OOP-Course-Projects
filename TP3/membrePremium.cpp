@@ -77,22 +77,10 @@ void MembrePremium::acheterCoupon(Coupon* coupon) {
 *	@brief Operator overload (<<) to print the state of the current member
 */
 ostream& operator<<(ostream& os, const MembrePremium& membrePremium) {
-	//os << setfill(' ');
-	//os << "- Membre " << membrePremium.nom_ << ":" << endl;
-	//os << "\t" << left << setw(10) << "- Points" << ": " << membrePremium.points_ << endl;
-	//os << "\t" << "- Billets :" << endl;
-	//for (int i = 0; i < membrePremium.billets_.size(); i++) {
-	//	os << *membrePremium.billets_[i];
-	//}
-	//os << "\t" << "- Coupons :" << endl;
-	//for (int i = 0; i < membrePremium.coupons_.size(); i++) {
-	//	os << *membrePremium.coupons_[i];
-	//}
-
 	// Implicit upcasting i.e. MembrePremium --> MembreRegulier
 	MembreRegulier membreRegulier = membrePremium;
 
-	os << membreRegulier << endl;
+	os << membreRegulier;
 	os << "\t" << left << "- Points cumules : " << membrePremium.pointsCumules_ << endl;
 	os << "\t" << left << "- Jours premium restants : " << membrePremium.joursRestants_ << endl;
 	return os << endl;
