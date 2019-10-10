@@ -7,7 +7,7 @@
 
 1.	Quel est l’utilité de l’opérateur = et du constructeur par copie?
 
-L'opérateur = et le constructeur par copie peuvent être redéfini pour
+L'opérateur = et le constructeur par copie peuvent être redéfinis pour
 permettre d'effectuer une "deep copy" (c-à-d une copie de l'entité) au lieu
 d'une simple copie de ses attributs ("shallow copy"). Copier les attributs
 peut être problématique lorsqu'on utilise des pointeurs parce qu'on
