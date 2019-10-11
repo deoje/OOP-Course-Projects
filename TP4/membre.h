@@ -46,10 +46,11 @@ public:
 	Membre& operator=(const Membre& membre);
 
 	// TODO : Remplacer cette fonction par la methode afficher()
-	friend ostream& operator<<(ostream& o, const Membre& membre);
+	//friend ostream& operator<<(ostream& o, const Membre& membre);
 
 	// TODO
 	void afficher(ostream& o);
+
 protected:
 	string nom_;
 	vector<Billet*> billets_;

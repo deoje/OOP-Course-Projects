@@ -50,7 +50,7 @@ double MembrePremium::calculerCoutCoupon(Coupon* coupon)
 // TODO
 bool MembrePremium::peutAcheterCoupon(Coupon* coupon)
 {
-
+	return points_ >= calculerCoutCoupon(coupon);
 }
 
 void MembrePremium::acheterCoupon(Coupon* coupon)
@@ -62,16 +62,19 @@ void MembrePremium::acheterCoupon(Coupon* coupon)
 }
 
 // TODO: Retirer cette fonction par afficher()
-ostream& operator<<(ostream& os, const MembrePremium& membrePremium)
-{
-	os << static_cast<MembreRegulier>(membrePremium) << endl;
-	os << "\t- Points cumulee: " << membrePremium.pointsCumulee_ << endl;
-	os << "\t- Jours premium restant: " << membrePremium.joursRestants_ << endl;
-	return os << endl;
-}
+//ostream& operator<<(ostream& os, const MembrePremium& membrePremium)
+//{
+//	os << static_cast<MembreRegulier>(membrePremium) << endl;
+//	os << "\t- Points cumulee: " << membrePremium.pointsCumulee_ << endl;
+//	os << "\t- Jours premium restant: " << membrePremium.joursRestants_ << endl;
+//	return os << endl;
+//}
 
 // TODO
 void MembrePremium::afficher(ostream& o)
 {
-
+	MembreRegulier::afficher(o);
+	o << "\t- Points cumulee: " << pointsCumulee_ << endl;
+	o << "\t- Jours premium restant: " << joursRestants_ << endl;
+	o << endl;
 }
