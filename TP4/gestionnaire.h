@@ -38,7 +38,7 @@ public:
 	int calculerNombreBilletsEnSolde();
 
 	// TODO: Retirer cette fonction par afficher()
-	friend ostream& operator<<(ostream& o, const Gestionnaire& gestionnaire);
+	//friend ostream& operator<<(ostream& o, const Gestionnaire& gestionnaire);
 
 	// TODO
 	void afficher(ostream& o);
