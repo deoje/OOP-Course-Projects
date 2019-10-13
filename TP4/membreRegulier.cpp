@@ -72,7 +72,10 @@ double MembreRegulier::calculerPoints(Billet* billet) const
 	return billet->getPrix() * 0.10 + bonus;
 }
 
-// TODO
+/**
+*	@brief Verify if a member can buy a coupon.
+*	@param coupon The coupon used to assess whether the member can buy it or not.
+*/
 bool MembreRegulier::peutAcheterCoupon(Coupon* coupon)
 {
 	return points_ >= coupon->getCout();
@@ -86,19 +89,10 @@ void MembreRegulier::acheterCoupon(Coupon* coupon)
 	}
 }
 
-// TODO: Remplacer cette fonction par afficher()
-//ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier)
-//{
-//	os << static_cast<Membre>(membreRegulier);
-//	os << "\t" << "- Points : " << membreRegulier.points_ << endl;
-//	os << "\t" << "- Coupons :" << endl;
-//	for (size_t i = 0; i < membreRegulier.coupons_.size(); ++i) {
-//		os << *membreRegulier.coupons_[i];
-//	}
-//	return os << endl;
-//}
-
-// TODO
+/**
+*	@brief Regular member printing method.
+*	@param o Output stream used for display.
+*/
 void MembreRegulier::afficher(ostream& o)
 {
 	Membre::afficher(o);

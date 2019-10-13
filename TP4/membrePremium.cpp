@@ -47,7 +47,10 @@ double MembrePremium::calculerCoutCoupon(Coupon* coupon)
 	return coupon->getCout() * (1 - rabais);
 }
 
-// TODO
+/**
+*	@brief Verify if a member can buy a coupon (may apply a discount).
+*	@param coupon The coupon used to assess whether the member can buy it or not.
+*/
 bool MembrePremium::peutAcheterCoupon(Coupon* coupon)
 {
 	return points_ >= calculerCoutCoupon(coupon);
@@ -61,16 +64,10 @@ void MembrePremium::acheterCoupon(Coupon* coupon)
 	}
 }
 
-// TODO: Retirer cette fonction par afficher()
-//ostream& operator<<(ostream& os, const MembrePremium& membrePremium)
-//{
-//	os << static_cast<MembreRegulier>(membrePremium) << endl;
-//	os << "\t- Points cumulee: " << membrePremium.pointsCumulee_ << endl;
-//	os << "\t- Jours premium restant: " << membrePremium.joursRestants_ << endl;
-//	return os << endl;
-//}
-
-// TODO
+/**
+*	@brief Premium member printing method.
+*	@param o Output stream used for display.
+*/
 void MembrePremium::afficher(ostream& o)
 {
 	MembreRegulier::afficher(o);

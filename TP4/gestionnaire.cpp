@@ -53,7 +53,12 @@ Membre* Gestionnaire::trouverMembre(const string& nomMembre) const
 	return nullptr;
 }
 
-// TODO
+/**
+*	@brief Ticket assigning method.
+*	@param billet Pointer to the ticket that will be assigned.
+*	@param nomMembre Member name
+*	@param utiliserCoupon Boolean indicating whether a coupon is used or not.
+*/
 void Gestionnaire::assignerBillet(Billet* billet, const string& nomMembre, bool utiliserCoupon)
 	{
 	Membre* membre = trouverMembre(nomMembre);
@@ -63,22 +68,24 @@ void Gestionnaire::assignerBillet(Billet* billet, const string& nomMembre, bool 
 		return;
 	}
 
-	double prixDeBase = billet->getPrix();
-	double prix = prixDeBase;
+	double basePrice = billet->getPrix();
+	double price = basePrice;
 
+	// Discount obtained from using a coupon.
 	if (utiliserCoupon) {
-		prix -= appliquerCoupon(membre, prixDeBase);
+		price -= appliquerCoupon(membre, basePrice);
 	}
 
+	// Discount obtained from premium membership.
 	if (MembrePremium* membrePremium = dynamic_cast<MembrePremium*>(membre)) {
-		double rabais = 0.005 * membrePremium->getpointsCumulee() / 1000;
-		if (rabais > 0.1)
-			rabais = 0.1;
+		double discount = 0.005 * membrePremium->getpointsCumulee() / 1000;
+		if (discount > 0.1)
+			discount = 0.1;
 
-		prix -= prixDeBase * (1 - rabais);
+		price -= basePrice * (1 - discount);
 	}
 
-	billet->setPrix(prix);
+	billet->setPrix(price);
 	membre->ajouterBillet(billet);
 	
 }
@@ -145,11 +152,14 @@ void Gestionnaire::acheterCoupon(const string& nomMembre)
 	}
 }
 
-// TODO
+/**
+*	@brief Revenu calculating method
+*/
 double Gestionnaire::calculerRevenu()
 {
 	double revenu = 0.0;
 	for (int i = 0; i < membres_.size(); i++) {
+		// Sum all the prices of all tickets.
 		for (int j = 0; j < membres_[i]->getBillets().size(); j++) {
 			revenu += membres_[i]->getBillets()[j]->getPrix();
 		}
@@ -157,44 +167,27 @@ double Gestionnaire::calculerRevenu()
 	return revenu;
 }
 
-// TODO
+/**
+*	@brief This method computes the number of discounted tickets.
+*/
 int Gestionnaire::calculerNombreBilletsEnSolde()
 {
 	int nBillets = 0;
 	for (int i = 0; i < membres_.size(); i++) {
 		for (int j = 0; j < membres_[i]->getBillets().size(); j++) {
-			if (dynamic_cast<Solde*>(membres_[i]->getBillets()[j])) {
+			// A ticket is discounted if it inherited "Solde"
+			if (dynamic_cast<BilletRegulierSolde*>(membres_[i]->getBillets()[j])) {
 				nBillets++;
 			}
 		}
 	}
 	return nBillets;
 }
-
-// TODO: Retirer cette fonction par afficher()
-//ostream& operator<<(ostream& o, const Gestionnaire& gestionnaire)
-//{
-//	o << "=================== ETAT ACTUEL DU PROGRAMME ==================\n\n";
-//
-//	for (int i = 0; i < gestionnaire.membres_.size(); ++i) {
-//		switch (gestionnaire.membres_[i]->getTypeMembre())
-//		{
-//		case Membre_Premium:
-//			o << *static_cast<MembrePremium*>(gestionnaire.membres_[i]);
-//			break;
-//		case Membre_Occasionnel:
-//			o << *gestionnaire.membres_[i];
-//			break;
-//		case Membre_Regulier:
-//			o << *static_cast<MembreRegulier*>(gestionnaire.membres_[i]);
-//			break;
-//		}
-//	}
-//
-//	return o;
-//}
 	
-// TODO
+/**
+*	@brief Printing method for the whole class.
+*	@param o The output stream used for display.
+*/
 void Gestionnaire::afficher(ostream& o)
 {
 	o << "=================== ETAT ACTUEL DU PROGRAMME ==================\n\n";

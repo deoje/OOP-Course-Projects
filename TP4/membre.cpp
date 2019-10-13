@@ -16,27 +16,16 @@ Membre::Membre(const string& nom) :
 {
 }
 
-// TODO
+/**
+*	@brief Copy constructor
+*	@param membre Reference to the copied member.
+*/
 Membre::Membre(const Membre& membre) :
 	nom_(membre.nom_)
 {
 	for (size_t i = 0; i < membre.billets_.size(); ++i) {
 		billets_.push_back(membre.billets_[i]);
 	}
-
-	//for (size_t i = 0; i < membre.billets_.size(); ++i) {
-	//	switch (membre.billets_[i]->getTypeBillet()) {
-	//	case TypeBillet::Billet_Base:
-	//		billets_.push_back(new Billet(*membre.billets_[i]));
-	//		break;
-	//	case TypeBillet::Billet_Regulier:
-	//		billets_.push_back(new BilletRegulier(*static_cast<BilletRegulier*>(membre.billets_[i])));
-	//		break;
-	//	case TypeBillet::Flight_Pass:
-	//		billets_.push_back(new FlightPass(*static_cast<FlightPass*>(membre.billets_[i])));
-	//		break;
-	//	}
-	//}
 }
 
 Membre::~Membre()
@@ -61,9 +50,13 @@ void Membre::setNom(const string& nom)
 	nom_ = nom;
 }
 
-// TODO
+/**
+*	@brief Ticket usage method.
+*	@param pnr Unique indentified used to retrieve the ticket.
+*/
 void Membre::utiliserBillet(const string& pnr)
 {
+	// Find the coupon corresponding to argument "pnr".
 	int indexTrouve = -1;
 	for (size_t i = 0; i < billets_.size(); ++i) {
 		if (billets_[i]->getPnr() == pnr) {
@@ -77,20 +70,13 @@ void Membre::utiliserBillet(const string& pnr)
 		return;
 	}
 
+	// Manage flight pass operations, if required.
 	if (FlightPass* flightPass = dynamic_cast<FlightPass*>(billets_[indexTrouve])) {
 		flightPass->decrementeNbUtilisations();
 		if (flightPass->getNbUtilisationsRestante() > 0) {
 			return;
 		}
 	}
-
-	//if (billets_[indexTrouve]->getTypeBillet() == Flight_Pass) {
-	//	FlightPass* flightPass = static_cast<FlightPass*>(billets_[indexTrouve]);
-	//	flightPass->decrementeNbUtilisations();
-	//	if (flightPass->getNbUtilisationsRestante() > 0) {
-	//		return;
-	//	}
-	//}
 
 	delete billets_[indexTrouve];
 	billets_[indexTrouve] = billets_[billets_.size() - 1];
@@ -113,7 +99,10 @@ bool operator==(const string& nomMembre, const Membre& membre)
 	return nomMembre == membre.nom_;
 }
 
-// TODO
+/**
+*	@brief "=" assignment operator overloading.
+*	@param membre Reference to the copied member.
+*/
 Membre& Membre::operator=(const Membre& membre)
 {
 	if (this != &membre) {
@@ -127,49 +116,16 @@ Membre& Membre::operator=(const Membre& membre)
 
 		for (size_t i = 0; i < membre.billets_.size(); ++i) {
 			billets_.push_back(membre.billets_[i]);
-
-			//switch (membre.billets_[i]->getTypeBillet()) {
-			//case TypeBillet::Billet_Base:
-			//	billets_.push_back(new Billet(*membre.billets_[i]));
-			//	break;
-			//case TypeBillet::Billet_Regulier:
-			//	billets_.push_back(new BilletRegulier(*static_cast<BilletRegulier*>(membre.billets_[i])));
-			//	break;
-			//case TypeBillet::Flight_Pass:
-			//	billets_.push_back(new FlightPass(*static_cast<FlightPass*>(membre.billets_[i])));
-			//	break;
-			//}
 		}
 	}
 
 	return *this;
 }
 
-// TODO : Remplacer cette fonction par la methode afficher()
-//ostream& operator<<(ostream& o, const Membre& membre)
-//{
-//	o << setfill(' ');
-//	o << "- Membre " << membre.nom_ <<":" << endl;
-//	o << "\t" << "- Billets :" << endl;
-//	for (size_t i = 0; i < membre.billets_.size(); i++) {
-//		membre.billets_[i]->afficher(o);
-//
-//		//switch (membre.billets_[i]->getTypeBillet()) {
-//		//case Billet_Base:
-//		//	o << *static_cast<Billet*>(membre.billets_[i]);
-//		//	break;
-//		//case Billet_Regulier:
-//		//	o << *static_cast<BilletRegulier*>(membre.billets_[i]);
-//		//	break;
-//		//case Flight_Pass:
-//		//	o << *static_cast<FlightPass*>(membre.billets_[i]);
-//		//	break;
-//		//}
-//	}
-//	return o << endl;
-//}
-
-// TODO
+/**
+*	@brief Member printing method.
+*	@param o Output stream used for display.
+*/
 void Membre::afficher(ostream& o)
 {
 	o << setfill(' ');

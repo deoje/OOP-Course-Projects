@@ -25,14 +25,9 @@ public:
 
 	void ajouterBillet(Billet* billet) override;
 	double calculerCoutCoupon(Coupon* coupon);
-	// TODO
 	bool peutAcheterCoupon(Coupon* coupon);
 	void acheterCoupon(Coupon* coupon) override;
 
-	// TODO: Retirer cette fonction par afficher()
-	friend ostream& operator<<(ostream& os, const MembrePremium& membrePremium);
-
-	// TODO
 	void afficher(ostream& o);
 private:
 	unsigned int joursRestants_;

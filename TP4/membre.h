@@ -13,6 +13,7 @@
 
 #include "flightPass.h"
 #include "billetRegulier.h"
+#include "billetRegulierSolde.h"
 #include "coupon.h"
 
 using namespace std;
@@ -22,7 +23,6 @@ public:
 	// Constructeurs
 	Membre();
 	Membre(const string& nom);
-	// TODO
 	Membre(const Membre& membre);
 
 	virtual ~Membre();
@@ -35,22 +35,16 @@ public:
 	// Setters
 	void setNom(const string& nom);
 	
-	// TODO
 	void utiliserBillet(const string& pnr);
 	virtual void ajouterBillet(Billet* billet);
 
 	bool operator==(const string& nomMembre) const;
 	friend bool operator==(const string& nomMembre, const Membre& membre);
 
-	// TODO
 	Membre& operator=(const Membre& membre);
 
-	// TODO : Remplacer cette fonction par la methode afficher()
-	//friend ostream& operator<<(ostream& o, const Membre& membre);
-
-	// TODO
 	void afficher(ostream& o);
-
+	void afficher(ostream& o);
 protected:
 	string nom_;
 	vector<Billet*> billets_;

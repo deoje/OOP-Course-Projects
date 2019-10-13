@@ -25,16 +25,10 @@ public:
 	void ajouterBillet(Billet* billet) override;
 
 	double calculerPoints(Billet* billet) const;
-	// TODO
 	bool peutAcheterCoupon(Coupon* coupon);
 	virtual void acheterCoupon(Coupon* coupon);
 
-	// TODO: Retirer cette fonction par afficher()
-	//friend ostream& operator<<(ostream& os, const MembreRegulier& membreRegulier);
-
-	// TODO
 	void afficher(ostream& o);
-
 protected:
 	int points_;
 	vector<Coupon*> coupons_;

@@ -28,19 +28,12 @@ public:
 	void ajouterCoupon(Coupon* coupon);
 
 	Membre* trouverMembre(const string& nomMembre) const;
-	// TODO
 	void assignerBillet(Billet* billet, const string& nomMembre, bool utiliserCoupon);
 	double appliquerCoupon(Membre* membre, double prix);
 	void acheterCoupon(const string& nomMembre);
-	// TODO
 	double calculerRevenu();
-	// TODO
 	int calculerNombreBilletsEnSolde();
 
-	// TODO: Retirer cette fonction par afficher()
-	//friend ostream& operator<<(ostream& o, const Gestionnaire& gestionnaire);
-
-	// TODO
 	void afficher(ostream& o);
 private:
 	vector<Membre*> membres_;
