@@ -15,7 +15,7 @@ FlightPassSolde::FlightPassSolde(const string& pnr, double prix, const string& o
 
 double FlightPassSolde::getPrix() const
 {
-	return getPrixBase() * (1 - getPourcentageSolde()/10);
+	return getPrixBase() * (1 - getPourcentageSolde());
 }
 
 

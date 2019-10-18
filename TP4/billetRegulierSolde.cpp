@@ -15,7 +15,7 @@ BilletRegulierSolde::BilletRegulierSolde(const string& pnr, double prix, const s
 
 double BilletRegulierSolde::getPrix() const
 {
-	return getPrixBase() * (1 - getPourcentageSolde()/100);
+	return getPrixBase() * (1 - getPourcentageSolde());
 }
 
 
