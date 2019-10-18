@@ -89,7 +89,7 @@ void Gestionnaire::assignerBillet(Billet* billet, const string& nomMembre, bool 
 		if (discount > 0.1)
 			discount = 0.1;
 
-		price -= basePrice * discount;
+		price *= 1 - discount;
 	}
 	billet->setPrix(price);
 	
