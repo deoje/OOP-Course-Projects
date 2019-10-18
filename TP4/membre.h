@@ -12,6 +12,7 @@
 #include <iomanip>
 
 #include "flightPass.h"
+#include "flightPassSolde.h"
 #include "billetRegulier.h"
 #include "billetRegulierSolde.h"
 #include "coupon.h"

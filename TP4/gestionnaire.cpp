@@ -179,6 +179,9 @@ int Gestionnaire::calculerNombreBilletsEnSolde()
 			if (dynamic_cast<BilletRegulierSolde*>(membres_[i]->getBillets()[j])) {
 				nBillets++;
 			}
+			else if (dynamic_cast<FlightPassSolde*>(membres_[i]->getBillets()[j])) {
+				nBillets++;
+			}
 		}
 	}
 	return nBillets;

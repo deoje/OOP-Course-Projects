@@ -22,7 +22,7 @@ public:
 
 	// Getter
 	// TODO
-	double getPrix() const;
+	double getPrix() const override;
 	double getPrixBase() const override;
 
 	// TODO
