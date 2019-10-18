@@ -25,7 +25,7 @@ public:
 	// Getters
 	string getPnr() const;
 	string getNomPassager() const;
-	double getPrix() const;
+	virtual double getPrix() const;
 	string getOd() const;
 	TarifBillet getTarif() const;
 
@@ -39,13 +39,13 @@ public:
 	string formatTarif(TarifBillet tarif) const;
 
 	// TODO
-	Billet* clone();
+	virtual Billet* clone() const = 0; // const?
 
 	// TODO : Remplacer cette fonction par la methode afficher()
-	friend ostream& operator<<(ostream& o, const Billet& billet);
+	// friend ostream& operator<<(ostream& o, const Billet& billet);
 
 	// TODO
-	void afficher(ostream& o);
+	virtual void afficher(ostream& o) const;
 protected:
 	string pnr_;
 	string nomPassager_;

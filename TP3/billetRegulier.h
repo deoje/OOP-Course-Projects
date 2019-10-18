@@ -19,7 +19,7 @@ public:
 	void setDateVol(string dateVol);
 
 	// Overloading << operator
-	friend ostream& operator<<(ostream& o, const BilletRegulier& billet);
+	friend ostream& operator<<(ostream& o, const BilletRegulier& billetRegulier);
 private:
 	/**
 	* @ brief dateVol_ String containing the date of flight

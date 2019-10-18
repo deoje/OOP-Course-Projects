@@ -24,13 +24,13 @@ public:
 	void setDateVol(string dateVol);
 
 	// TODO
-	BilletRegulier* clone();
+	BilletRegulier* clone() const override;
 
 	// TODO : Remplacer cette fonction par la methode afficher()
-	friend ostream& operator<<(ostream& o, const BilletRegulier& billet);
+	//friend ostream& operator<<(ostream& o, const BilletRegulier& billet);
 
 	// TODO
-	void afficher(ostream& o);
+	void afficher(ostream& o) const override;
 private:
 	string dateVol_;
 };

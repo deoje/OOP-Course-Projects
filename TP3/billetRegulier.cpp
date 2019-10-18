@@ -24,12 +24,13 @@ void BilletRegulier::setDateVol(string dateVol)
 	dateVol_ = dateVol_;
 }
 
-ostream& operator<<(ostream& o, const BilletRegulier& billet)
+ostream& operator<<(ostream& o, const BilletRegulier& billetRegulier)
 {	
-	// Implicit upcasting i.e. BilletRegulier --> Billet
-	Billet tempBillet = billet;
+//	// Implicit upcasting i.e. BilletRegulier --> Billet
+//	Billet tempBillet = billet;
+	Billet billet = static_cast<BilletRegulier>(billetRegulier);
 
-	o << tempBillet << endl;
+	o << billet << endl;
 
 	return o;
 }

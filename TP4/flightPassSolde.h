@@ -16,19 +16,19 @@ using namespace std;
 
 class FlightPassSolde : public FlightPass, public Solde {
 public:
+
 	// Constructeur
-	// TODO
 	FlightPassSolde(const string& pnr, double prix, const string& od, TarifBillet tarif, double pourcentageSolde);
 
 	// Getter
 	// TODO
-	double getPrix();
-	double getPrixBase();
+	double getPrix() const override;
+	double getPrixBase() const override;
 
 	// TODO
-	FlightPassSolde* clone();
+	FlightPassSolde* clone() const override;
 
 	// TODO
-	void afficher(ostream& o);
+	void afficher(ostream& o) const override;
 };
 #endif // !FLIGHT_PASS_SOLDE_H

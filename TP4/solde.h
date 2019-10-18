@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class Solde {
+class Solde {// la classe est abstraite ==> possède au moins une fonction membre virtuelle pure.
 public:
 	// Constructeurs
 	Solde(double pourcentageSolde);
@@ -17,7 +17,7 @@ public:
 
 	// Getter
 	double getPourcentageSolde() const;
-	double getPrixBase();
+	virtual double getPrixBase() const  = 0; // fonction membre virtuelle pure
 
 	// Setter
 	void setPourcentageSolde(double pourcentageSolde);

@@ -26,9 +26,10 @@ int FlightPass::getNbUtilisationsRestante() const
 ostream& operator<<(ostream& os, const FlightPass& flightpass)
 {
 	// Implicit upcasting i.e. flightPass --> Billet
-	Billet tempBillet = flightpass;
+	//Billet tempBillet = flightpass;
+	Billet billet = static_cast<Billet>(flightpass);
 
-	os << tempBillet
+	os << billet
 	   << "\t\t\t" << setw(11) << "- Utilisation restantes" << ": " << flightpass.nbUtilisationsRestante_ << endl;
 
 	return os;

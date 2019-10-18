@@ -19,14 +19,12 @@ public:
 
 	void decrementeNbUtilisations();
 
-	// TODO
-	FlightPass* clone();
+	FlightPass* clone() const override;
 
-	// TODO : Remplacer cette fonction par la methode afficher()
-	friend ostream& operator<<(ostream& o, const FlightPass& flightpass);
+	//// TODO : Remplacer cette fonction par la methode afficher()
+	//friend ostream& operator<<(ostream& o, const FlightPass& flightpass);
 
-	// TODO
-	void afficher(ostream& o);
+	void afficher(ostream& o) const override;
 private:
 	 int nbUtilisationsRestante_;
 };
