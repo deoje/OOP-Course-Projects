@@ -126,7 +126,7 @@ Membre& Membre::operator=(const Membre& membre)
 *	@brief Member printing method.
 *	@param o Output stream used for display.
 */
-void Membre::afficher(ostream& o)
+void Membre::afficher(ostream& o) const
 {
 	o << setfill(' ');
 	o << "- Membre " << nom_ << ":" << endl;

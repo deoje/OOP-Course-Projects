@@ -44,7 +44,7 @@ public:
 
 	Membre& operator=(const Membre& membre);
 
-	void afficher(ostream& o);
+	virtual void afficher(ostream& o) const;
 protected:
 	string nom_;
 	vector<Billet*> billets_;

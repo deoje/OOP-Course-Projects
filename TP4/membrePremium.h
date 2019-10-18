@@ -28,7 +28,7 @@ public:
 	bool peutAcheterCoupon(Coupon* coupon);
 	void acheterCoupon(Coupon* coupon) override;
 
-	void afficher(ostream& o);
+	void afficher(ostream& o) const override;
 private:
 	unsigned int joursRestants_;
 	unsigned int pointsCumulee_;

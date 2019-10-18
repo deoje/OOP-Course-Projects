@@ -68,7 +68,7 @@ void MembrePremium::acheterCoupon(Coupon* coupon)
 *	@brief Premium member printing method.
 *	@param o Output stream used for display.
 */
-void MembrePremium::afficher(ostream& o)
+void MembrePremium::afficher(ostream& o) const
 {
 	MembreRegulier::afficher(o);
 	o << "\t- Points cumulee: " << pointsCumulee_ << endl;

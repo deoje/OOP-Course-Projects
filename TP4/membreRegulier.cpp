@@ -93,7 +93,7 @@ void MembreRegulier::acheterCoupon(Coupon* coupon)
 *	@brief Regular member printing method.
 *	@param o Output stream used for display.
 */
-void MembreRegulier::afficher(ostream& o)
+void MembreRegulier::afficher(ostream& o) const
 {
 	Membre::afficher(o);
 	o << "\t" << "- Points : " << points_ << endl;

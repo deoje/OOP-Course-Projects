@@ -28,7 +28,7 @@ public:
 	bool peutAcheterCoupon(Coupon* coupon);
 	virtual void acheterCoupon(Coupon* coupon);
 
-	void afficher(ostream& o);
+	void afficher(ostream& o) const override;
 protected:
 	int points_;
 	vector<Coupon*> coupons_;

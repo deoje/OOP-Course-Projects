@@ -67,25 +67,32 @@ void Gestionnaire::assignerBillet(Billet* billet, const string& nomMembre, bool 
 		delete billet;
 		return;
 	}
-
+	
 	double basePrice = billet->getPrix();
+	
+	if (BilletRegulierSolde * billetRegulierSolde = dynamic_cast<BilletRegulierSolde*>(billet)) {
+		basePrice = billetRegulierSolde->getPrixBase();
+	}
+	else if (FlightPassSolde * flightPassSolde = dynamic_cast<FlightPassSolde*>(billet)){
+		basePrice = flightPassSolde->getPrixBase();
+	}
+
 	double price = basePrice;
 
 	// Discount obtained from using a coupon.
 	if (utiliserCoupon) {
 		price -= appliquerCoupon(membre, basePrice);
 	}
-
 	// Discount obtained from premium membership.
 	if (MembrePremium* membrePremium = dynamic_cast<MembrePremium*>(membre)) {
 		double discount = 0.005 * membrePremium->getpointsCumulee() / 1000;
 		if (discount > 0.1)
 			discount = 0.1;
 
-		price -= basePrice * (1 - discount);
+		price -= basePrice * discount;
 	}
-
 	billet->setPrix(price);
+	
 	membre->ajouterBillet(billet);
 	
 }
