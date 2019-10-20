@@ -23,13 +23,16 @@ public:
 	// Setter
 	void setDateVol(string dateVol);
 
-	// TODO
+	// Utils
+	/* 
+	   Overriding: BilletRegulier::clone() remplace Billet::clone() car aucun appel
+	   à cette dernière.
+	*/
 	BilletRegulier* clone() const override;
-
-	// TODO : Remplacer cette fonction par la methode afficher()
-	//friend ostream& operator<<(ostream& o, const BilletRegulier& billet);
-
-	// TODO
+	/*
+	   Overriding: BilletRegulier::afficher() est une extension de Billet::clone() car la redéfinition
+	   fait appel à cette dernière.
+	*/
 	void afficher(ostream& o) const override;
 private:
 	string dateVol_;

@@ -38,13 +38,11 @@ public:
 
 	string formatTarif(TarifBillet tarif) const;
 
-	// TODO
+	// Utils
+	/**
+	* @brief a pure virtual function member to create an exact copy of this object
+	*/
 	virtual Billet* clone() const = 0; // const?
-
-	// TODO : Remplacer cette fonction par la methode afficher()
-	// friend ostream& operator<<(ostream& o, const Billet& billet);
-
-	// TODO
 	virtual void afficher(ostream& o) const;
 protected:
 	string pnr_;

@@ -6,10 +6,21 @@
 
 /* REPONSES AUX QUESTIONS
 
-1.	Nous remarquons que le classe Solde à une méthode sans implémentation, getPrixBase(). Dans le contexte du polymorphisme, 
+1.	Nous remarquons que la classe Solde à une méthode sans implémentation, getPrixBase(). Dans le contexte du polymorphisme, 
     quelle est l’utilité d’avoir une méthode dans une classe parent qui ne possède aucune implémentation?
 
-2.	Pour quelle raison devons-nous déclarer certains destructeurs virtuels? 
+	Pour imposer un certain comportement général aux classes dérivées tout en laissant leurs particularités spécifier
+	la façon à atteindre ce comportement. Par exemple, la Classe `FormeGeometrique` devrait avoir une fonction membre
+	`calculerAire`, mais ce calcul est dépendant de la forme actuelle de l'objet (la classe dérivée e.g: `Carre` ou `
+	Triangle`). La définition est alors laissée aux classe dérivées.
+
+2.	Pour quelle raison devons-nous déclarer certains destructeurs virtuels? 	
+	
+	Dans un contexte où l'on travaille avec des variables polymorphiques, le mot-clé `virtual` permet
+	d'appeler la fonction membre correspondant au type actuel (déterminé dynamiquement, soit à l'exécution).
+	Dans le cas où la classe de base ne déclare pas son destructeur comme étant virtuel, le destructeur
+	des classes dérivée ne sera pas appelé. Une mauvaise gestion de la mémoire peut alors s'en suivre. On se rappelle
+	que le compilateur définit des destructeurs par défaut pour gérer la suppression des attributs des classes.
 
 */
 

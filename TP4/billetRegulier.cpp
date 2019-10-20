@@ -21,7 +21,10 @@ void BilletRegulier::setDateVol(string dateVol)
 	dateVol_ = dateVol;
 }
 
-// TODO
+/**
+*	@brief clone To create a dynamically allocated exact copy of this object
+*	@return BilletRegulier* pointer to the copy
+*/
 BilletRegulier* BilletRegulier::clone() const
 {
 	return new BilletRegulier(
@@ -33,16 +36,10 @@ BilletRegulier* BilletRegulier::clone() const
 	);
 }
 
-//// TODO : Remplacer cette fonction par la methode afficher()
-//ostream& operator<<(ostream& o, const BilletRegulier& billet)
-//{
-//	o << static_cast<Billet>(billet);
-//	o << "\t\t\t" << setw(11) << "- Vol le" << ": " << billet.dateVol_ << endl;
-//
-//	return o;
-//}
-
-// TODO
+/**
+*	@brief afficher To print out the current state of the object
+*	@param o Ostream reference
+*/
 void BilletRegulier::afficher(ostream& o) const
 {
 	Billet::afficher(o);
