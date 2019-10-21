@@ -9,7 +9,7 @@
 1.	Nous remarquons que la classe Solde à une méthode sans implémentation, getPrixBase(). Dans le contexte du polymorphisme, 
     quelle est l’utilité d’avoir une méthode dans une classe parent qui ne possède aucune implémentation?
 
-	Pour imposer un certain comportement général aux classes dérivées tout en laissant leurs particularités spécifier
+	Pour imposer un certain comportement général aux classes dérivées tout en les laissant spécifier
 	la façon à atteindre ce comportement. Par exemple, la Classe `FormeGeometrique` devrait avoir une fonction membre
 	`calculerAire`, mais ce calcul est dépendant de la forme actuelle de l'objet (la classe dérivée e.g: `Carre` ou `
 	Triangle`). La définition est alors laissée aux classe dérivées.
