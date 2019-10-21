@@ -12,14 +12,14 @@
 	Pour imposer un certain comportement général aux classes dérivées tout en les laissant spécifier
 	la façon à atteindre ce comportement. Par exemple, la Classe `FormeGeometrique` devrait avoir une fonction membre
 	`calculerAire`, mais ce calcul est dépendant de la forme actuelle de l'objet (la classe dérivée e.g: `Carre` ou `
-	Triangle`). La définition est alors laissée aux classe dérivées.
+	Triangle`). La définition est alors laissée aux classes dérivées.
 
 2.	Pour quelle raison devons-nous déclarer certains destructeurs virtuels? 	
 	
 	Dans un contexte où l'on travaille avec des variables polymorphiques, le mot-clé `virtual` permet
 	d'appeler la fonction membre correspondant au type actuel (déterminé dynamiquement, soit à l'exécution).
 	Dans le cas où la classe de base ne déclare pas son destructeur comme étant virtuel, le destructeur
-	des classes dérivée ne sera pas appelé. Une mauvaise gestion de la mémoire peut alors s'en suivre. On se rappelle
+	des classes dérivées ne sera pas appelé. Une mauvaise gestion de la mémoire peut alors s'en suivre. On se rappelle
 	que le compilateur définit des destructeurs par défaut pour gérer la suppression des attributs des classes.
 
 */
