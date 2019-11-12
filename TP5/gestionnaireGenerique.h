@@ -28,7 +28,16 @@ using namespace  std;
 	* Conteneur   = map<string, Membre*> ou vector<Coupon*>; 
 	* FoncteurAjouter = AjouterMembre ou AjouterCoupon
 */
+
+template <typename T, typename C, typename FoncteurAjouter>
 class GestionnaireGenerique
 {
+public:
+	C getConteneur() const;
+	void ajouter(const T& t);
+	int getNombreElements() const;
+
+protected:
+	C conteneur_;
 
 };
