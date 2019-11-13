@@ -33,7 +33,7 @@ public:
 	Billet* getBilletMax(string nomMembre) const ;
 
 	//TODO
-	vector<Billet*>trouverBilletParIntervallle(Membre* membre, double prixInf, double prixSup) const;
+	vector<Billet*>trouverBilletParIntervalle(Membre* membre, double prixInf, double prixSup) const;
 
 	//TODO
 	void afficher(ostream& o) const;

@@ -42,38 +42,82 @@ void GestionnaireMembres::assignerBillet(Billet* billet, const string& nomMembre
 
 double GestionnaireMembres::calculerRevenu() const
 {
-	//TODO
 	double revenu = 0;
-	for (size_t i = 0; i < membres_.size(); ++i) {
-		for (size_t j = 0; j < membres_[i]->getBillets().size(); ++j) {
-			revenu += membres_[i]->getBillets()[j]->getPrix();
-		}
-	}
-
+	for_each(conteneur_.begin(), conteneur_.end(), [&revenu](pair<string, Membre*> membre){
+		vector<Billet*> billets = membre.second->getBillets();
+		for_each(billets.begin(), billets.end(), [&revenu](Billet* billet) {
+			revenu += billet->getPrix();
+		});
+	});
 	return revenu;
+
+	//for (size_t i = 0; i < membres_.size(); ++i) {
+	//	for (size_t j = 0; j < membres_[i]->getBillets().size(); ++j) {
+	//		revenu += membres_[i]->getBillets()[j]->getPrix();
+	//	}
+	//}
+	//
+	//return revenu;
 }
 
 int GestionnaireMembres::calculerNombreBilletsEnSolde() const
 {
-	//TODO
 	int nbBilletsSolde = 0;
-	for (size_t i = 0; i < membres_.size(); ++i) {
-		for (size_t j = 0; j < membres_[i]->getBillets().size(); ++j) {
-			if (dynamic_cast<Solde*>(membres_[i]->getBillets()[j])) {
+	for_each(conteneur_.begin(), conteneur_.end(), [&nbBilletsSolde](pair<string, Membre*> membre) {
+		vector<Billet*> billets = membre.second->getBillets();
+		for_each(billets.begin(), billets.end(), [&nbBilletsSolde](Billet* billet) {
+			if (dynamic_cast<Solde*>(billet)) {
 				++nbBilletsSolde;
 			}
-		}
-	}
-
+		});
+	});
 	return nbBilletsSolde;
+
+	//for (size_t i = 0; i < membres_.size(); ++i) {
+	//	for (size_t j = 0; j < membres_[i]->getBillets().size(); ++j) {
+	//		if (dynamic_cast<Solde*>(membres_[i]->getBillets()[j])) {
+	//			++nbBilletsSolde;
+	//		}
+	//	}
+	//}
+	//
+	//return nbBilletsSolde;
+}
+
+Billet* GestionnaireMembres::getBilletMin(string nomMembre) const
+{
+	map<string, Membre*>::const_iterator positionMembre = conteneur_.find(nomMembre);
+	vector<Billet*> billets = (*positionMembre).second->getBillets();
+	return *min_element(billets.begin(), billets.end(), [](const Billet& billet1, const Billet& billet2) {
+		return billet1.getPrix() < billet2.getPrix();} );
+}
+
+Billet* GestionnaireMembres::getBilletMax(string nomMembre) const
+{
+	map<string, Membre*>::const_iterator positionMembre = conteneur_.find(nomMembre);
+	vector<Billet*> billets = (*positionMembre).second->getBillets();
+	return *max_element(billets.begin(), billets.end(), [](const Billet& billet1, const Billet& billet2) {
+		return billet1.getPrix() > billet2.getPrix();});
+}
+
+vector<Billet*> GestionnaireMembres::trouverBilletParIntervalle(Membre* membre, double prixInf, double prixSup) const
+{
+	vector<Billet*> billetsDansIntervalle;
+	for_each(conteneur_.begin(), conteneur_.end(), [&billetsDansIntervalle, prixInf, prixSup](pair<string, Membre*> membre) {
+		vector<Billet*> billets = membre.second->getBillets();
+		copy_if(billets.begin(), billets.end(), billetsDansIntervalle.end(), IntervallePrixBillet(pair<double, double>(prixInf, prixSup)));
+	});
 }
 
 void GestionnaireMembres::afficher(ostream& o) const
 {
 	//TODO
 	o << "=================== ETAT ACTUEL DU PROGRAMME ==================\n\n";
+	for_each(conteneur_.begin(), conteneur_.end(), [](pair<string, Membre*> membre) {
+		membre.second->afficher(o);
+	});
 
-	for (size_t i =0 ; i<membres_.size() ; ++i) {
-		membres[i]->afficher(o);
-	}
+	//for (size_t i =0 ; i<membres_.size() ; ++i) {
+	//	membres[i]->afficher(o);
+	//}
 }

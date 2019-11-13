@@ -17,8 +17,13 @@ class AjouterCoupon
 public:
 	AjouterCoupon(vector<Coupon*>& conteneur): conteneur_(conteneur) {};
 	vector<Coupon*> operator()(Coupon* coupon) {
-		//TODO
-		return nullptr;
+		if (find(conteneur_.begin(), conteneur_.end(), coupon) != conteneur_.end()) {
+			return conteneur_;
+		}
+		else {
+			conteneur_.push_back(coupon);
+			return conteneur_;
+		}
 	};
 
 private:
@@ -30,9 +35,8 @@ class AjouterMembre
 {
 public:
 	AjouterMembre(map<string, Membre*>& conteneur) : conteneur_(conteneur) {};
-	void operator()(pair < string, Membre* membre >) {
-		//TODO
-		return;
+	void operator()(pair<string, Membre*> membre) {
+		conteneur_.insert(membre);
 	}
 
 private:
@@ -42,10 +46,9 @@ private:
 class IntervallePrixBillet
 {
 public:
-	IntervallePrixBillet(double borneInf, double borneSup) : borneInf_(borneInf), borneSup_(borneSup) {};
-	bool operator()(Billet* billet) {
-		//TODO
-		return false;
+	IntervallePrixBillet(pair<double, double> extrema) : borneInf_(extrema.first), borneSup_(extrema.second) {};
+	bool operator()(Billet* billet) const {
+		return billet->getPrix() < borneSup_ && billet->getPrix() > borneInf_;
 	}
 
 private:
