@@ -89,7 +89,7 @@ Billet* GestionnaireMembres::getBilletMin(string nomMembre) const
 	map<string, Membre*>::const_iterator positionMembre = conteneur_.find(nomMembre);
 	vector<Billet*> billets = (*positionMembre).second->getBillets();
 	vector<Billet*>::const_iterator itBillet = min_element(billets.begin(), billets.end(),
-		[](const Billet* billet1, const Billet* billet2) {
+		[](Billet* billet1, Billet* billet2) {
 			return billet1->getPrix() < billet2->getPrix();});
 	return *itBillet;
 }
@@ -99,8 +99,8 @@ Billet* GestionnaireMembres::getBilletMax(string nomMembre) const
 	map<string, Membre*>::const_iterator positionMembre = conteneur_.find(nomMembre);
 	vector<Billet*> billets = (*positionMembre).second->getBillets();
 	vector<Billet*>::const_iterator itBillet = min_element(billets.begin(), billets.end(),
-		[](const Billet* billet1, const Billet* billet2) {
-		return billet1->getPrix() > billet2->getPrix();});
+		[](Billet* billet1, Billet* billet2) {
+			return billet1->getPrix() > billet2->getPrix();});
 	return *itBillet;
 }
 
@@ -109,7 +109,7 @@ vector<Billet*> GestionnaireMembres::trouverBilletParIntervallle(Membre* membre,
 	vector<Billet*> billetsDansIntervalle;
 	for_each(conteneur_.begin(), conteneur_.end(), [&billetsDansIntervalle, prixInf, prixSup](pair<string, Membre*> membre) {
 		vector<Billet*> billets = membre.second->getBillets();
-		copy_if(billets.begin(), billets.end(), billetsDansIntervalle.end(), IntervallePrixBillet(pair<double, double>(prixInf, prixSup)));
+		copy_if(billets.begin(), billets.end(), back_inserter(billetsDansIntervalle), IntervallePrixBillet(pair<double, double>(prixInf, prixSup)));
 	});
 	return billetsDansIntervalle;
 }
