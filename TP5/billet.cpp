@@ -106,3 +106,9 @@ void Billet::afficher(ostream& o) const
 }
 
 //todo operateur<<
+
+ostream& operator<<(ostream& o, Billet const* billet)
+{
+	billet->afficher(o);
+	return o;
+}

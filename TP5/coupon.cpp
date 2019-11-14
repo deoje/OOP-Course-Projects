@@ -70,3 +70,9 @@ void Coupon::afficher(ostream& o) const
 }
 
 //todo operateur<<
+
+ostream& operator<<(ostream& o, Coupon* c)
+{
+	c->afficher(o);
+	return o;
+}
