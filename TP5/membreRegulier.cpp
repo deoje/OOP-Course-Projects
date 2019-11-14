@@ -37,15 +37,19 @@ Membre& MembreRegulier::operator+=(Coupon* coupon)
 //todo
 Membre& MembreRegulier::operator-=(Coupon* coupon)
 {
-	for (size_t i = 0; i < coupons_.size(); ++i) {
-		if (coupons_[i] == coupon) {
-			coupons_[i] = coupons_[coupons_.size() - 1];
-			coupons_.pop_back();
-			return *this;
-		}
-	}
+	remove_if(coupons_.begin(), coupons_.end(), [coupon](Coupon* c) -> bool {
+		return coupon == c;
+	});
 
-	return *this;
+	//for (size_t i = 0; i < coupons_.size(); ++i) {
+	//	if (coupons_[i] == coupon) {
+	//		coupons_[i] = coupons_[coupons_.size() - 1];
+	//		coupons_.pop_back();
+	//		return *this;
+	//	}
+	//}
+	//
+	//return *this;
 }
 
 void MembreRegulier::modifierPoints(int points)
@@ -93,7 +97,10 @@ void MembreRegulier::afficher(ostream& o) const
 	Membre::afficher(o);
 	o << "\t" << "- Points : " << points_ << endl;
 	o << "\t" << "- Coupons :" << endl;
-	for (size_t i = 0; i < coupons_.size(); ++i) {
-		coupons_[i]->afficher(o);
-	}
+
+	copy(billets_.begin(), billets_.end(), ostream_iterator<int>(o, "\n"));
+
+	//for (size_t i = 0; i < coupons_.size(); ++i) {
+	//	coupons_[i]->afficher(o);
+	//}
 }

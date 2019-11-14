@@ -88,32 +88,36 @@ Billet* GestionnaireMembres::getBilletMin(string nomMembre) const
 {
 	map<string, Membre*>::const_iterator positionMembre = conteneur_.find(nomMembre);
 	vector<Billet*> billets = (*positionMembre).second->getBillets();
-	return *min_element(billets.begin(), billets.end(), [](const Billet& billet1, const Billet& billet2) {
-		return billet1.getPrix() < billet2.getPrix();} );
+	vector<Billet*>::const_iterator itBillet = min_element(billets.begin(), billets.end(),
+		[](const Billet* billet1, const Billet* billet2) {
+			return billet1->getPrix() < billet2->getPrix();});
+	return *itBillet;
 }
 
 Billet* GestionnaireMembres::getBilletMax(string nomMembre) const
 {
 	map<string, Membre*>::const_iterator positionMembre = conteneur_.find(nomMembre);
 	vector<Billet*> billets = (*positionMembre).second->getBillets();
-	return *max_element(billets.begin(), billets.end(), [](const Billet& billet1, const Billet& billet2) {
-		return billet1.getPrix() > billet2.getPrix();});
+	vector<Billet*>::const_iterator itBillet = min_element(billets.begin(), billets.end(),
+		[](const Billet* billet1, const Billet* billet2) {
+		return billet1->getPrix() > billet2->getPrix();});
+	return *itBillet;
 }
 
-vector<Billet*> GestionnaireMembres::trouverBilletParIntervalle(Membre* membre, double prixInf, double prixSup) const
+vector<Billet*> GestionnaireMembres::trouverBilletParIntervallle(Membre* membre, double prixInf, double prixSup) const
 {
 	vector<Billet*> billetsDansIntervalle;
 	for_each(conteneur_.begin(), conteneur_.end(), [&billetsDansIntervalle, prixInf, prixSup](pair<string, Membre*> membre) {
 		vector<Billet*> billets = membre.second->getBillets();
 		copy_if(billets.begin(), billets.end(), billetsDansIntervalle.end(), IntervallePrixBillet(pair<double, double>(prixInf, prixSup)));
 	});
+	return billetsDansIntervalle;
 }
 
 void GestionnaireMembres::afficher(ostream& o) const
 {
-	//TODO
 	o << "=================== ETAT ACTUEL DU PROGRAMME ==================\n\n";
-	for_each(conteneur_.begin(), conteneur_.end(), [](pair<string, Membre*> membre) {
+	for_each(conteneur_.begin(), conteneur_.end(), [&o](pair<string, Membre*> membre) {
 		membre.second->afficher(o);
 	});
 

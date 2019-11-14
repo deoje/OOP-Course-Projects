@@ -33,9 +33,16 @@ template <typename T, typename C, typename FoncteurAjouter>
 class GestionnaireGenerique
 {
 public:
-	C getConteneur() const;
-	void ajouter(const T& t);
-	int getNombreElements() const;
+	C getConteneur() const {
+		return conteneur_;
+	}
+	void ajouter(const T& t) {
+		FoncteurAjouter f(conteneur_);
+		f(t);
+	}
+	int getNombreElements() const {
+		return (int)(size(conteneur_));
+	}
 
 protected:
 	C conteneur_;
