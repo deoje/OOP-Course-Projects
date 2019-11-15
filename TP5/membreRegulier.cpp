@@ -36,9 +36,14 @@ Membre& MembreRegulier::operator+=(Coupon* coupon)
 
 Membre& MembreRegulier::operator-=(Coupon* coupon)
 {
-	remove_if(coupons_.begin(), coupons_.end(), [coupon](Coupon* c) -> bool {
-		return coupon == c;
-	});
+	coupons_.erase(std::remove(coupons_.begin(), coupons_.end(), coupon), coupons_.end());
+	//remove(coupons_.begin(), coupons_.end(), coupon);
+	//cout << coupons_.size() << endl;
+	//remove_if(coupons_.begin(), coupons_.end(), [coupon](Coupon* c) -> bool {
+	//	cout << int(coupon->getCode() == c->getCode()) << "    ****" << endl;
+ 	//	return coupon->getCode() == c->getCode();
+	//});
+	//cout << coupons_.size() << endl;
 
 	return *this;
 }
