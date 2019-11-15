@@ -48,7 +48,7 @@ class IntervallePrixBillet
 public:
 	IntervallePrixBillet(pair<double, double> extrema) : borneInf_(extrema.first), borneSup_(extrema.second) {};
 	bool operator()(Billet* billet) const {
-		return billet->getPrix() < borneSup_ && billet->getPrix() > borneInf_;
+		return billet->getPrix() <= borneSup_ && billet->getPrix() >= borneInf_;
 	}
 
 private:

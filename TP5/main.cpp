@@ -15,7 +15,6 @@
 using namespace std;
 
 int main() {
-
 	vector<bool> tests;
 
 	// TESTS
@@ -406,7 +405,8 @@ int main() {
 	tests.push_back(g_membres->getBilletMax("Alex")->getPnr() == "J9K5L0");
 
 	// Test 66 : trouverBilletParIntervallle()
-	tests.push_back(g_membres->trouverBilletParIntervallle(alex, 800.0, 10000.0).size() == 3 && g_membres->trouverBilletParIntervallle(alex, 600.0, 830.0).size() == 0);
+	tests.push_back(g_membres->trouverBilletParIntervallle(alex, 800.0, 10000.0).size() == 3
+		&& g_membres->trouverBilletParIntervallle(alex, 600.0, 830.0).size() == 0);
 
 
 	// Affichage des tests

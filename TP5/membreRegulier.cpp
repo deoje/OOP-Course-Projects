@@ -36,14 +36,7 @@ Membre& MembreRegulier::operator+=(Coupon* coupon)
 
 Membre& MembreRegulier::operator-=(Coupon* coupon)
 {
-	coupons_.erase(std::remove(coupons_.begin(), coupons_.end(), coupon), coupons_.end());
-	//remove(coupons_.begin(), coupons_.end(), coupon);
-	//cout << coupons_.size() << endl;
-	//remove_if(coupons_.begin(), coupons_.end(), [coupon](Coupon* c) -> bool {
-	//	cout << int(coupon->getCode() == c->getCode()) << "    ****" << endl;
- 	//	return coupon->getCode() == c->getCode();
-	//});
-	//cout << coupons_.size() << endl;
+	coupons_.erase(std::remove(coupons_.begin(), coupons_.end(), coupon));
 
 	return *this;
 }
@@ -92,5 +85,5 @@ void MembreRegulier::afficher(ostream& o) const
 	o << "\t" << "- Points : " << points_ << endl;
 	o << "\t" << "- Coupons :" << endl;
 
-	copy(billets_.begin(), billets_.end(), ostream_iterator<Billet*>(o, "\n"));
+	copy(coupons_.begin(), coupons_.end(), ostream_iterator<Coupon*>(o, "\n"));
 }

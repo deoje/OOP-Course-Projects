@@ -50,14 +50,6 @@ double GestionnaireMembres::calculerRevenu() const
 		});
 	});
 	return revenu;
-
-	//for (size_t i = 0; i < membres_.size(); ++i) {
-	//	for (size_t j = 0; j < membres_[i]->getBillets().size(); ++j) {
-	//		revenu += membres_[i]->getBillets()[j]->getPrix();
-	//	}
-	//}
-	//
-	//return revenu;
 }
 
 int GestionnaireMembres::calculerNombreBilletsEnSolde() const
@@ -72,16 +64,6 @@ int GestionnaireMembres::calculerNombreBilletsEnSolde() const
 		});
 	});
 	return nbBilletsSolde;
-
-	//for (size_t i = 0; i < membres_.size(); ++i) {
-	//	for (size_t j = 0; j < membres_[i]->getBillets().size(); ++j) {
-	//		if (dynamic_cast<Solde*>(membres_[i]->getBillets()[j])) {
-	//			++nbBilletsSolde;
-	//		}
-	//	}
-	//}
-	//
-	//return nbBilletsSolde;
 }
 
 Billet* GestionnaireMembres::getBilletMin(string nomMembre) const
@@ -107,10 +89,9 @@ Billet* GestionnaireMembres::getBilletMax(string nomMembre) const
 vector<Billet*> GestionnaireMembres::trouverBilletParIntervallle(Membre* membre, double prixInf, double prixSup) const
 {
 	vector<Billet*> billetsDansIntervalle;
-	for_each(conteneur_.begin(), conteneur_.end(), [&billetsDansIntervalle, prixInf, prixSup](pair<string, Membre*> membre) {
-		vector<Billet*> billets = membre.second->getBillets();
-		copy_if(billets.begin(), billets.end(), back_inserter(billetsDansIntervalle), IntervallePrixBillet(pair<double, double>(prixInf, prixSup)));
-	});
+	vector<Billet*> billets = membre->getBillets();
+	copy_if(billets.begin(), billets.end(), back_inserter(billetsDansIntervalle), IntervallePrixBillet(pair<double, double>(prixInf, prixSup)));
+	
 	return billetsDansIntervalle;
 }
 
@@ -120,8 +101,4 @@ void GestionnaireMembres::afficher(ostream& o) const
 	for_each(conteneur_.begin(), conteneur_.end(), [&o](pair<string, Membre*> membre) {
 		membre.second->afficher(o);
 	});
-
-	//for (size_t i =0 ; i<membres_.size() ; ++i) {
-	//	membres[i]->afficher(o);
-	//}
 }
