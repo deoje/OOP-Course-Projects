@@ -19,6 +19,7 @@ Membre::Membre(const string& nom) :
 Membre::Membre(const Membre& membre) :
 	nom_(membre.nom_)
 {
+	// Iterate through the tickets of the member to copy and copy each ticket into this member
 	copy(membre.billets_.begin(), membre.billets_.end(), billets_.begin());
 }
 
@@ -44,6 +45,7 @@ void Membre::setNom(const string& nom)
 }
 
 vector<Billet*>::iterator Membre::trouverBillet(const string& pnr) {
+	// find the ticket with its id 
 	return find_if(billets_.begin(), billets_.end(), [&pnr](Billet* billet) -> bool {
 		return pnr == billet->getPnr();});
 }
@@ -84,6 +86,7 @@ bool operator==(const string& nomMembre, const Membre& membre)
 
 Membre& Membre::operator=(const Membre& membre)
 {
+	// Verify that member is not copying itself
 	if (this != &membre) {
 		nom_ = membre.nom_;
 

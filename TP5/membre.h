@@ -36,16 +36,22 @@ public:
 	// Setters
 	void setNom(const string& nom);
 	
+	//Utils
+	/**
+	 *	@brief trouverBillet To find a specific ticket
+	 *	@param pnr String representing the id of the ticket
+	 *	@return vector<Billet*>::iterator Iterator pointing to the found ticket
+	 */
 	vector<Billet*>::iterator trouverBillet(const string& pnr);
-
 	void utiliserBillet(const string& pnr);
 	virtual void ajouterBillet(Billet* billet);
 
+	// Overloads
 	bool operator==(const string& nomMembre) const;
 	friend bool operator==(const string& nomMembre, const Membre& membre);
-
 	Membre& operator=(const Membre& membre);
 
+	// Print member function
 	virtual void afficher(ostream& o) const;
 protected:
 	string nom_;

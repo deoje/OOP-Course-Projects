@@ -19,6 +19,11 @@ public:
 	vector<Coupon*> getCoupons() const;
 	
 	Membre& operator+=(Coupon* coupon);
+	/**
+	 *	@brief operator-= To remove the coupon
+	 *	@param coupon The coupon to remove
+	 *	@return Membre& reference to the member
+	 */
 	Membre& operator-=(Coupon* coupon);
 	void modifierPoints(int points);
 	void ajouterBillet(Billet* billet) override;

@@ -35,8 +35,6 @@ public:
 
 	void afficher(ostream& o) const;
 
-
-	//todo
 	friend ostream& operator<<(ostream& o, Coupon* c);
 private:
 	string code_;

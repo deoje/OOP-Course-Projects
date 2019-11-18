@@ -39,7 +39,6 @@ public:
 
 	virtual Billet* clone() const = 0;
 
-	//todo
 	friend ostream& operator<<(ostream& o, Billet const* billet);
 
 	virtual void afficher(ostream& o) const;

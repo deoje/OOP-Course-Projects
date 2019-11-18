@@ -54,42 +54,69 @@ double GestionnaireMembres::calculerRevenu() const
 
 int GestionnaireMembres::calculerNombreBilletsEnSolde() const
 {
+	// Initialize the variable holding the number of tickets in sale
 	int nbBilletsSolde = 0;
+
+	// Iterate through the vector of member
 	for_each(conteneur_.begin(), conteneur_.end(), [&nbBilletsSolde](pair<string, Membre*> membre) {
+
+		// Get the vector of pointers to the member's tickets
 		vector<Billet*> billets = membre.second->getBillets();
+
+		// Iterate through the vector of tickets
 		for_each(billets.begin(), billets.end(), [&nbBilletsSolde](Billet* billet) {
+
+			// If the ticket is in sale, increment the number of tickets in sale
 			if (dynamic_cast<Solde*>(billet)) {
 				++nbBilletsSolde;
 			}
 		});
+
 	});
 	return nbBilletsSolde;
 }
 
 Billet* GestionnaireMembres::getBilletMin(string nomMembre) const
 {
+	// Get an iterator pointing to the member
 	map<string, Membre*>::const_iterator positionMembre = conteneur_.find(nomMembre);
+	// Get the member's tickets
 	vector<Billet*> billets = (*positionMembre).second->getBillets();
+	// Get an iterator pointing to the ticket
 	vector<Billet*>::const_iterator itBillet = min_element(billets.begin(), billets.end(),
 		[](Billet* billet1, Billet* billet2) {
+
+			// Find the ticket with the lowest price by comparing prices
 			return billet1->getPrix() < billet2->getPrix();});
+
+	// return the pointer to the ticket 
 	return *itBillet;
 }
 
 Billet* GestionnaireMembres::getBilletMax(string nomMembre) const
 {
+	// Get an iterator pointing to the member
 	map<string, Membre*>::const_iterator positionMembre = conteneur_.find(nomMembre);
+	// Get the member's tickets
 	vector<Billet*> billets = (*positionMembre).second->getBillets();
+	// Get an iterator pointing to the ticket
 	vector<Billet*>::const_iterator itBillet = min_element(billets.begin(), billets.end(),
 		[](Billet* billet1, Billet* billet2) {
+
+			// Find the ticket with the lowest price by comparing prices
 			return billet1->getPrix() > billet2->getPrix();});
+
+	// return the pointer to the ticket 
 	return *itBillet;
 }
 
 vector<Billet*> GestionnaireMembres::trouverBilletParIntervallle(Membre* membre, double prixInf, double prixSup) const
 {
+	// Initialize the container which will hold the tickets in the desired price range
 	vector<Billet*> billetsDansIntervalle;
+	// Get the member's tickets
 	vector<Billet*> billets = membre->getBillets();
+	// Push back the tickets in the desired price range into billetsDansIntervalle
 	copy_if(billets.begin(), billets.end(), back_inserter(billetsDansIntervalle), IntervallePrixBillet(pair<double, double>(prixInf, prixSup)));
 	
 	return billetsDansIntervalle;
