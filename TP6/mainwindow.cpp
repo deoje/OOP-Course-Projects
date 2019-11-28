@@ -52,7 +52,8 @@ void MainWindow::setup(){
 }
 
 void MainWindow::afficherMessage(QString msg) {
-    // TODO
+    QLabel* msgToShow = new QLabel(msg.toStdString().c_str());
+    msgToShow->show();
 }
 
 void MainWindow::setMenu() {
@@ -67,7 +68,8 @@ void MainWindow::setUI(){
     billetsLabel->setText("Billets : ");
     listeBillets_ = new QListWidget(this);
     listeBillets_->setSortingEnabled(true);
-// TODO
+    connect(listeBillets_, SIGNAL(itemClicked(QListWidgetItem*)),
+            this, SLOT(selectionnerBillet(QListWidgetItem*)))
 
     // Boutons radios Type de billets
     boutonsRadioTypeBillets_.push_back(new QRadioButton("Regulier", this));
@@ -75,10 +77,15 @@ void MainWindow::setUI(){
     boutonsRadioTypeBillets_.push_back(new QRadioButton("FlightPass", this));
     boutonsRadioTypeBillets_.push_back(new QRadioButton("FlightPass Solde", this));
 
+    //QButtonGroup* billetTypeButtonGroup = new QButtonGroup;
+    //for(QRadioButton * bouton : boutonsRadioTypeBillets_)
+    //    billetTypeButtonGroup­->addButton(bouton);
+    //connect(billetTypeButtonGroup, SIGNAL(buttonClicked(int)),
+            this, SLOT(changedType(int)));
+
     QHBoxLayout* boutonsRadioBilletsLayout = new QHBoxLayout();
     for(QRadioButton* bouton : boutonsRadioTypeBillets_)
         boutonsRadioBilletsLayout->addWidget(bouton);
-
 
     // Liste deroulante pour choisir le Membre
     choixMembreBillet_ = new QComboBox(this);
@@ -145,8 +152,10 @@ void MainWindow::setUI(){
 
 
     //Bouton ajouter billet
-// TODO
-
+    addBilletButton = new QPushButton(this);
+    addBilletButton->setText("Ajouter Billet");
+    connect(AddBilletButton, SIGNAL(clicked()),
+            this, SLOT(ajouterBillet()))
 
     //ligne seprant les ajouts de billets
     //et les ajouts de coupons
@@ -158,7 +167,8 @@ void MainWindow::setUI(){
     couponsLabel->setText("Coupons : ");
     listeCoupons_ = new QListWidget(this);
     listeCoupons_->setSortingEnabled(true);
-// TODO
+    connect(listeCoupons_, SIGNAL(itemClicked(QListWidgetItem*)),
+            this, SLOT(selectionnerCoupon(QListWidgetItem*)));
 
 
     //Champ pour le code du coupon
@@ -186,8 +196,9 @@ void MainWindow::setUI(){
 
 
     //Bouton ajouter coupon
-// TODO
-
+    QPushButton * addCouponButton = new QPushButton(this);
+    addCouponButton->setText("Ajouter Coupon");
+    connect(addCouponButton, SIGNAL(clicked()), this, SLOT(ajouterCoupon()));
 
     //ligne seprant les ajouts de coupons
     //et les informations des membres
@@ -200,13 +211,16 @@ void MainWindow::setUI(){
     choixMembre->addItem("Tout Afficher"); // Index 0
     choixMembre->addItem("Afficher Membres Reguliers"); // Index 1
     choixMembre->addItem("Afficher Membres Premium"); // Index 2
-// TODO
+    connect(choixMembre, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(filtrerListe(int)));
 
     //liste des membres
     QLabel* membresLabel = new QLabel();
     membresLabel->setText("Membres : ");
     listeMembres_ = new QListWidget(this);
     listeMembres_->setSortingEnabled(true);
+    connect(listeMembres_, SIGNAL(itemClicked(QListWidgetItem*)),
+            this, SLOT(selectionnerMembre(QListWidgetItem*)))
 // TODO
 
 
@@ -367,11 +381,76 @@ void MainWindow::nettoyerVueMembres(){
 }
 
 void MainWindow::selectionnerBillet(QListWidgetItem* item){
-    // TODO
+    // Fetch the actual billet data
+    Billet * billet = item->data(Qt::UserRole).value<Billet*>();
+
+    // Disable modifications
+    editeurDateVol_->setDisabled(true);
+    editeurPourcentageSoldeBillet_->setDisabled(true);
+    editeurUtilisationsRestantesFlightPass_->setDisabled(true);
+
+    // Verify if it's a regular ticket
+    BilletRegulier * billetRegulier = dynamic_cast<BilletRegulier*>(billet);
+    if (billetRegulier){
+
+        editeurDateVol_->setText(
+            QString::fromStdString(billetRegulier->getDateVol())
+        );
+
+        BilletRegulierSolde * billetRegulierSolde = dynamic_cast<BilletRegulierSolde*>(billetRegulier);
+
+        // Verify if it's in sale
+        if (billetRegulierSolde)
+        {
+            editeurPourcentageSoldeBillet_->setText(
+                QString::number(billetRegulierSolde->getPourcentageSolde()));
+            editeurUtilisationsRestantesFlightPass_->setText(QString("N/A"));
+            return;
+
+        } else {
+
+            editeurPourcentageSoldeBillet_->setText(QString("N/A"));
+            editeurUtilisationsRestantesFlightPass_->setText(QString("N/A"));
+            return;
+        }
+    }
+
+    // Verify if it's a flightPass
+    FlightPass * flightPass = dynamic_cast<FlightPass*>(billet);
+    if (flightPass){
+        editeurDateVol_->setText(QString("N/A"));
+        editeurUtilisationsRestantesFlightPass_->setText(QString::number(flightPass->getNbUtilisationsRestante()));
+
+        FlightPassSolde * flightPassSolde = dynamic_cast<FlightPassSolde*>(flightPass);
+        // Verify if it's in sale
+        if (flightPassSolde){
+            editeurPourcentageSoldeBillet_->setText(
+                QString::number(flightPassSolde->getPourcentageSolde()));
+            return;
+            }
+        editeurPourcentageSoldeBillet_->setText(QString("N/A"));
+        return;
+    } else {
+        editeurDateVol_->setText(QString("N/A"));
+        editeurPourcentageSoldeBillet_->setText(QString("N/A"));
+        editeurUtilisationsRestantesFlightPass_->setText(QString("N/A"));
+    }
 }
 void MainWindow::selectionnerCoupon(QListWidgetItem* item ){
-    // TODO
+    // Fetch the actual coupon data
+    Coupon* coupon = item->data(Qt::UserRole).value<Coupon*>();
 
+    // Disable modifications to coupon's code and show its value
+    editeurCodeCoupon_->setDisabled(true);
+    editeurCodeCoupon_->setText(QString::fromStdString(coupon->getCode()));
+
+    // Disable modifications to coupon's rabais and show its value
+    editeurRabaisCoupon_->setDisabled(true);
+    editeurRabaisCoupon_->setText(QString::number(coupon->getRabais()));
+
+    // Disable modifications to coupon's cout and show its value
+    editeurCoutCoupon_->setDisabled(true);
+    editeurCoutCoupon_->setText(QString::number(coupon->getCout()));
 }
 void MainWindow::selectionnerMembre(QListWidgetItem* item){
     // TODO
@@ -387,11 +466,35 @@ void MainWindow::ajouterCoupon(){
 
 
 void MainWindow::filtrerListe(int index){
-    // TODO
+    // Iterate through all the members
+    for (int i = 0; i < listeMembres_->count(); ++i){
+
+        // store the item i
+        QListWidgetItem *item = listeMembres_->item(i);
+
+        // fetch the actual member pointer from the item
+        Membre* member = item->data(Qt::UserRole).value<Membre*>();
+
+        // Hide the member if the index corresponds to its type
+        item->setHidden(filtrerMasque(member, index));
+    }
 }
 
 bool MainWindow::filtrerMasque(Membre* membre, int index) {
-    // TODO
+
+    switch (index){
+        case 2 : // Verify if member is actually premium
+            if (dynamic_cast<MembrePremium*>(membre))
+                return true;
+        case 1 : // Verify if member is actually regular
+            if (dynamic_cast<MembreRegulier*>(membre))
+                return true;
+        case 0 : // Return true since a member was passed as a parameter
+            return true;
+    }
+
+    // Covers cases where the type does not match the index
+    // and index is not 0, 1 or 2.
     return false;
 }
 
