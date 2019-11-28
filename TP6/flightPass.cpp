@@ -28,5 +28,5 @@ FlightPass* FlightPass::clone() const
 void FlightPass::afficher(ostream& o) const
 {
 	Billet::afficher(o);
-	o << "\t\t\t" << setw(11) << "- Utilisation restantes" << ": " << nbUtilisationsRestante_ << endl;
+    //o << "\t\t\t" << setw(11) << "- Utilisation restantes" << ": " << nbUtilisationsRestante_ << endl;
 }

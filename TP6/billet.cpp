@@ -98,10 +98,10 @@ string Billet::formatTarif(TarifBillet tarif) const
 
 void Billet::afficher(ostream& o) const
 {
-	o << "\t\t- Billet " << pnr_ << " (Classe : " << formatTarif(tarif_) << ")" << endl;
-	o << left << "\t\t\t" << setw(11) << "- Passager " << ": " << nomPassager_ << endl;
-	o << "\t\t\t" << setw(11) << "- Prix" << ": " << prix_ << "$" << endl;
-	o << "\t\t\t" << setw(11) << "- Trajet" << ": " << od_ << endl;
+    //o << "\t\t- Billet " << pnr_ << " (Classe : " << formatTarif(tarif_) << ")" << std::endl;
+    //o << left << "\t\t\t" << setw(11) << "- Passager " << ": " << nomPassager_ << std::endl;
+    //o << "\t\t\t" << setw(11) << "- Prix" << ": " << prix_ << "$" << std::endl;
+    //o << "\t\t\t" << setw(11) << "- Trajet" << ": " << od_ << std::endl;
 }
 
 

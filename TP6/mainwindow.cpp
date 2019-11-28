@@ -69,7 +69,7 @@ void MainWindow::setUI(){
     listeBillets_ = new QListWidget(this);
     listeBillets_->setSortingEnabled(true);
     connect(listeBillets_, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(selectionnerBillet(QListWidgetItem*)))
+            this, SLOT(selectionnerBillet(QListWidgetItem*)));
 
     // Boutons radios Type de billets
     boutonsRadioTypeBillets_.push_back(new QRadioButton("Regulier", this));
@@ -77,11 +77,11 @@ void MainWindow::setUI(){
     boutonsRadioTypeBillets_.push_back(new QRadioButton("FlightPass", this));
     boutonsRadioTypeBillets_.push_back(new QRadioButton("FlightPass Solde", this));
 
-    //QButtonGroup* billetTypeButtonGroup = new QButtonGroup;
-    //for(QRadioButton * bouton : boutonsRadioTypeBillets_)
-    //    billetTypeButtonGroup­->addButton(bouton);
-    //connect(billetTypeButtonGroup, SIGNAL(buttonClicked(int)),
-            this, SLOT(changedType(int)));
+    QButtonGroup* billetTypeButtonGroup = new QButtonGroup;
+    for (QRadioButton* bouton : boutonsRadioTypeBillets_)
+        billetTypeButtonGroup->addButton(bouton);
+    connect(billetTypeButtonGroup, SIGNAL(buttonClicked(int)),
+        this, SLOT(changedType(int)));
 
     QHBoxLayout* boutonsRadioBilletsLayout = new QHBoxLayout();
     for(QRadioButton* bouton : boutonsRadioTypeBillets_)
@@ -152,10 +152,10 @@ void MainWindow::setUI(){
 
 
     //Bouton ajouter billet
-    addBilletButton = new QPushButton(this);
+    QPushButton * addBilletButton = new QPushButton(this);
     addBilletButton->setText("Ajouter Billet");
-    connect(AddBilletButton, SIGNAL(clicked()),
-            this, SLOT(ajouterBillet()))
+    connect(addBilletButton, SIGNAL(clicked()),
+            this, SLOT(ajouterBillet()));
 
     //ligne seprant les ajouts de billets
     //et les ajouts de coupons
@@ -220,7 +220,7 @@ void MainWindow::setUI(){
     listeMembres_ = new QListWidget(this);
     listeMembres_->setSortingEnabled(true);
     connect(listeMembres_, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(selectionnerMembre(QListWidgetItem*)))
+            this, SLOT(selectionnerMembre(QListWidgetItem*)));
 // TODO
 
 
@@ -506,6 +506,7 @@ TarifBillet MainWindow::getTarifBillet(){
 
 
 Membre* MainWindow::trouverMembreParNom(const string& nom){
-   //TODO
-    return nullptr;
+    auto it = std::find_if(membres_.begin(), membres_.end(),
+        [&nom](Membre* ptrMembre) -> bool {return ptrMembre->getNom() == nom;});
+    return *it;
 }

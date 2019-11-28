@@ -29,5 +29,5 @@ BilletRegulierSolde* BilletRegulierSolde::clone() const
 void BilletRegulierSolde::afficher(ostream& o) const
 {
 	BilletRegulier::afficher(o);
-	o << "\t\t\t" << setw(11) << "- Pourcentage solde" << ": " << pourcentageSolde_ << "%" << endl;
+    //o << "\t\t\t" << setw(11) << "- Pourcentage solde" << ": " << pourcentageSolde_ << "%" << endl;
 }

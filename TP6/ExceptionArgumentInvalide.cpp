@@ -1,6 +1,6 @@
 #include "ExceptionArgumentInvalide.h"
 
-
+/**
 ExceptionArgumentInvalide::ExceptionArgumentInvalide(QString const& s) noexcept
     :s_(s) {}
 
@@ -16,3 +16,4 @@ const char * ExceptionArgumentInvalide::what() const noexcept
 {
     return this->s_.toStdString().c_str();
 }
+*/

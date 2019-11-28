@@ -12,6 +12,7 @@
 #include <QLineEdit>
 #include <QRadioButton>
 #include <QPushButton>
+#include <QComboBox>
 #include <string>
 #include <vector>
 

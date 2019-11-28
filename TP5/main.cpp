@@ -7,6 +7,8 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <set>
 #include "gestionnaireCoupons.h"
 #include "gestionnaireMembres.h"
 #include "flightPassSolde.h"
@@ -14,7 +16,24 @@
 
 using namespace std;
 
+struct Sum
+{
+	Sum() : sum{ 0 } { cout << "Created " << sum << endl; }
+	void operator()(int n) { cout << n << "    " << sum << endl; sum += n; }
+	int sum;
+};
+
 int main() {
+
+	int first[] = { 1,2,3,4,5 };
+	int second[] = { 10,20,30,40,50 };
+	int results[5];
+	std::transform(first, first + 5, second, results, std::plus<int>());
+	for (int i = 0; i < 5; i++)
+		std::cout << results[i] << ' ';
+	std::cout << '\n';
+	return 0;
+
 	vector<bool> tests;
 
 	// TESTS
@@ -245,7 +264,7 @@ int main() {
 	MembreRegulier* johnRegulier = new MembreRegulier("John");
 	MembreRegulier* robertRegulier = new MembreRegulier("Robert");
 	MembrePremium* alexPremium = new MembrePremium("Alex");
-	g_membres->ajouter(make_pair(marcRegulier->getNom(),marcRegulier));
+	g_membres->ajouter(make_pair(marcRegulier->getNom(), marcRegulier));
 	g_membres->ajouter(make_pair(johnRegulier->getNom(), johnRegulier));
 
 	tests.push_back(g_membres->getConteneur().size() == 2);
@@ -321,7 +340,7 @@ int main() {
 		&& john->getBillets()[0]->getNomPassager() == "John"
 		&& john->getPoints() == 150);
 	tests.push_back(marc->getBillets().size() == 2
-		&& marc->getBillets()[0]->getPrix() == 2000	
+		&& marc->getBillets()[0]->getPrix() == 2000
 		&& marc->getBillets()[0]->getNomPassager() == "Marc"
 		&& marc->getBillets()[1]->getPrix() == 1600
 		&& marc->getPoints() == 1960
@@ -405,8 +424,7 @@ int main() {
 	tests.push_back(g_membres->getBilletMax("Alex")->getPnr() == "J9K5L0");
 
 	// Test 66 : trouverBilletParIntervallle()
-	tests.push_back(g_membres->trouverBilletParIntervallle(alex, 800.0, 10000.0).size() == 3
-		&& g_membres->trouverBilletParIntervallle(alex, 600.0, 830.0).size() == 0);
+	tests.push_back(g_membres->trouverBilletParIntervallle(alex, 800.0, 10000.0).size() == 3 && g_membres->trouverBilletParIntervallle(alex, 600.0, 830.0).size() == 0);
 
 
 	// Affichage des tests
