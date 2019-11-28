@@ -436,6 +436,7 @@ void MainWindow::selectionnerBillet(QListWidgetItem* item){
         editeurUtilisationsRestantesFlightPass_->setText(QString("N/A"));
     }
 }
+
 void MainWindow::selectionnerCoupon(QListWidgetItem* item ){
     // Fetch the actual coupon data
     Coupon* coupon = item->data(Qt::UserRole).value<Coupon*>();
@@ -452,8 +453,40 @@ void MainWindow::selectionnerCoupon(QListWidgetItem* item ){
     editeurCoutCoupon_->setDisabled(true);
     editeurCoutCoupon_->setText(QString::number(coupon->getCout()));
 }
+
 void MainWindow::selectionnerMembre(QListWidgetItem* item){
-    // TODO
+    // Fetch the the member from the data
+    Membre * membre = item->data(Qt::UserRole).value<Membre*>();
+
+    // Disable modifications to member's data
+    editeurPoints_->setDisabled(true);
+    editeurPointsCumules_->setDisabled(true);
+    editeurJoursRestants_->setDisabled(true);
+
+    // Verify if regular member
+    MembreRegulier * membreRegulier = dynamic_cast<MembreRegulier*>(membre);
+    if (membreRegulier){
+
+        editeurPoints_->setText(QString::number(membreRegulier->getPoints()));
+
+        // Verify if premium member
+        MembrePremium * membrePremium = dynamic_cast<MembrePremium*>(membreRegulier);
+        if (membrePremium){
+            editeurPointsCumules_->setText(QString::number(membrePremium->getpointsCumulee()));
+            editeurJoursRestants_->setText(QString::number(membrePremium->getpointsCumulee()));
+            return;
+        }
+
+        editeurPointsCumules_->setText(QString("N/A"));
+        editeurJoursRestants_->setText(QString("N/A"));
+        return;
+
+    } else {
+        editeurPoints_->setText(QString("N/A"));
+        editeurPointsCumules_->setText(QString("N/A"));
+        editeurJoursRestants_->setText(QString("N/A"));
+        return;
+    }
 }
 void MainWindow::ajouterBillet(){
     // TODO
@@ -486,16 +519,16 @@ bool MainWindow::filtrerMasque(Membre* membre, int index) {
         case 2 : // Verify if member is actually premium
             if (dynamic_cast<MembrePremium*>(membre))
                 return true;
+            break;
         case 1 : // Verify if member is actually regular
             if (dynamic_cast<MembreRegulier*>(membre))
                 return true;
+            break;
         case 0 : // Return true since a member was passed as a parameter
             return true;
+        default: // Covers cases where the type does not match the index and index is not 0, 1 or 2.
+            return false;
     }
-
-    // Covers cases where the type does not match the index
-    // and index is not 0, 1 or 2.
-    return false;
 }
 
 TarifBillet MainWindow::getTarifBillet(){
