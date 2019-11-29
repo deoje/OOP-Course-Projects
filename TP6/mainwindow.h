@@ -38,6 +38,8 @@ public slots :
     void selectionnerBillet(QListWidgetItem* item);
     void selectionnerCoupon(QListWidgetItem* item);
     void selectionnerMembre(QListWidgetItem* item);
+    //  selectionnerTypeBillet To update the editor when we select another type of billet
+    void selectionnerTypeBillet(int);
     void ajouterBillet();
     void ajouterCoupon();
     void filtrerListe(int index);
@@ -67,13 +69,13 @@ private:
     QLineEdit* editeurDateVol_;
     QLineEdit* editeurPourcentageSoldeBillet_;
     QLineEdit* editeurUtilisationsRestantesFlightPass_;
-    //TODO bouton "ajouter Billet"
+    QPushButton * addBilletButton_;
 
     // Coupon
     QLineEdit* editeurCodeCoupon_;
     QLineEdit* editeurRabaisCoupon_;
     QLineEdit* editeurCoutCoupon_;
-    //TODO bouton "ajouter Coupon"
+    QPushButton * addCouponButton_;
 
 
     // Membres
@@ -97,6 +99,7 @@ private:
     void nettoyerVueMembres();
 
     TarifBillet getTarifBillet();
+    string getTarifBilletString(const TarifBillet & tarif);
     void ajouterMembresDansComboBox(QComboBox* list);
     Membre* trouverMembreParNom(const string& nom);
 
