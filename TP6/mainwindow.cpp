@@ -54,8 +54,9 @@ void MainWindow::setup(){
 
 // TODO
 void MainWindow::afficherMessage(QString msg) {
-    QLabel* msgToShow = new QLabel(msg.toStdString().c_str());
-    msgToShow->show();
+    QMessageBox msgToShow;
+    msgToShow.setText(msg.toStdString().c_str());
+    msgToShow.exec();
 }
 
 void MainWindow::setMenu() {
@@ -381,7 +382,6 @@ void MainWindow::nettoyerVue() {
     chargerBillets();
     chargerCoupons();
     chargerMembres();
-    afficherMessage(QString("HeLLOO"));
 }
 
 void MainWindow::nettoyerVueBillets(){
@@ -389,10 +389,13 @@ void MainWindow::nettoyerVueBillets(){
     listeBillets_->setDisabled(false);
     choixMembreBillet_->setDisabled(false);
     choixMembreBillet_->setCurrentIndex(0);
+
+    boutonsRadioTypeBillets_[0]->setChecked(true);
+
     for(QRadioButton * button : boutonsRadioTypeBillets_){
         button->setDisabled(false);
-        button->setChecked(false);
     }
+
     editeurPNR_->setDisabled(false);
     editeurPNR_->setText("");
     editeurPrixBillet_->setDisabled(false);
@@ -403,9 +406,9 @@ void MainWindow::nettoyerVueBillets(){
     choixTarifBillet_->setCurrentIndex(0);
     editeurDateVol_->setDisabled(false);
     editeurDateVol_->setText("");
-    editeurPourcentageSoldeBillet_->setDisabled(false);
+    editeurPourcentageSoldeBillet_->setDisabled(true);
     editeurPourcentageSoldeBillet_->setText("");
-    editeurUtilisationsRestantesFlightPass_->setDisabled(false);
+    editeurUtilisationsRestantesFlightPass_->setDisabled(true);
     editeurUtilisationsRestantesFlightPass_->setText("");
     addBilletButton_->setDisabled(false);
 }
@@ -614,7 +617,7 @@ void MainWindow::selectionnerTypeBillet(int index){
         editeurOD_->setDisabled(false);
         editeurDateVol_->setDisabled(true);
         editeurPourcentageSoldeBillet_->setDisabled(true);
-        editeurUtilisationsRestantesFlightPass_->setDisabled(false);
+        editeurUtilisationsRestantesFlightPass_->setDisabled(true);
         break;
         case -5:
         editeurPNR_->setDisabled(false);
@@ -622,7 +625,7 @@ void MainWindow::selectionnerTypeBillet(int index){
         editeurOD_->setDisabled(false);
         editeurDateVol_->setDisabled(true);
         editeurPourcentageSoldeBillet_->setDisabled(false);
-        editeurUtilisationsRestantesFlightPass_->setDisabled(false);
+        editeurUtilisationsRestantesFlightPass_->setDisabled(true);
         break;
        default:
             editeurPNR_->setDisabled(true);
@@ -636,14 +639,35 @@ void MainWindow::selectionnerTypeBillet(int index){
 
 void MainWindow::ajouterBillet(){
 
-//    QString nomMembre = choixMembreBillet_->currentText();
-
-//    listeMembres_->fin
-
-//    // Fetch the the member from the data
-//    Membre * membre = item->data(Qt::UserRole).value<Membre*>();
-
     try {
+        // Get the text from the combo box
+        QString memberName = choixMembreBillet_->currentText();
+
+        Membre * member = nullptr;
+        for (int i = 0; i < listeMembres_->count(); ++i){
+
+            // store the item i
+            QListWidgetItem * item = listeMembres_->item(i);
+
+            // fetch the actual member pointer from the item
+            Membre* tempMember = item->data(Qt::UserRole).value<Membre*>();
+
+            if (memberName.toStdString() == tempMember->getNom()){
+
+                // We found the member which selected in the combo box
+                member = tempMember;
+                // No need to continue looping
+                break;
+            }
+        }
+
+        if (!member){ // TODO
+              // No actual member was selected
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun membre selectionné!"));
+            e.raise();
+        }
+
+
         QRadioButton* selection = nullptr;
         for (QRadioButton* button : boutonsRadioTypeBillets_){
             if (button->isChecked()){
@@ -651,31 +675,144 @@ void MainWindow::ajouterBillet(){
                 break;
             }
         }
+
+        if (!selection){
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun type de billet sélectionné!"));
+            e.raise();
+        }
+
+        if (editeurPNR_->text().isEmpty()){
+
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun PNR défini."));
+            e.raise();
+
+        } else if (editeurPrixBillet_->text().isEmpty()) {
+
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Prix défini."));
+            e.raise();
+        } else if (editeurOD_->text().isEmpty()){
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucune Origine-Destination définie."));
+            e.raise();
+        } else if (choixTarifBillet_->currentText().toStdString() == "Tarif Billet"){
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Tarif Billet défini."));
+            e.raise();
+        }
+
         if (selection->text().toStdString() == "Regulier"){
-            Membre* membre = trouverMembreParNom(choixMembreBillet_->currentText().toStdString());
+
+            if (editeurDateVol_->text().isEmpty()){
+                ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucune Date de vol définie."));
+                e.raise();
+            }
+
+            // Create the ticket
             Billet* billet = new BilletRegulier(
                         editeurPNR_->text().toStdString(),
                         editeurPrixBillet_->text().toDouble(),
                         editeurOD_->text().toStdString(),
                         getTarifBillet(),
                         editeurDateVol_->text().toStdString());
-            membre->ajouterBillet(billet);
-        }
-    }
-    catch (...){
 
+            // Add it to the corresponding member
+            member->ajouterBillet(billet);
+
+        } else if (selection->text().toStdString() == "Regulier Solde"){
+
+            if (editeurDateVol_->text().isEmpty()){
+                ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucune Date de vol définie."));
+                e.raise();
+            } else if (editeurPourcentageSoldeBillet_->text().isEmpty()){
+                    ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Pourcentage solde billet défini."));
+                    e.raise();
+            }
+
+            // Create the ticket
+            Billet* billet = new BilletRegulierSolde(
+                        editeurPNR_->text().toStdString(),
+                        editeurPrixBillet_->text().toDouble(),
+                        editeurOD_->text().toStdString(),
+                        getTarifBillet(),
+                        editeurDateVol_->text().toStdString(),
+                        editeurPourcentageSoldeBillet_->text().toDouble()
+                        );
+
+            // Add it to the corresponding member
+            member->ajouterBillet(billet);
+
+        } else if (selection->text().toStdString() == "FlightPass"){
+
+            // Create the ticket
+            Billet * billet = new FlightPass(
+                        editeurPNR_->text().toStdString(),
+                        editeurPrixBillet_->text().toDouble(),
+                        editeurOD_->text().toStdString(),
+                        getTarifBillet()
+                        );
+
+            // Add it to the corresponding member
+            member->ajouterBillet(billet);
+
+        } else if (selection->text().toStdString() == "FlightPass Solde"){
+
+            if (editeurPourcentageSoldeBillet_->text().isEmpty()){
+                            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Pourcentage solde billet définie."));
+                            e.raise();
+                        }
+            // Create the ticket
+            Billet * billet = new FlightPassSolde(
+                        editeurPNR_->text().toStdString(),
+                        editeurPrixBillet_->text().toDouble(),
+                        editeurOD_->text().toStdString(),
+                        getTarifBillet(),
+                        editeurPourcentageSoldeBillet_->text().toDouble()
+                        );
+
+            // Add it to the corresponding member
+            member->ajouterBillet(billet);
+        }
+
+        // Show a confirmation msg and clean the window
+        QString msg = QString::fromStdString("Billet " + editeurPNR_->text().toStdString() + " a été ajouté!");
+        afficherMessage(msg);
+        nettoyerVueBillets();
+        chargerBillets();
+
+    } catch (ExceptionArgumentInvalide& e){
+
+          // Print exception msg here
+          afficherMessage(e.what());
     }
 }
+
 void MainWindow::ajouterCoupon(){
     try {
 
+
+        if (editeurCodeCoupon_->text().isEmpty()){
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Code défini."));
+            e.raise();
+        } else if (editeurRabaisCoupon_->text().isEmpty()){
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Rabais défini."));
+            e.raise();
+        } else if (editeurCoutCoupon_->text().isEmpty()){
+            ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Cout défini."));
+            e.raise();
+        }
+        // Create a new coupon
         Coupon* coupon = new Coupon(editeurCodeCoupon_->text().toStdString(),
                                     editeurRabaisCoupon_->text().toInt(),
                                     editeurCoutCoupon_->text().toInt());
+        // Add the coupon to the vector
         coupons_.push_back(coupon);
-    }
-    catch (...){
 
+        // Print confirmation msg and clean coupon's display
+        QString msg = QString::fromStdString("Coupon " + editeurCodeCoupon_->text().toStdString() + " a été ajouté!");
+        afficherMessage(msg);
+        nettoyerVueCoupons();
+        chargerCoupons();
+
+    } catch ( ExceptionArgumentInvalide& e ){
+        afficherMessage(e.what());
     }
 }
 
