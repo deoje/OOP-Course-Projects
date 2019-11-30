@@ -52,7 +52,10 @@ void MainWindow::setup(){
    nettoyerVue();
 }
 
-// TODO
+/*
+*   @brief afficherMessage To display a message in a separate window
+*   @param msg QString representing the message to display
+*/
 void MainWindow::afficherMessage(QString msg) {
     QMessageBox msgToShow;
     msgToShow.setText(msg.toStdString().c_str());
@@ -77,6 +80,8 @@ void MainWindow::setUI(){
     billetsLabel->setText("Billets : ");
     listeBillets_ = new QListWidget(this);
     listeBillets_->setSortingEnabled(true);
+    // Link the action of clicking an item in the ticket's list box
+    // to the actual function that handles what to show after the selection
     connect(listeBillets_, SIGNAL(itemClicked(QListWidgetItem*)),
             this, SLOT(selectionnerBillet(QListWidgetItem*)));
 
@@ -89,6 +94,8 @@ void MainWindow::setUI(){
     QButtonGroup* billetTypeButtonGroup = new QButtonGroup;
     for (QRadioButton* bouton : boutonsRadioTypeBillets_)
         billetTypeButtonGroup->addButton(bouton);
+    // Link the action of selecting a type in the ticket's type radio buttons
+    // to the actual function that handles which field can actually me modified
     connect(billetTypeButtonGroup, SIGNAL(buttonClicked(int)),
         this, SLOT(selectionnerTypeBillet(int)));
 
@@ -163,6 +170,8 @@ void MainWindow::setUI(){
     //Bouton ajouter billet
     addBilletButton_ = new QPushButton(this);
     addBilletButton_->setText("Ajouter Billet");
+    // Link the action of clicking on "Ajouter Billet"
+    // to the actual function that handles the addition of the new ticket
     connect(addBilletButton_, SIGNAL(clicked()),
             this, SLOT(ajouterBillet()));
 
@@ -207,6 +216,8 @@ void MainWindow::setUI(){
     //Bouton ajouter coupon
     addCouponButton_ = new QPushButton(this);
     addCouponButton_->setText("Ajouter Coupon");
+    // Link the action of clicking on "Ajouter Coupon"
+    // to the actual function that handles the addition of the new coupon
     connect(addCouponButton_, SIGNAL(clicked()), this, SLOT(ajouterCoupon()));
 
     //ligne seprant les ajouts de coupons
@@ -371,6 +382,7 @@ void MainWindow::ajouterMembresDansComboBox(QComboBox* list){
 
 void MainWindow::nettoyerVue() {
 
+    // Clean individual sections
     nettoyerVueBillets();
     nettoyerVueCoupons();
     nettoyerVueMembres();
@@ -385,17 +397,25 @@ void MainWindow::nettoyerVue() {
 }
 
 void MainWindow::nettoyerVueBillets(){
+
+    // Remove tickets to reload them later
     listeBillets_->clearSelection();
+    // Allow selection of a ticket
     listeBillets_->setDisabled(false);
+
+    // Allow selection of a member which will receive the new ticket
     choixMembreBillet_->setDisabled(false);
+    // Revert to the invalid "Membres" option
     choixMembreBillet_->setCurrentIndex(0);
 
+    // Select the first radio button by default
     boutonsRadioTypeBillets_[0]->setChecked(true);
 
     for(QRadioButton * button : boutonsRadioTypeBillets_){
         button->setDisabled(false);
     }
 
+    // Allow modification to fields and empty them
     editeurPNR_->setDisabled(false);
     editeurPNR_->setText("");
     editeurPrixBillet_->setDisabled(false);
@@ -406,17 +426,26 @@ void MainWindow::nettoyerVueBillets(){
     choixTarifBillet_->setCurrentIndex(0);
     editeurDateVol_->setDisabled(false);
     editeurDateVol_->setText("");
+
+    // Since the first radio button shows as selected
+    // disable fields that should not be modified
     editeurPourcentageSoldeBillet_->setDisabled(true);
     editeurPourcentageSoldeBillet_->setText("");
     editeurUtilisationsRestantesFlightPass_->setDisabled(true);
     editeurUtilisationsRestantesFlightPass_->setText("");
+
+    // Allow clicking "Ajouter Billet"
     addBilletButton_->setDisabled(false);
 }
 
 void MainWindow::nettoyerVueCoupons(){
+
+    // Remove coupons to reload them later
     listeCoupons_->clearSelection();
+    // Allow selection of a ticket
     listeCoupons_->setDisabled(false);
 
+    // Allow modification to fields and empty them
     editeurCodeCoupon_->setDisabled(false);
     editeurCodeCoupon_->setText("");
     editeurRabaisCoupon_->setDisabled(false);
@@ -425,6 +454,7 @@ void MainWindow::nettoyerVueCoupons(){
     editeurCoutCoupon_->setText("");
     addCouponButton_->setDisabled(false);
 
+    // Match the display show in the assignement paper
     editeurPoints_->setDisabled(true);
     editeurPoints_->setText("N/A");
     editeurPointsCumules_->setDisabled(true);
@@ -434,48 +464,35 @@ void MainWindow::nettoyerVueCoupons(){
 }
 
 void MainWindow::nettoyerVueMembres(){
+
+    // Remove members to reload them later
     listeMembres_->clearSelection();
+    // Allow selection of a ticket
     listeMembres_->setDisabled(false);
 }
+
 
 void MainWindow::selectionnerBillet(QListWidgetItem* item){
     // Fetch the actual billet data
     Billet * billet = item->data(Qt::UserRole).value<Billet*>();
 
     // Disable modifications
-
-        //ComboBox membre
     int posBillet = choixMembreBillet_->findText(QString(QString::fromStdString(billet->getNomPassager())));
     choixMembreBillet_->setCurrentIndex(posBillet);
     choixMembreBillet_->setDisabled(true);
-
-        // Type de billet
     for (QRadioButton * button : boutonsRadioTypeBillets_){
-        //if (billet->get == getTarifBillet())
-            //button->setChecked(true);
         button->setDisabled(true);
     }
-
-        // Combobox Tarif
-    int posTarif = choixTarifBillet_->findText(QString::fromStdString(getTarifBilletString(billet->getTarif())));
-    choixTarifBillet_->setCurrentIndex(posTarif);
-    choixTarifBillet_->setDisabled(true);
-
     editeurPNR_->setDisabled(true);
-    editeurPNR_->setText(QString::fromStdString(billet->getPnr()));
-
     editeurPrixBillet_->setDisabled(true);
-    editeurPrixBillet_->setText(QString::number(billet->getPrix()));
-
     editeurOD_->setDisabled(true);
-    editeurOD_->setText(QString::fromStdString(billet->getOd()));
-
+    choixTarifBillet_->setDisabled(true);
     editeurDateVol_->setDisabled(true);
     editeurPourcentageSoldeBillet_->setDisabled(true);
     editeurUtilisationsRestantesFlightPass_->setDisabled(true);
-
     addBilletButton_->setDisabled(true);
 
+    // Match the display of the member's section shown in the assignment
     editeurPoints_->setText(QString("N/A"));
     editeurPoints_->setDisabled(true);
     editeurPointsCumules_->setText(QString("N/A"));
@@ -483,10 +500,16 @@ void MainWindow::selectionnerBillet(QListWidgetItem* item){
     editeurJoursRestants_->setText(QString("N/A"));
     editeurJoursRestants_->setDisabled(true);
 
+    // Set the values in the fields which all type of tickets have
+    editeurPNR_->setText(QString::fromStdString(billet->getPnr()));
+    editeurPrixBillet_->setText(QString::number(billet->getPrix()));
+    editeurOD_->setText(QString::fromStdString(billet->getOd()));
+    int posTarif = choixTarifBillet_->findText(QString::fromStdString(getTarifBilletString(billet->getTarif())));
+    choixTarifBillet_->setCurrentIndex(posTarif);
+
     // Verify if it's a regular ticket
     BilletRegulier * billetRegulier = dynamic_cast<BilletRegulier*>(billet);
     if (billetRegulier){
-
         editeurDateVol_->setText(
             QString::fromStdString(billetRegulier->getDateVol())
         );
@@ -494,16 +517,13 @@ void MainWindow::selectionnerBillet(QListWidgetItem* item){
         BilletRegulierSolde * billetRegulierSolde = dynamic_cast<BilletRegulierSolde*>(billetRegulier);
 
         // Verify if it's in sale
-        if (billetRegulierSolde)
-        {
+        if (billetRegulierSolde){
             editeurPourcentageSoldeBillet_->setText(
                 QString::number(billetRegulierSolde->getPourcentageSolde()));
             editeurUtilisationsRestantesFlightPass_->setText(QString("N/A"));
             boutonsRadioTypeBillets_[1]->setChecked(true);
             return;
-
-        } else {
-
+        } else { // Set default values to field which a regular ticket does not have
             editeurPourcentageSoldeBillet_->setText(QString("N/A"));
             editeurUtilisationsRestantesFlightPass_->setText(QString("N/A"));
             boutonsRadioTypeBillets_[0]->setChecked(true);
@@ -518,22 +538,25 @@ void MainWindow::selectionnerBillet(QListWidgetItem* item){
         editeurUtilisationsRestantesFlightPass_->setText(QString::number(flightPass->getNbUtilisationsRestante()));
 
         FlightPassSolde * flightPassSolde = dynamic_cast<FlightPassSolde*>(flightPass);
+
         // Verify if it's in sale
         if (flightPassSolde){
             editeurPourcentageSoldeBillet_->setText(
                 QString::number(flightPassSolde->getPourcentageSolde()));
             return;
-            }
-        editeurPourcentageSoldeBillet_->setText(QString("N/A"));
-        boutonsRadioTypeBillets_[3]->setChecked(true);
-        return;
-    } else {
+        } else { // No in sale, so set default values to sale fields
+            editeurPourcentageSoldeBillet_->setText(QString("N/A"));
+            boutonsRadioTypeBillets_[3]->setChecked(true);
+            return;
+        }
+    } else { // In case a basic ticket is added programmatically?
         editeurDateVol_->setText(QString("N/A"));
         editeurPourcentageSoldeBillet_->setText(QString("N/A"));
         editeurUtilisationsRestantesFlightPass_->setText(QString("N/A"));
         boutonsRadioTypeBillets_[2]->setChecked(true);
     }
 }
+
 void MainWindow::selectionnerCoupon(QListWidgetItem* item ){
     // Fetch the actual coupon data
     Coupon* coupon = item->data(Qt::UserRole).value<Coupon*>();
@@ -550,14 +573,15 @@ void MainWindow::selectionnerCoupon(QListWidgetItem* item ){
     editeurCoutCoupon_->setDisabled(true);
     editeurCoutCoupon_->setText(QString::number(coupon->getCout()));
 
-    //Dis
+    //Disable abilty to add a coupon
     addCouponButton_->setDisabled(true);
 
-    //Di
+    // Match the display in the assignment
     editeurPoints_->setDisabled(true);
     editeurPointsCumules_->setDisabled(true);
     editeurJoursRestants_->setDisabled(true);
 }
+
 void MainWindow::selectionnerMembre(QListWidgetItem* item){
     // Fetch the the member from the data
     Membre * membre = item->data(Qt::UserRole).value<Membre*>();
@@ -595,7 +619,7 @@ void MainWindow::selectionnerMembre(QListWidgetItem* item){
 
 void MainWindow::selectionnerTypeBillet(int index){
     switch (index) {
-        case -2:
+        case -2: // Regular
         editeurPNR_->setDisabled(false);
         editeurPrixBillet_->setDisabled(false);
         editeurOD_->setDisabled(false);
@@ -603,7 +627,7 @@ void MainWindow::selectionnerTypeBillet(int index){
         editeurPourcentageSoldeBillet_->setDisabled(true);
         editeurUtilisationsRestantesFlightPass_->setDisabled(true);
         break;
-        case -3:
+        case -3: // Regular in sale
         editeurPNR_->setDisabled(false);
         editeurPrixBillet_->setDisabled(false);
         editeurOD_->setDisabled(false);
@@ -611,7 +635,7 @@ void MainWindow::selectionnerTypeBillet(int index){
         editeurPourcentageSoldeBillet_->setDisabled(false);
         editeurUtilisationsRestantesFlightPass_->setDisabled(true);
         break;
-        case -4:
+        case -4: // FlightPass
         editeurPNR_->setDisabled(false);
         editeurPrixBillet_->setDisabled(false);
         editeurOD_->setDisabled(false);
@@ -619,7 +643,7 @@ void MainWindow::selectionnerTypeBillet(int index){
         editeurPourcentageSoldeBillet_->setDisabled(true);
         editeurUtilisationsRestantesFlightPass_->setDisabled(true);
         break;
-        case -5:
+        case -5: // FlightPass in sale
         editeurPNR_->setDisabled(false);
         editeurPrixBillet_->setDisabled(false);
         editeurOD_->setDisabled(false);
@@ -627,7 +651,7 @@ void MainWindow::selectionnerTypeBillet(int index){
         editeurPourcentageSoldeBillet_->setDisabled(false);
         editeurUtilisationsRestantesFlightPass_->setDisabled(true);
         break;
-       default:
+       default: // In case of a unexpected int?
             editeurPNR_->setDisabled(true);
             editeurPrixBillet_->setDisabled(true);
             editeurOD_->setDisabled(true);
@@ -643,9 +667,9 @@ void MainWindow::ajouterBillet(){
         // Get the text from the combo box
         QString memberName = choixMembreBillet_->currentText();
 
+        // Find the corresponding member
         Membre * member = nullptr;
         for (int i = 0; i < listeMembres_->count(); ++i){
-
             // store the item i
             QListWidgetItem * item = listeMembres_->item(i);
 
@@ -653,7 +677,6 @@ void MainWindow::ajouterBillet(){
             Membre* tempMember = item->data(Qt::UserRole).value<Membre*>();
 
             if (memberName.toStdString() == tempMember->getNom()){
-
                 // We found the member which selected in the combo box
                 member = tempMember;
                 // No need to continue looping
@@ -661,13 +684,12 @@ void MainWindow::ajouterBillet(){
             }
         }
 
-        if (!member){ // TODO
-              // No actual member was selected
+        if (!member){ // No actual member was selected
             ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun membre selectionné!"));
             e.raise();
         }
 
-
+        // Fetch the ticket's type
         QRadioButton* selection = nullptr;
         for (QRadioButton* button : boutonsRadioTypeBillets_){
             if (button->isChecked()){
@@ -676,16 +698,15 @@ void MainWindow::ajouterBillet(){
             }
         }
 
-        if (!selection){
+        if (!selection){ // No type specified
             ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun type de billet sélectionné!"));
             e.raise();
         }
 
+        // Verify if common fields were filled
         if (editeurPNR_->text().isEmpty()){
-
             ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun PNR défini."));
             e.raise();
-
         } else if (editeurPrixBillet_->text().isEmpty()) {
 
             ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Prix défini."));
@@ -698,13 +719,14 @@ void MainWindow::ajouterBillet(){
             e.raise();
         }
 
+        // Depending on the type of ticket selected, verify if
+        // the fields were filled and create the ticket
         if (selection->text().toStdString() == "Regulier"){
 
             if (editeurDateVol_->text().isEmpty()){
                 ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucune Date de vol définie."));
                 e.raise();
             }
-
             // Create the ticket
             Billet* billet = new BilletRegulier(
                         editeurPNR_->text().toStdString(),
@@ -777,17 +799,17 @@ void MainWindow::ajouterBillet(){
         nettoyerVueBillets();
         chargerBillets();
 
-    } catch (ExceptionArgumentInvalide& e){
-
+    } catch (ExceptionArgumentInvalide& e){ // If a field is not filled
           // Print exception msg here
           afficherMessage(e.what());
     }
 }
 
 void MainWindow::ajouterCoupon(){
+
     try {
 
-
+        // Verify if fields are filled
         if (editeurCodeCoupon_->text().isEmpty()){
             ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Code défini."));
             e.raise();
@@ -798,10 +820,12 @@ void MainWindow::ajouterCoupon(){
             ExceptionArgumentInvalide e = ExceptionArgumentInvalide(QString("ERREUR: Aucun Cout défini."));
             e.raise();
         }
+
         // Create a new coupon
         Coupon* coupon = new Coupon(editeurCodeCoupon_->text().toStdString(),
                                     editeurRabaisCoupon_->text().toInt(),
                                     editeurCoutCoupon_->text().toInt());
+
         // Add the coupon to the vector
         coupons_.push_back(coupon);
 
@@ -811,7 +835,8 @@ void MainWindow::ajouterCoupon(){
         nettoyerVueCoupons();
         chargerCoupons();
 
-    } catch ( ExceptionArgumentInvalide& e ){
+    } catch (ExceptionArgumentInvalide& e ){ // if some info is missing
+        // No actual member was selected
         afficherMessage(e.what());
     }
 }
@@ -852,7 +877,10 @@ bool MainWindow::filtrerMasque(Membre* membre, int index) {
 }
 
 TarifBillet MainWindow::getTarifBillet(){
+    // fetch the text from selected Tarif
     QString tarif = choixTarifBillet_->currentText();
+
+    // Return the matching Tarif
     if (tarif == "Economie")
         return TarifBillet::Economie;
     if (tarif == "Premium economie")
@@ -861,10 +889,14 @@ TarifBillet MainWindow::getTarifBillet(){
         return TarifBillet::Affaire;
     if (tarif == "Premiere")
         return TarifBillet::Premiere;
+
+    // return a TarifBillet for sure
     return TarifBillet::Economie;
 }
 
+// Helper to get a string depending on the tarif we are working with
 string MainWindow::getTarifBilletString(const TarifBillet & tarif){
+
     if (tarif == TarifBillet::Economie)
         return "Economie";
     if (tarif == TarifBillet::PremiumEconomie)
