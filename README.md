@@ -1,2 +1,3 @@
-# INF1010_Programmation_orientee_objet
-Dépôt pour les travaux pratiques
+# OPP Course Projects
+
+Examples of Object-oriented programming (INF1010 - Programmation Orientée Objet @ Polytechnique Montréal
